@@ -17,7 +17,6 @@
   -moz-osx-font-smoothing: grayscale;
   max-width: 1440px;
   max-height: 1024px;
-  background: #FFFFFF;
 }
 
 /* #nav {

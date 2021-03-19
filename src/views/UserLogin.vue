@@ -5,18 +5,18 @@
     </div>
     <h1>enyata</h1>
     <h2>Applicant Log In</h2>
-    <LoginForm />
+    <LoginFormUser />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import LoginForm from '@/components/LoginForm.vue';
+import LoginFormUser from '@/components/LoginFormUser.vue';
 
 export default {
   name: 'UserLogin',
   components: {
-    LoginForm,
+    LoginFormUser,
   },
 };
 </script>

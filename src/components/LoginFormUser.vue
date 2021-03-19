@@ -1,0 +1,102 @@
+<template>
+  <div class="login-form">
+    <b-form>
+      <b-form-group
+        id="input-group-1"
+        label="Email Address"
+        label-for="input-1"
+      >
+        <b-form-input
+          id="input-1"
+          type="email"
+          required
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-group-2" label="Password" label-for="input-2">
+        <div class="login-form-password">
+          <b-form-input
+          id="input-2"
+          required
+        ></b-form-input>
+        <div class="eye-icon">
+          <img src="../assets/view-password.svg" alt="show-password-icon">
+        </div>
+        </div>
+      </b-form-group>
+      <b-button block type="submit" variant="dark" class="button">Sign In</b-button>
+      <div class="login-form-small-text">
+        <span>Don't have an account yet? <a href="">Sign Up</a></span>
+        <span>Forgot Password?</span>
+      </div>
+    </b-form>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'LoginFormUser',
+};
+</script>
+
+<style scoped>
+  .login-form {
+    width: 379px;
+  }
+  #input-group-1, #input-group-2 {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #4F4F4F;
+    text-align: left;
+  }
+  #input-1, #input-2 {
+    width: 379px;
+    height: 41px;
+    border: 1.5px solid #BDBDBD;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-bottom: 19px;
+  }
+  .login-form-password{
+    display: flex;
+    align-items: center;
+  }
+  .eye-icon {
+    width: 15px;
+    height: 9px;
+    margin-left: -30px;
+    cursor: pointer;
+    margin-top: -30px;
+  }
+  .eye-icon img {
+    width: 100%;
+    height: 100%;
+  }
+  .button {
+    height: 50px;
+    margin-top: 20px;
+  }
+  .login-form-small-text{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  .login-form-small-text a{
+    font-style: italic;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    text-decoration-line: underline;
+    color: #1A2C56;
+  }
+  span {
+    font-style: italic;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #4F4F4F;
+  }
+</style>

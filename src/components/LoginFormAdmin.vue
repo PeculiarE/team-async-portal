@@ -20,14 +20,13 @@
           required
         ></b-form-input>
         <div class="eye-icon">
-          <img src="../assets/view-password.svg" alt="show-password-icon">
+          <img src="../assets/view-password-blue.svg" alt="show-password-icon">
         </div>
         </div>
       </b-form-group>
-      <b-button block type="submit" variant="dark" class="button">Sign In</b-button>
+      <b-button block type="submit" class="button">Sign In</b-button>
       <div class="login-form-small-text">
-        <span>Don't have an account yet? <a href="">Sign Up</a></span>
-        <span>Forgot Password</span>
+        <span>Forgot Password?</span>
       </div>
     </b-form>
   </div>
@@ -35,7 +34,7 @@
 
 <script>
 export default {
-  name: 'LoginForm',
+  name: 'LoginFormAdmin',
 };
 </script>
 
@@ -48,16 +47,18 @@ export default {
     font-weight: normal;
     font-size: 14px;
     line-height: 17px;
-    color: #4F4F4F;
+    color: #FFFFFF;
     text-align: left;
   }
   #input-1, #input-2 {
     width: 379px;
     height: 41px;
-    border: 1.5px solid #BDBDBD;
+    border: 1.5px solid #FFFFFF;
     box-sizing: border-box;
     border-radius: 4px;
     margin-bottom: 19px;
+    background-color: #111E2B;
+    color: #FFFFFF;
   }
   .login-form-password{
     display: flex;
@@ -77,26 +78,22 @@ export default {
   .button {
     height: 50px;
     margin-top: 20px;
+    background-color: #FFFFFF;
+    color: #2b3c4e;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
   }
   .login-form-small-text{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    text-align: right;
     margin-top: 12px;
-  }
-  .login-form-small-text a{
-    font-style: italic;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    text-decoration-line: underline;
-    color: #1A2C56;
   }
   span {
     font-style: italic;
     font-weight: normal;
     font-size: 14px;
     line-height: 17px;
-    color: #4F4F4F;
+    color: #FFFFFF;
   }
 </style>
