@@ -99,6 +99,7 @@ export default {
 
 <style scoped>
   .signup-form {
+    height: 100vh;
     width: 820px;
   }
   .grids {
@@ -143,6 +144,7 @@ export default {
     width: 520px;
     height: 77px;
     margin: auto;
+    margin-bottom: 155px;
   }
   .button {
     height: 50px;

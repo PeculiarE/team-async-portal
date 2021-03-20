@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
     <router-view/>
   </div>
 </template>
@@ -16,9 +12,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   max-width: 1440px;
-  max-height: 900px;
+  max-height: 1024px;
   color: #2b3c4e;
   box-sizing: border-box;
  }
-
+#admin-sidebar-top-section {
+  height: 33%;
+  padding-top: 15%;
+  background: #5ABEFD;
+  text-align: center;
+}
 </style>
