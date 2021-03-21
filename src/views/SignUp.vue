@@ -22,17 +22,10 @@ export default {
 
 <style scoped>
   .signup-container {
-    max-height: 100%;
+    max-height: 100vh;
     width: 820px;
     margin: auto;
-    /* margin-top: 20px; */
     text-align: center;
-    /* max-height: 100vh;
-    width: 820px;
-    width: 400px;
-    margin: auto;
-    text-align: center;
-    margin-top: 100px; */
   }
   .enyata-logo {
     width: 48.84px;

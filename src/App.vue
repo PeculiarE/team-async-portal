@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+
     <router-view/>
   </div>
 </template>
@@ -11,8 +12,8 @@
   font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  max-width: 1440px;
-  max-height: 1024px;
+  /* max-width: 1440px;
+  max-height: 1024px; */
   color: #2b3c4e;
   box-sizing: border-box;
  }

@@ -14,6 +14,16 @@ const routes = [
     name: 'CreateApplication',
     component: () => import('../views/CreateApplication.vue'),
   },
+  {
+    path: '/admin/entries',
+    name: 'ApplicationEntries',
+    component: () => import('../views/ApplicationEntries.vue'),
+  },
+  {
+    path: '/admin/dashboard',
+    name: 'AdminDashboard',
+    component: () => import('../views/AdminDashboard.vue'),
+  },
 ];
 
 const router = new VueRouter({

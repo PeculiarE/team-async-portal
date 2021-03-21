@@ -1,5 +1,5 @@
 <template>
-  <div class="create-form">
+  <div class="wrapper">
     <div class="aside">
       <AdminSidebar />
     </div>
@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style scoped>
-.create-form {
+.wrapper {
     height: 100vh;
     width: 100%;
     box-sizing: border-box;
