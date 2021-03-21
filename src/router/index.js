@@ -24,6 +24,11 @@ const routes = [
     name: 'AssessmentHistory',
     component: () => import('../views/AssessmentHistory.vue'),
   },
+  {
+    path: '/admin/results/:batchId',
+    name: 'AssessmentResults',
+    component: () => import('../views/AssessmentResults.vue'),
+  },
 ];
 
 const router = new VueRouter({
