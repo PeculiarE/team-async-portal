@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
+    <div id="nav">
+    </div>
     <router-view/>
   </div>
 </template>
@@ -13,22 +11,13 @@
 
 #app {
   font-family: 'Lato', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   max-width: 1440px;
   max-height: 1024px;
 }
-
-/* #nav {
-  padding: 30px;
-} */
-
-/* #nav a {
-  font-weight: bold;
-  color: #2c3e50;
+#admin-sidebar-top-section {
+  height: 33%;
+  padding-top: 15%;
+  background: #5ABEFD;
+  text-align: center;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-} */
 </style>

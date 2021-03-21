@@ -14,6 +14,11 @@ const routes = [
     name: 'AdminLogin',
     component: () => import('../views/AdminLogin.vue'),
   },
+  {
+    path: '/admin/assessment',
+    name: 'ComposeAssessment',
+    component: () => import('../views/ComposeAssessment.vue'),
+  },
 ];
 
 const router = new VueRouter({
