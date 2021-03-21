@@ -19,6 +19,11 @@ const routes = [
     name: 'ComposeAssessment',
     component: () => import('../views/ComposeAssessment.vue'),
   },
+  {
+    path: '/admin/history',
+    name: 'AssessmentHistory',
+    component: () => import('../views/AssessmentHistory.vue'),
+  },
 ];
 
 const router = new VueRouter({
