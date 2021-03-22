@@ -101,10 +101,11 @@ export default {
 }
 a,
 p {
-  color: #2b3c4e;
+
+  color: var(--text-primary);
 }
 a:hover {
-  color: #2b3c4e;
+  color: var(--text-primary);
   font-weight: 700;
 }
 </style>
