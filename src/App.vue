@@ -25,7 +25,6 @@
   background: #5ABEFD;
   text-align: center;
 }
-
 #sidebar-top-section {
   height: 25%;
   width: 100%;

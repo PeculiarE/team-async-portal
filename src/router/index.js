@@ -5,6 +5,7 @@ import TakeAssessment from '../views/user/TakeAssessment.vue';
 import Questions from '../views/user/Questions.vue';
 import SuccessPage from '../views/user/SuccessPage.vue';
 
+
 Vue.use(VueRouter);
 
 const routes = [
