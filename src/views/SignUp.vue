@@ -31,7 +31,7 @@ export default {
     width: 48.84px;
     height: 51.87px;
     margin: auto;
-    margin-top: 173px;
+    margin-top: 150px;
     margin-bottom: 16.13px;
   }
   .enyata-logo img {
@@ -52,7 +52,6 @@ export default {
   width: 179px;
   height: 29px;
   font-style: italic;
-  /* font-weight: 500; */
   font-size: 24px;
   line-height: 29px;
 }

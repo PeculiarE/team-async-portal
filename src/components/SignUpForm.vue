@@ -98,10 +98,6 @@ export default {
 </script>
 
 <style scoped>
-  .signup-form {
-    height: 100vh;
-    width: 820px;
-  }
   .grids {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -113,7 +109,7 @@ export default {
     font-weight: normal;
     font-size: 14px;
     line-height: 17px;
-    color: #4F4F4F;
+    color: var(--text-secondary-small);
     text-align: left;
   }
   #input-1, #input-2, #input-3, #input-4, #input-5, #input-6 {
@@ -149,7 +145,7 @@ export default {
   .button {
     height: 50px;
     margin-top: 20px;
-    background-color: #2b3c4e;
+    background-color: var(--enyata-purple);
   }
   .already{
     display: flex;
@@ -163,11 +159,11 @@ export default {
     font-weight: normal;
     font-size: 14px;
     line-height: 17px;
-    /* color: #4F4F4F; */
+    color: var(--text-secondary-small);
   }
   .already a{
     text-decoration-line: underline;
     font-weight: 400;
-    color: #1a2c56;
+    color: #030c22;
   }
 </style>
