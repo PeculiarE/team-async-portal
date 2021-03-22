@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-
     <router-view/>
   </div>
 </template>
@@ -15,16 +14,21 @@
 }
 #app {
   font-family: 'Lato', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  max-width: 1440px;
-  max-height: 1024px;
-  box-sizing: border-box;
+  color: #2b3c4e;
+  background-color: #FDFDFF;
  }
 #admin-sidebar-top-section {
   height: 33%;
   padding-top: 15%;
   background: #5ABEFD;
+  text-align: center;
+}
+#sidebar-top-section {
+  height: 25%;
+  width: 100%;
+  background: #2B3C4E;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
+  border: 1px solid #000000;
   text-align: center;
 }
 </style>

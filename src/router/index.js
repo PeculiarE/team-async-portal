@@ -24,6 +24,26 @@ const routes = [
     name: 'AdminDashboard',
     component: () => import('../views/AdminDashboard.vue'),
   },
+  {
+    path: '/application',
+    name: 'ApplicationForm',
+    component: ApplicationForm,
+  },
+  {
+    path: '/user/assessment',
+    name: 'TakeAssessment',
+    component: TakeAssessment,
+  },
+  {
+    path: '/user/success',
+    name: 'SuccessPage',
+    component: SuccessPage,
+  },
+  {
+    path: '/user/questions',
+    name: 'Questions',
+    component: Questions,
+  },
 ];
 
 const router = new VueRouter({
