@@ -5,7 +5,6 @@ import TakeAssessment from '../views/user/TakeAssessment.vue';
 import Questions from '../views/user/Questions.vue';
 import SuccessPage from '../views/user/SuccessPage.vue';
 
-
 Vue.use(VueRouter);
 
 const routes = [
@@ -48,6 +47,31 @@ const routes = [
     path: '/user/questions',
     name: 'Questions',
     component: Questions,
+  },
+  {
+    path: '/user/login',
+    name: 'UserLogin',
+    component: () => import('../views/UserLogin.vue'),
+  },
+  {
+    path: '/admin/login',
+    name: 'AdminLogin',
+    component: () => import('../views/AdminLogin.vue'),
+  },
+  {
+    path: '/admin/assessment',
+    name: 'ComposeAssessment',
+    component: () => import('../views/ComposeAssessment.vue'),
+  },
+  {
+    path: '/admin/history',
+    name: 'AssessmentHistory',
+    component: () => import('../views/AssessmentHistory.vue'),
+  },
+  {
+    path: '/admin/results/:batchId',
+    name: 'AssessmentResults',
+    component: () => import('../views/AssessmentResults.vue'),
   },
 ];
 
