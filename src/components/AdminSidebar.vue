@@ -101,6 +101,7 @@ export default {
 }
 a,
 p {
+
   color: var(--text-primary);
 }
 a:hover {
