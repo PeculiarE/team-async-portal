@@ -84,6 +84,16 @@ const routes = [
     name: 'AssessmentResults',
     component: () => import('../views/admin/AssessmentResults.vue'),
   },
+  {
+    path: '/admin/profile-settings',
+    name: 'ProfileSettings',
+    component: () => import('../views/admin/ProfileSettings.vue'),
+  },
+  {
+    path: '/admin/timer-settings',
+    name: 'TimerSettings',
+    component: () => import('../views/admin/TimerSettings.vue'),
+  },
 ];
 
 const router = new VueRouter({
