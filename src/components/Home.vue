@@ -87,7 +87,6 @@ export default {
 }
 .layer {
   position: absolute;
-  /* top: -164px; */
   right: 0;
   max-width: 400px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
