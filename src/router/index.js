@@ -5,6 +5,11 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/home',
+    name: 'HomePage',
+    component: () => import('../views/HomePage.vue'),
+  },
+  {
     path: '/signup',
     name: 'SignUp',
     component: () => import('../views/user/SignUp.vue'),
@@ -13,6 +18,11 @@ const routes = [
     path: '/user/login',
     name: 'UserLogin',
     component: () => import('../views/user/UserLogin.vue'),
+  },
+  {
+    path: '/user/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import('../views/user/ForgotPassword.vue'),
   },
   {
     path: '/application',
