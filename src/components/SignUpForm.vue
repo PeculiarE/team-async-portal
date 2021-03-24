@@ -1,6 +1,6 @@
 <template>
   <div class="signup-form">
-    <b-form v-if="confirmDetails" @submit.prevent="confirmDetails = false">
+    <b-form v-if="confirmDetails" @submit.prevent="confirmPage">
       <div class="grids">
         <b-form-group
           id="input-group-1"
@@ -53,6 +53,9 @@
             v-model="userDetails.email"
             required
           ></b-form-input>
+          <b-form-invalid-feedback style="font-size: 15px" :state="feedbackEmail">
+            <b>{{getResponseRegister.message}}</b>
+          </b-form-invalid-feedback>
         </b-form-group>
 
         <b-form-group
@@ -64,8 +67,15 @@
             id="input-4"
             type="number"
             v-model="userDetails.phone"
+            @keyup="validatePhoneNumber()"
             required
           ></b-form-input>
+          <b-form-invalid-feedback :state="feedbackPhoneNumber">
+            Your phone number must contain 7 - 15 digits
+          </b-form-invalid-feedback>
+          <b-form-valid-feedback :state="feedbackPhoneNumber">
+            Looks Good.
+          </b-form-valid-feedback>
         </b-form-group>
 
         <b-form-group
@@ -135,34 +145,40 @@
         </div>
       </div>
     </b-form>
-    <div v-else>
+    <div v-else v-show="!successPage">
       <b-card class="mt-3" border-variant="dark" header="Confirm Your Details">
-      <b-list-group class="m-0 mb-5 pl-5 text-left" flush>
-        <b-list-group-item>First Name: <b>{{ userDetails.firstName }}</b></b-list-group-item>
-        <b-list-group-item>Last Name: <b>{{ userDetails.lastName }}</b></b-list-group-item>
-        <b-list-group-item>Email: <b>{{ userDetails.email }}</b></b-list-group-item>
-        <b-list-group-item>Phone Number: <b>{{ userDetails.phone }}</b></b-list-group-item>
-        <b-list-group-item>Password: <b>{{ userDetails.password }}</b></b-list-group-item>
-      </b-list-group>
-    </b-card>
-    <div class="extras-two">
-      <div class="d-flex justify-space-between">
-        <b-button variant="primary" class="button" @click="confirmDetails = true">
-          Go Back to Form
-        </b-button>
-        <b-button type="submit" variant="primary" class="button" @click="signUp">
-          Confirm &amp; Sign Up
-        </b-button>
-      </div>
-      <div class="already-two">
-        Already have an account? <a href="http://localhost:8080/user/login">Sign In</a>
+        <b-list-group class="m-0 mb-5 pl-5 text-left" flush>
+          <b-list-group-item>First Name: <b>{{ userDetails.firstName }}</b></b-list-group-item>
+          <b-list-group-item>Last Name: <b>{{ userDetails.lastName }}</b></b-list-group-item>
+          <b-list-group-item>Email: <b>{{ userDetails.email }}</b></b-list-group-item>
+          <b-list-group-item>Phone Number: <b>{{ userDetails.phone }}</b></b-list-group-item>
+          <b-list-group-item>Password: <b>{{ userDetails.password }}</b></b-list-group-item>
+        </b-list-group>
+      </b-card>
+      <div class="extras-two">
+        <div class="d-flex justify-content-between">
+          <b-button variant="primary" class="button" @click="confirmDetails = true">
+            Go Back to Form
+          </b-button>
+          <b-button type="submit" variant="primary" class="button" @click="signUp">
+            Confirm &amp; Sign Up
+          </b-button>
+        </div>
+        <div class="already-two">
+          Already have an account? <a href="http://localhost:8080/user/login">Sign In</a>
+        </div>
       </div>
     </div>
+    <div v-show="successPage">
+      <h1>Congratulations! {{ getResponseRegister.message }}</h1>
+      <h3>Kindly proceed to login</h3>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'SignUpForm',
   data() {
@@ -181,11 +197,36 @@ export default {
       feedbackLastName: null,
       feedbackPassword: null,
       feedbackConfirmPassword: null,
+      feedbackPhoneNumber: null,
+      feedbackEmail: null,
       valid: false,
       confirmDetails: true,
+      successPage: null,
     };
   },
+  computed: {
+    ...mapGetters(['getResponseRegister']),
+  },
+  watch: {
+    getResponseRegister(val) {
+      if (val.status === 'Success') {
+        this.successPage = true;
+        setTimeout(() => {
+          this.$router.push({ name: 'UserLogin' });
+        }, 2000);
+      } else {
+        this.confirmDetails = true;
+        this.feedbackFirstName = null;
+        this.feedbackLastName = null;
+        this.feedbackPassword = null;
+        this.feedbackConfirmPassword = null;
+        this.feedbackPhoneNumber = null;
+        this.feedbackEmail = false;
+      }
+    },
+  },
   methods: {
+    ...mapActions(['register']),
     validateFirstName() {
       const letters = /^[A-Za-z]{2,}$/;
       if (this.userDetails.firstName.match(letters)) {
@@ -210,14 +251,27 @@ export default {
       this.valid = true;
       return this.feedbackLastName;
     },
+    validatePhoneNumber() {
+      const phoneDigits = /^[0-9]{7,15}$/;
+      if (this.userDetails.phone.match(phoneDigits)) {
+        this.feedbackPhoneNumber = true;
+        this.valid = false;
+        return this.feedbackPhoneNumber;
+      }
+      this.feedbackPhoneNumber = false;
+      this.valid = true;
+      return this.feedbackPhoneNumber;
+    },
     validatePassword() {
-      const strongPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%#*?&])[A-Za-z\d@$!%#*?&]{8,}$/;
+      const strongPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$^!%#*?&])[A-Za-z\d@$^!%#*?&]{8,}$/;
       if (this.userDetails.password.match(strongPassword)) {
         this.feedbackPassword = true;
+        this.valid = false;
         this.checkPasswords();
         return this.feedbackPassword;
       }
       this.feedbackPassword = false;
+      this.valid = true;
       this.checkPasswords();
       return this.feedbackPassword;
     },
@@ -237,7 +291,19 @@ export default {
     toggleConfirmPassword() {
       this.showConfirmPassword = !this.showConfirmPassword;
     },
-    signUp() {},
+    confirmPage() {
+      this.confirmDetails = false;
+      this.successPage = false;
+    },
+    signUp() {
+      const user = {
+        fullName: `${this.userDetails.firstName} ${this.userDetails.lastName}`,
+        email: this.userDetails.email,
+        phone: this.userDetails.phone,
+        password: this.userDetails.password,
+      };
+      this.register(user);
+    },
   },
 };
 </script>
@@ -308,7 +374,8 @@ export default {
     color: var(--text-secondary-small);
   }
   .already-two {
-    margin-top: 12px;
+    margin-top: 20px;
+    margin: auto;
     width: 191px;
     height: 17px;
     font-style: italic;
