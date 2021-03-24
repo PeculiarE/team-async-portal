@@ -38,7 +38,9 @@
             type="text" placeholder="3891 Ranchview Dr. Richardson, California 62639">
           </div>
         </div>
-        <button type="submit" class="save-btn">Save</button>
+        <div class="save-btn">
+          <button type="submit" class="save-btn">Save</button>
+        </div>
       </div>
     </div>
 </template>
@@ -104,14 +106,16 @@ a {
 }
 .row1, .row2 {
   width: 724px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 .row1 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   margin-top: 44px;
 }
 .row2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 40px 0;
 }
 input {
@@ -135,6 +139,5 @@ input {
   color: #ffffff;
   border: none;
   margin: auto;
-
 }
 </style>
