@@ -2,7 +2,7 @@
   <div class="d-flex flex-column justify-content-center align-items-center m-5">
     <div class="d-flex flex-column justify-content-center align-items-center mb-2">
       <div>
-        <img src="../assets/logo.svg" alt="" />
+        <img src="../../assets/logo.svg" alt="" />
       </div>
       <div>
         <h3>enyata</h3>
