@@ -20,7 +20,7 @@
           required
         ></b-form-input>
         <div class="eye-icon">
-          <img src="../assets/view-password-blue.svg" alt="show-password-icon">
+          <img src="../../src/assets/view-password-blue.svg" alt="show-password-icon">
         </div>
         </div>
       </b-form-group>

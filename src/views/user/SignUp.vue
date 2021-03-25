@@ -1,7 +1,7 @@
 <template>
   <div class="signup-container">
     <div class="enyata-logo">
-      <img src="../assets/enyata-logo.svg" alt="Enyata Logo">
+      <img src="../../../src/assets/enyata-logo.svg" alt="Enyata Logo">
     </div>
     <div class="name">enyata</div>
     <div class="title">Applicant Sign Up</div>

@@ -3,7 +3,7 @@
   <div class="admin-login-background-image">
     <div class="admin-login-content">
       <div class="admin-login-content-icon">
-          <img alt="Enyata logo" src="../assets/enyata-white-icon.svg">
+          <img alt="Enyata logo" src="../../assets/enyata-white-icon.svg">
       </div>
       <h1>enyata</h1>
       <h2>Admin Log In</h2>
@@ -36,7 +36,7 @@ export default {
     padding-bottom: 50px;
   }
   .admin-login-background-image {
-    background-image: url("../assets/laptop-background.svg");
+    background-image: url("../../assets/laptop-background.svg");
     background-repeat: no-repeat;
     /* width: 1086px; */
     height: 724px;

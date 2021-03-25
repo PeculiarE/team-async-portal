@@ -1,7 +1,7 @@
 <template>
   <div class="user-login">
     <div class="user-login-icon">
-      <img alt="Enyata logo" src="../assets/enyata-logo.svg">
+      <img alt="Enyata logo" src="../../assets/enyata-logo.svg">
     </div>
     <h1>enyata</h1>
     <h2>Applicant Log In</h2>
