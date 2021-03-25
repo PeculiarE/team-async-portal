@@ -15,7 +15,7 @@
     <div class="form-container p-5">
       <form enctype="multipart/form-data"
        @submit.prevent="apply">
-        <div class="form-row justify-content-around d-flex mb-4">
+        <!-- <div class="form-row justify-content-around d-flex mb-4">
             <div>
                 <label for="upload-cv"
                 class="justify-content-center d-flex align-items-center">
@@ -31,7 +31,7 @@
             accept="image/*" :name="uploadedFieldName" id="upload-photo" />
             <small v-if="isSaving">Uploading...</small>
             </div>
-        </div>
+        </div> -->
         <div>
             <div class="form-row justify-content-between mb-4">
           <div class="col-12 col-md-6">
