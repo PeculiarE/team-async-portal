@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="container">
     <div class="title d-flex">
         <span pt-5 pl-5>Entries - Batch 2</span>
         <div class="image"><img src="../assets/arrow-down-icon.svg" alt="arrow"></div>
@@ -11,13 +11,32 @@
       head-variant="dark"
       table-variant="light"
       :borderless="true"
-    ></b-table>
+      :select-mode="selectMode"
+      responsive="sm"
+      ref="selectableTable"
+      selectable
+      @row-selected="onRowSelected"
+    >
+    <template #cell(selected)="{ rowSelected }">
+        <template v-if="rowSelected" >
+          <b-button @click="modalShow = !modalShow">Show details</b-button>
+          <b-modal v-model="modalShow" class="modal-container">
+            <EntriesModal />
+          </b-modal>
+        </template>
+      </template>
+    </b-table>
   </div>
 </template>
 
 <script>
+import EntriesModal from '@/components/EntriesModal.vue';
+
 export default {
   name: 'EntriesTable',
+  components: {
+    EntriesModal,
+  },
   data() {
     return {
       fields: [
@@ -35,7 +54,7 @@ export default {
           sortable: true,
         },
         {
-          key: 'address',
+          key: 'course',
           sortable: false,
         },
         {
@@ -50,6 +69,10 @@ export default {
         {
           key: 'status',
           label: 'Application Status',
+          sortable: false,
+        },
+        {
+          key: 'selected',
           sortable: false,
         },
       ],
@@ -82,25 +105,39 @@ export default {
           status: 'pending',
         },
       ],
+      modes: ['single'],
+      selectMode: 'single',
+      modalShow: false,
+      approveApplication: false,
+      declineApplication: false,
     };
+  },
+  methods: {
+    onRowSelected(items) {
+      this.selected = items;
+    },
+    clearSelected() {
+      this.$refs.selectableTable.clearSelected();
+    },
   },
 };
 </script>
 
 <style scoped>
-.wrapper {
-    padding-right: 1.5rem;
-}
+/* .container {
+    margin-right: 42px;
+} */
 .title {
-  width: 299px;
+  width: 350px;
   height: 53px;
+  justify-content: space-between;
   font-style: normal;
   font-weight: 300;
   font-size: 43px;
   line-height: 52px;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  margin: 101px 0 55px 42px;
+  margin-top: 30px;
 }
 .description {
     font-weight: normal;
@@ -109,8 +146,13 @@ export default {
     text-align: left;
     color: var(--text-secondary-small);
 }
-.wrapper table {
-  margin-top: 50px;
+.container table {
+  margin-top: 100px;
   text-align: center;
+}
+.entry-details {
+  width: 600px;
+  height: 100vh;
+  margin: 0 50px;
 }
 </style>

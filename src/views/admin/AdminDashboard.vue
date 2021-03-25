@@ -1,6 +1,6 @@
 <template>
   <div class="row g-0" style="overflow: hidden">
-    <div class="col-3 w-100 px-0">
+    <div class="aside col-3 w-100 px-0">
       <AdminSidebar />
     </div>
     <div class="contents col-9 px-0 mt-4 pl-5">
@@ -96,6 +96,9 @@ export default {
 </script>
 
 <style scoped>
+/* .aside {
+  height: 100vh;
+} */
 p {
     font-style: normal;
 }
