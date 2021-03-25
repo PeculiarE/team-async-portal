@@ -5,6 +5,11 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/',
+    name: 'HomePage',
+    component: () => import('../views/HomePage.vue'),
+  },
+  {
     path: '/signup',
     name: 'SignUp',
     component: () => import('../views/user/SignUp.vue'),
@@ -13,6 +18,11 @@ const routes = [
     path: '/user/login',
     name: 'UserLogin',
     component: () => import('../views/user/UserLogin.vue'),
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import('../views/user/ForgotPassword.vue'),
   },
   {
     path: '/application',
@@ -73,6 +83,16 @@ const routes = [
     path: '/admin/results/:batchId',
     name: 'AssessmentResults',
     component: () => import('../views/admin/AssessmentResults.vue'),
+  },
+  {
+    path: '/admin/profile-settings',
+    name: 'ProfileSettings',
+    component: () => import('../views/admin/ProfileSettings.vue'),
+  },
+  {
+    path: '/admin/timer-settings',
+    name: 'TimerSettings',
+    component: () => import('../views/admin/TimerSettings.vue'),
   },
 ];
 

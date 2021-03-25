@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <div class="aside">
-        <AdminSidebar />
+            <AdminSidebar />
         </div>
         <div class="contents">
             <EntriesTable />
@@ -36,5 +36,7 @@ export default {
 .contents {
     width: 75%;
     box-sizing: border-box;
+    margin: 0 30px;
+
 }
 </style>

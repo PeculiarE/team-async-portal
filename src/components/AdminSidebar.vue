@@ -4,7 +4,7 @@
       v-model="visible"
       aria-labelledby="admin-sidebar-no-header-title"
       bg-variant="white"
-      width="23%"
+      width="25%"
       no-header
       shadow
       class="border"
@@ -67,6 +67,18 @@
                 class="d-inline-block mr-3"
               />Results</b-nav-item
             >
+            <b-nav-item to="" class="admin-sidebar-menu mb-2">
+              <img
+                src="../assets/settings-icon.svg"
+                class="d-inline-block mr-3"
+              />Settings</b-nav-item
+            >
+            <b-nav-item to="" class="admin-sidebar-menu mb-2 log-out">
+              <img
+                src="../assets/log-out-icon.svg"
+                class="d-inline-block mr-3"
+              />Log Out</b-nav-item
+            >
           </b-nav>
         </nav>
       </div>
@@ -99,6 +111,9 @@ export default {
 #admin-sidebar-menu-history {
   margin-left: -2px;
 }
+#admin-sidebar-top-section {
+  background: var(--enyata-purple);
+}
 a,
 p {
 
@@ -107,5 +122,8 @@ p {
 a:hover {
   color: var(--text-primary);
   font-weight: 700;
+}
+.log-out {
+  margin-top: 100px;
 }
 </style>
