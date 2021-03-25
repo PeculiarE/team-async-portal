@@ -10,10 +10,21 @@ export default new Vuex.Store({
       status: '',
       message: '',
     },
+    responseLogin: {
+      status: '',
+      message: '',
+    },
+    loginToken: localStorage.getItem('loginToken') || null,
   },
   getters: {
     getResponseRegister(state) {
       return state.responseRegister;
+    },
+    getResponseLogin(state) {
+      return state.responseLogin;
+    },
+    loggedInStatus(state) {
+      return state.loginToken !== null;
     },
   },
   mutations: {
@@ -22,6 +33,15 @@ export default new Vuex.Store({
         status: payload.status,
         message: payload.message,
       };
+    },
+    updateResponseLogin(state, payload) {
+      state.responseLogin = {
+        status: payload.status,
+        message: payload.message,
+      };
+    },
+    retrieveLoginToken(state, payload) {
+      state.loginToken = payload;
     },
   },
   actions: {
@@ -33,7 +53,6 @@ export default new Vuex.Store({
             status: response.data.status,
             message: response.data.message,
           };
-          console.log(response, successObject);
           commit('updateResponseRegister', successObject);
         })
         .catch((error) => {
@@ -41,27 +60,33 @@ export default new Vuex.Store({
             status: error.response.data.status,
             message: error.response.data.message,
           };
-          console.log(error, failObject);
           commit('updateResponseRegister', failObject);
         })
         .finally(() => {});
     },
-    // async signup({ commit }, userInfo) {
-    //   try {
-    //     const response = await axios.post('https://sellforme-api.herokuapp.com/api/register', userInfo);
-    //     let responseObject = {
-    //       type: 'success',
-    //       message: response.data.message
-    //     }
-    //     commit('setResponseReg', responseObject)
-    //   } catch (error) {
-    //     let responseObject = {
-    //       type: 'failed',
-    //       message: error.response.data.message
-    //     }
-    //     commit('setResponseReg', responseObject)
-    //   }
-    // },
+    async login({ commit }, userData) {
+      await axios
+        .post('https://team-async.herokuapp.com/login', userData)
+        .then((response) => {
+          const successObject = {
+            status: response.data.status,
+            message: response.data.message,
+          };
+          const { token } = response.data;
+          localStorage.setItem('loginToken', token);
+          commit('retrieveLoginToken', token);
+          commit('updateResponseLogin', successObject);
+        })
+        .catch((error) => {
+          const failObject = {
+            status: error.response.data.status,
+            message: error.response.data.message,
+          };
+          console.log(error, failObject);
+          commit('updateResponseLogin', failObject);
+        })
+        .finally(() => {});
+    },
   },
   modules: {
   },

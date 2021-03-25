@@ -344,10 +344,6 @@ export default {
     margin-left: -30px;
     color: #b8b8b9;
   }
-  .eye-icon img {
-    width: 100%;
-    height: 100%;
-  }
   .extras, .extras-two {
     width: 520px;
     height: 77px;

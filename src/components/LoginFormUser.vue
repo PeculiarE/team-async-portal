@@ -1,6 +1,6 @@
 <template>
   <div class="login-form">
-    <b-form>
+    <b-form @submit.prevent="loginNow">
       <b-form-group
         id="input-group-1"
         label="Email Address"
@@ -9,6 +9,7 @@
         <b-form-input
           id="input-1"
           type="email"
+          v-model="userDetails.email"
           required
         ></b-form-input>
       </b-form-group>
@@ -17,16 +18,29 @@
         <div class="login-form-password">
           <b-form-input
           id="input-2"
+          :type="showPassword ? 'text' : 'password'"
+          v-model="userDetails.password"
           required
-        ></b-form-input>
-        <div class="eye-icon">
-          <img src="../assets/view-password.svg" alt="show-password-icon">
-        </div>
+          ></b-form-input>
+          <span @click="togglePassword" v-show='showPassword'>
+            <i class="fas fa-eye"></i>
+          </span>
+          <span @click="togglePassword" v-show="!showPassword">
+            <i class="fas fa-eye-slash"></i>
+          </span>
         </div>
       </b-form-group>
+
+      <b-form-invalid-feedback style="font-size: 15px" :state="loginStatus">
+       <b>{{ getResponseLogin.message }}</b>
+      </b-form-invalid-feedback>
+      <b-form-valid-feedback style="font-size: 15px" :state="loginStatus">
+       <b>{{ getResponseLogin.message }}</b>
+      </b-form-valid-feedback>
+
       <b-button block type="submit" variant="dark" class="button">Sign In</b-button>
       <div class="login-form-small-text">
-        <span>Don't have an account yet? <a href="">Sign Up</a></span>
+        <span>Don't have an account yet? <a href="http://localhost:8080/signup">Sign Up</a></span>
         <span>Forgot Password?</span>
       </div>
     </b-form>
@@ -34,8 +48,44 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'LoginFormUser',
+  data() {
+    return {
+      userDetails: {
+        email: '',
+        password: '',
+      },
+      showPassword: false,
+      loginStatus: null,
+    };
+  },
+  computed: {
+    ...mapGetters(['getResponseLogin']),
+  },
+  watch: {
+    getResponseLogin(val) {
+      if (val.status === 'Success') {
+        this.loginStatus = true;
+        setTimeout(() => {
+          this.$router.push({ name: 'ApplicationForm' });
+        }, 2000);
+      } else {
+        this.loginStatus = false;
+      }
+    },
+  },
+  methods: {
+    ...mapActions(['login']),
+    togglePassword() {
+      this.showPassword = !this.showPassword;
+    },
+    loginNow() {
+      this.login(this.userDetails);
+    },
+  },
 };
 </script>
 
@@ -59,20 +109,18 @@ export default {
     border-radius: 4px;
     margin-bottom: 19px;
   }
-  .login-form-password{
+  .login-form-password {
     display: flex;
     align-items: center;
   }
-  .eye-icon {
-    width: 15px;
-    height: 9px;
-    margin-left: -30px;
+  .login-form-password span {
     cursor: pointer;
-    margin-top: -30px;
+    margin-top: -15px;
   }
-  .eye-icon img {
-    width: 100%;
-    height: 100%;
+  .fa-eye, .fa-eye-slash {
+    font-size: 13px;
+    margin-left: -30px;
+    color: #b8b8b9;
   }
   .button {
     height: 50px;
