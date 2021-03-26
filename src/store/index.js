@@ -19,6 +19,12 @@ export default new Vuex.Store({
       status: '',
       message: '',
     },
+    ori: {
+      image: '',
+      adminName: '',
+      adminEmail: '',
+    },
+    adminInfo: JSON.parse(localStorage.getItem('adminInfo')),
     loginAdminToken: localStorage.getItem('loginAdminToken') || null,
   },
   getters: {
@@ -33,6 +39,12 @@ export default new Vuex.Store({
     },
     getResponseAdminLogin(state) {
       return state.responseAdminLogin;
+    },
+    getAdminInfo(state) {
+      if (!state.adminInfo) {
+        return state.ori;
+      }
+      return state.adminInfo;
     },
     loggedInStatusAdmin(state) {
       return state.loginAdminToken !== null;
@@ -60,8 +72,17 @@ export default new Vuex.Store({
         message: payload.message,
       };
     },
+    updateAdminInfo(state, payload) {
+      console.log(state.ori, payload);
+      state.ori.image = payload.image;
+      state.ori.adminName = payload.adminName;
+      state.ori.adminEmail = payload.adminEmail;
+    },
     retrieveLoginAdminToken(state, payload) {
       state.loginAdminToken = payload;
+    },
+    destroyLoginAdminToken(state) {
+      state.loginAdminToken = null;
     },
   },
   actions: {
@@ -115,10 +136,13 @@ export default new Vuex.Store({
             status: response.data.status,
             message: response.data.message,
           };
-          const { token } = response.data;
+          console.log(response);
+          const { token, deets } = response.data;
           localStorage.setItem('loginAdminToken', token);
           commit('retrieveLoginAdminToken', token);
           commit('updateResponseAdminLogin', successObject);
+          commit('updateAdminInfo', deets);
+          localStorage.setItem('adminInfo', JSON.stringify(deets));
         })
         .catch((error) => {
           const failObject = {

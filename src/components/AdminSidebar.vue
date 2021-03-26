@@ -13,14 +13,14 @@
         <b-img
           v-bind="mainProps"
           rounded="circle"
-          alt="Circle image"
-          src=""
+          alt="Admin image"
+          :src="getAdminInfo.image"
           class="m-auto"
         ></b-img>
         <div>
           <p class="m-auto">
-            <span class="font-weight-bold">Josh Doe</span><br />
-            <i>j.doe@enyata.com</i>
+            <span class="font-weight-bold">{{ getAdminInfo.adminName }}</span><br />
+            <i>{{ getAdminInfo.adminEmail }}</i>
           </p>
         </div>
       </div>
@@ -86,19 +86,22 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'AdminSidebar',
   data() {
     return {
       visible: true,
       mainProps: {
-        blank: true,
-        blankColor: '#777',
         width: 100,
         height: 100,
         class: 'mt-4',
       },
     };
+  },
+  computed: {
+    ...mapGetters(['getAdminInfo']),
   },
 };
 </script>
