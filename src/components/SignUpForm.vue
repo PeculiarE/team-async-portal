@@ -50,12 +50,15 @@
           <b-form-input
             id="input-3"
             type="email"
+            @keyup="feedbackEmail = true"
             v-model="userDetails.email"
             required
           ></b-form-input>
           <b-form-invalid-feedback style="font-size: 15px" :state="feedbackEmail">
             <b>{{getResponseRegister.message}}</b>
           </b-form-invalid-feedback>
+          <b-form-valid-feedback style="font-size: 15px" :state="feedbackEmail">
+          </b-form-valid-feedback>
         </b-form-group>
 
         <b-form-group
@@ -92,10 +95,10 @@
               required
             ></b-form-input>
             <span @click="togglePassword" v-show='showPassword'>
-              <i class="fas fa-eye"></i>
+              <i class="fas fa-eye-slash"></i>
             </span>
             <span @click="togglePassword" v-show="!showPassword">
-              <i class="fas fa-eye-slash"></i>
+              <i class="fas fa-eye"></i>
             </span>
           </div>
           <b-form-invalid-feedback :state="feedbackPassword">
@@ -122,10 +125,10 @@
               required
             ></b-form-input>
             <span @click="toggleConfirmPassword" v-show='showConfirmPassword'>
-              <i class="fas fa-eye"></i>
+              <i class="fas fa-eye-slash"></i>
             </span>
             <span @click="toggleConfirmPassword" v-show="!showConfirmPassword">
-              <i class="fas fa-eye-slash"></i>
+              <i class="fas fa-eye"></i>
             </span>
           </div>
           <b-form-invalid-feedback :state="feedbackConfirmPassword">
@@ -199,15 +202,45 @@ export default {
       feedbackConfirmPassword: null,
       feedbackPhoneNumber: null,
       feedbackEmail: null,
-      valid: false,
+      valid: true,
       confirmDetails: true,
       successPage: null,
     };
   },
   computed: {
     ...mapGetters(['getResponseRegister']),
+    changeState() {
+      const {
+        feedbackFirstName,
+        feedbackLastName,
+        feedbackPassword,
+        feedbackConfirmPassword,
+        feedbackPhoneNumber,
+        feedbackEmail,
+      } = this;
+      return {
+        feedbackFirstName,
+        feedbackLastName,
+        feedbackPassword,
+        feedbackConfirmPassword,
+        feedbackPhoneNumber,
+        feedbackEmail,
+      };
+    },
   },
   watch: {
+    changeState: {
+      handler(val) {
+        if (val.feedbackFirstName && val.feedbackLastName && val.feedbackPassword
+        && val.feedbackConfirmPassword && val.feedbackPhoneNumber && val.feedbackEmail) {
+          this.valid = false;
+          return this.valid;
+        }
+        this.valid = true;
+        return this.valid;
+      },
+      deep: true,
+    },
     getResponseRegister(val) {
       if (val.status === 'Success') {
         this.successPage = true;
@@ -216,11 +249,6 @@ export default {
         }, 2000);
       } else {
         this.confirmDetails = true;
-        this.feedbackFirstName = null;
-        this.feedbackLastName = null;
-        this.feedbackPassword = null;
-        this.feedbackConfirmPassword = null;
-        this.feedbackPhoneNumber = null;
         this.feedbackEmail = false;
       }
     },
@@ -231,58 +259,48 @@ export default {
       const letters = /^[A-Za-z]{2,}$/;
       if (this.userDetails.firstName.match(letters)) {
         this.feedbackFirstName = true;
-        this.valid = false;
         this.userDetails.firstName = this.userDetails.firstName.toLowerCase().replace(/\b(\w)/g, (s) => s.toUpperCase());
         return this.feedbackFirstName;
       }
       this.feedbackFirstName = false;
-      this.valid = true;
       return this.feedbackFirstName;
     },
     validateLastName() {
       const letters = /^[A-Za-z]{2,}$/;
       if (this.userDetails.lastName.match(letters)) {
         this.feedbackLastName = true;
-        this.valid = false;
         this.userDetails.lastName = this.userDetails.lastName.toLowerCase().replace(/\b(\w)/g, (s) => s.toUpperCase());
         return this.feedbackLastName;
       }
       this.feedbackLastName = false;
-      this.valid = true;
       return this.feedbackLastName;
     },
     validatePhoneNumber() {
       const phoneDigits = /^[0-9]{7,15}$/;
       if (this.userDetails.phone.match(phoneDigits)) {
         this.feedbackPhoneNumber = true;
-        this.valid = false;
         return this.feedbackPhoneNumber;
       }
       this.feedbackPhoneNumber = false;
-      this.valid = true;
       return this.feedbackPhoneNumber;
     },
     validatePassword() {
       const strongPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$^!%#*?&])[A-Za-z\d@$^!%#*?&]{8,}$/;
       if (this.userDetails.password.match(strongPassword)) {
         this.feedbackPassword = true;
-        this.valid = false;
         this.checkPasswords();
         return this.feedbackPassword;
       }
       this.feedbackPassword = false;
-      this.valid = true;
       this.checkPasswords();
       return this.feedbackPassword;
     },
     checkPasswords() {
       if (this.userDetails.password === this.userDetails.confirmPassword) {
         this.feedbackConfirmPassword = true;
-        this.valid = false;
         return this.feedbackConfirmPassword;
       }
       this.feedbackConfirmPassword = false;
-      this.valid = true;
       return this.feedbackConfirmPassword;
     },
     togglePassword() {

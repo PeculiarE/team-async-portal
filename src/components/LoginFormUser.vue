@@ -20,15 +20,21 @@
           id="input-2"
           :type="showPassword ? 'text' : 'password'"
           v-model="userDetails.password"
+          @keyup="validatePassword()"
           required
           ></b-form-input>
           <span @click="togglePassword" v-show='showPassword'>
-            <i class="fas fa-eye"></i>
-          </span>
-          <span @click="togglePassword" v-show="!showPassword">
             <i class="fas fa-eye-slash"></i>
           </span>
+          <span @click="togglePassword" v-show="!showPassword">
+            <i class="fas fa-eye"></i>
+          </span>
         </div>
+        <b-form-invalid-feedback :state="feedbackPassword">
+          Minimum of 8 characters.
+        </b-form-invalid-feedback>
+        <b-form-valid-feedback :state="feedbackPassword">
+        </b-form-valid-feedback>
       </b-form-group>
 
       <b-form-invalid-feedback style="font-size: 15px" :state="loginStatus">
@@ -59,6 +65,7 @@ export default {
         password: '',
       },
       showPassword: false,
+      feedbackPassword: null,
       loginStatus: null,
     };
   },
@@ -79,6 +86,16 @@ export default {
   },
   methods: {
     ...mapActions(['login']),
+    validatePassword() {
+      if (this.userDetails.password.length >= 8) {
+        this.feedbackPassword = true;
+        this.checkPasswords();
+        return this.feedbackPassword;
+      }
+      this.feedbackPassword = false;
+      this.checkPasswords();
+      return this.feedbackPassword;
+    },
     togglePassword() {
       this.showPassword = !this.showPassword;
     },

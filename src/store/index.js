@@ -15,6 +15,11 @@ export default new Vuex.Store({
       message: '',
     },
     loginToken: localStorage.getItem('loginToken') || null,
+    responseAdminLogin: {
+      status: '',
+      message: '',
+    },
+    loginAdminToken: localStorage.getItem('loginAdminToken') || null,
   },
   getters: {
     getResponseRegister(state) {
@@ -25,6 +30,12 @@ export default new Vuex.Store({
     },
     loggedInStatus(state) {
       return state.loginToken !== null;
+    },
+    getResponseAdminLogin(state) {
+      return state.responseAdminLogin;
+    },
+    loggedInStatusAdmin(state) {
+      return state.loginAdminToken !== null;
     },
   },
   mutations: {
@@ -42,6 +53,15 @@ export default new Vuex.Store({
     },
     retrieveLoginToken(state, payload) {
       state.loginToken = payload;
+    },
+    updateResponseAdminLogin(state, payload) {
+      state.responseAdminLogin = {
+        status: payload.status,
+        message: payload.message,
+      };
+    },
+    retrieveLoginAdminToken(state, payload) {
+      state.loginAdminToken = payload;
     },
   },
   actions: {
@@ -84,6 +104,29 @@ export default new Vuex.Store({
           };
           console.log(error, failObject);
           commit('updateResponseLogin', failObject);
+        })
+        .finally(() => {});
+    },
+    async adminLogin({ commit }, userData) {
+      await axios
+        .post('https://team-async.herokuapp.com/adminlogin', userData)
+        .then((response) => {
+          const successObject = {
+            status: response.data.status,
+            message: response.data.message,
+          };
+          const { token } = response.data;
+          localStorage.setItem('loginAdminToken', token);
+          commit('retrieveLoginAdminToken', token);
+          commit('updateResponseAdminLogin', successObject);
+        })
+        .catch((error) => {
+          const failObject = {
+            status: error.response.data.status,
+            message: error.response.data.message,
+          };
+          console.log(error, failObject);
+          commit('updateResponseAdminLogin', failObject);
         })
         .finally(() => {});
     },
