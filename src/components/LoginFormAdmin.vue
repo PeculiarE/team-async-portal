@@ -44,7 +44,7 @@
        <b>{{ getResponseAdminLogin.message }}</b>
       </b-form-valid-feedback>
 
-      <b-button block type="submit" class="button">Sign In</b-button>
+      <b-button block type="submit" class="button" :disabled="valid">Sign In</b-button>
       <div class="login-form-small-text">
         <span>Forgot Password?</span>
       </div>
@@ -66,6 +66,7 @@ export default {
       showPassword: false,
       feedbackPassword: null,
       loginStatus: null,
+      valid: true,
     };
   },
   computed: {
@@ -88,9 +89,11 @@ export default {
     validatePassword() {
       if (this.adminDetails.password.length >= 8) {
         this.feedbackPassword = true;
+        this.valid = false;
         return this.feedbackPassword;
       }
       this.feedbackPassword = false;
+      this.valid = true;
       return this.feedbackPassword;
     },
     togglePassword() {

@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <div class="aside">
-            <AdminSidebar />
+            <AdminSidebar :toggleEntriesBorder="toggleEntriesBorder" />
         </div>
         <div class="contents">
             <EntriesTable />
@@ -15,9 +15,17 @@ import EntriesTable from '@/components/EntriesTable.vue';
 
 export default {
   name: 'ApplicationEntries',
+  data() {
+    return {
+      toggleEntriesBorder: false,
+    };
+  },
   components: {
     AdminSidebar,
     EntriesTable,
+  },
+  mounted() {
+    this.toggleEntriesBorder = true;
   },
 };
 </script>

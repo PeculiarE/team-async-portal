@@ -111,13 +111,14 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
+    await store.dispatch('adminFetchPage');
     if (store.getters.loggedInStatusAdmin) {
       next();
-      return;
+    } else {
+      next('/admin/login');
     }
-    next('/admin/login');
   } else {
     next();
   }

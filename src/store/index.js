@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import backend from '../../backend';
 
 Vue.use(Vuex);
 
@@ -19,7 +20,7 @@ export default new Vuex.Store({
       status: '',
       message: '',
     },
-    ori: {
+    initialResponseAdminLogin: {
       image: '',
       adminName: '',
       adminEmail: '',
@@ -42,7 +43,7 @@ export default new Vuex.Store({
     },
     getAdminInfo(state) {
       if (!state.adminInfo) {
-        return state.ori;
+        return state.initialResponseAdminLogin;
       }
       return state.adminInfo;
     },
@@ -73,10 +74,9 @@ export default new Vuex.Store({
       };
     },
     updateAdminInfo(state, payload) {
-      console.log(state.ori, payload);
-      state.ori.image = payload.image;
-      state.ori.adminName = payload.adminName;
-      state.ori.adminEmail = payload.adminEmail;
+      state.initialResponseAdminLogin.image = payload.image;
+      state.initialResponseAdminLogin.adminName = payload.adminName;
+      state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
     },
     retrieveLoginAdminToken(state, payload) {
       state.loginAdminToken = payload;
@@ -123,7 +123,6 @@ export default new Vuex.Store({
             status: error.response.data.status,
             message: error.response.data.message,
           };
-          console.log(error, failObject);
           commit('updateResponseLogin', failObject);
         })
         .finally(() => {});
@@ -136,7 +135,6 @@ export default new Vuex.Store({
             status: response.data.status,
             message: response.data.message,
           };
-          console.log(response);
           const { token, deets } = response.data;
           localStorage.setItem('loginAdminToken', token);
           commit('retrieveLoginAdminToken', token);
@@ -145,14 +143,25 @@ export default new Vuex.Store({
           localStorage.setItem('adminInfo', JSON.stringify(deets));
         })
         .catch((error) => {
+          console.log(error);
           const failObject = {
             status: error.response.data.status,
             message: error.response.data.message,
           };
-          console.log(error, failObject);
           commit('updateResponseAdminLogin', failObject);
         })
         .finally(() => {});
+    },
+    async adminFetchPage(context) {
+      backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginAdminToken}`;
+      await backend
+        .get('')
+        .finally(() => {});
+    },
+    adminLogout({ commit }) {
+      localStorage.removeItem('loginAdminToken');
+      localStorage.removeItem('adminInfo');
+      commit('destroyLoginAdminToken');
     },
   },
   modules: {
