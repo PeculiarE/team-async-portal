@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <router-view/>
-    <fileUpload />
+    <!-- <fileUpload /> -->
   </div>
 </template>
 
 <script>
-import fileUpload from './components/fileUpload.vue';
+// import fileUpload from './components/fileUpload.vue';
 
 export default {
   name: 'app',
   components: {
-    fileUpload,
+    // fileUpload,
   },
 };
 </script>

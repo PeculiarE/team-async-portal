@@ -22,7 +22,7 @@ const validateDob = (field) => {
   }
   const date = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
   if (!field.match(date)) {
-    return { valid: false, error: 'Please, enter a valid date' };
+    return { valid: false, error: 'Please, enter a valid date format' };
   }
   return { valid: true, error: null };
 };
