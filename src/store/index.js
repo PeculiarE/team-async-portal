@@ -6,6 +6,18 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    cv: '',
+    photo: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    university: '',
+    course: '',
+    dob: '',
+    cgpa: '',
+  },
+  getters: {
     responseRegister: {
       status: '',
       message: '',
@@ -14,9 +26,6 @@ export default new Vuex.Store({
       status: '',
       message: '',
     },
-    loginToken: localStorage.getItem('loginToken') || null,
-  },
-  getters: {
     getResponseRegister(state) {
       return state.responseRegister;
     },
@@ -26,7 +35,9 @@ export default new Vuex.Store({
     loggedInStatus(state) {
       return state.loginToken !== null;
     },
+    loginToken: localStorage.getItem('loginToken') || null,
   },
+
   mutations: {
     updateResponseRegister(state, payload) {
       state.responseRegister = {
@@ -87,7 +98,5 @@ export default new Vuex.Store({
         })
         .finally(() => {});
     },
-  },
-  modules: {
   },
 });

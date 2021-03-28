@@ -17,9 +17,10 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
+    "vue-file-agent": "^1.7.3",
     "vue-router": "^3.2.0",
+    "vuex": "^3.6.2",
     "vuejs-overlay": "0.0.28",
-    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -35,5 +36,6 @@
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
-  }
+  },
+  "proxy": "http://localhost:3000"
 }
