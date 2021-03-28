@@ -7,6 +7,18 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    cv: '',
+    photo: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    address: '',
+    university: '',
+    course: '',
+    dob: '',
+    cgpa: '',
+  },
+  getters: {
     responseRegister: {
       status: '',
       message: '',
@@ -27,9 +39,7 @@ export default new Vuex.Store({
     },
     adminInfo: JSON.parse(localStorage.getItem('adminInfo')),
     loginAdminToken: localStorage.getItem('loginAdminToken') || null,
-  },
-  getters: {
-    getResponseRegister(state) {
+     getResponseRegister(state) {
       return state.responseRegister;
     },
     getResponseLogin(state) {
@@ -37,7 +47,7 @@ export default new Vuex.Store({
     },
     loggedInStatus(state) {
       return state.loginToken !== null;
-    },
+  },
     getResponseAdminLogin(state) {
       return state.responseAdminLogin;
     },
@@ -51,6 +61,7 @@ export default new Vuex.Store({
       return state.loginAdminToken !== null;
     },
   },
+
   mutations: {
     updateResponseRegister(state, payload) {
       state.responseRegister = {
@@ -163,7 +174,5 @@ export default new Vuex.Store({
       localStorage.removeItem('adminInfo');
       commit('destroyLoginAdminToken');
     },
-  },
-  modules: {
   },
 });
