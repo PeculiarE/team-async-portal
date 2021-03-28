@@ -1,7 +1,7 @@
 <template>
   <div class="row g-0" style="overflow: hidden">
     <div class="aside col-3 w-100 px-0">
-      <AdminSidebar />
+      <AdminSidebar :toggleDashboardBorder="toggleDashboardBorder" />
     </div>
     <div class="contents col-9 px-0 mt-4 pl-5">
       <div class="row mt-5 mb-3">
@@ -90,7 +90,11 @@ export default {
           start_date: 'Started 11/09/15',
         },
       ],
+      toggleDashboardBorder: false,
     };
+  },
+  mounted() {
+    this.toggleDashboardBorder = true;
   },
 };
 </script>

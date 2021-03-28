@@ -1,7 +1,7 @@
 <template>
   <div class="admin-assessment">
       <div class="admin-assessment-sidebar">
-        <AdminSidebar />
+        <AdminSidebar :toggleComposeBorder="toggleComposeBorder" />
       </div>
       <div class="admin-assessment-content">
         <AssessmentQuestions />
@@ -16,9 +16,17 @@ import AssessmentQuestions from '@/components/AssessmentQuestions.vue';
 
 export default {
   name: 'ComposeAssessment',
+  data() {
+    return {
+      toggleComposeBorder: false,
+    };
+  },
   components: {
     AdminSidebar,
     AssessmentQuestions,
+  },
+  mounted() {
+    this.toggleComposeBorder = true;
   },
 };
 </script>

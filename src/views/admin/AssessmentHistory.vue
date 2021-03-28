@@ -1,7 +1,7 @@
 <template>
   <div class="admin-history">
       <div class="admin-history-sidebar">
-        <AdminSidebar />
+        <AdminSidebar :toggleHistoryBorder="toggleHistoryBorder" />
       </div>
       <div class="admin-history-content">
         <HistoryTable />
@@ -16,9 +16,17 @@ import HistoryTable from '@/components/HistoryTable.vue';
 
 export default {
   name: 'AssessmentHistory',
+  data() {
+    return {
+      toggleHistoryBorder: false,
+    };
+  },
   components: {
     AdminSidebar,
     HistoryTable,
+  },
+  mounted() {
+    this.toggleHistoryBorder = true;
   },
 };
 </script>

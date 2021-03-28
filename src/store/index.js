@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import backend from '../../backend';
 
 Vue.use(Vuex);
 
@@ -26,7 +27,19 @@ export default new Vuex.Store({
       status: '',
       message: '',
     },
-    getResponseRegister(state) {
+    loginToken: localStorage.getItem('loginToken') || null,
+    responseAdminLogin: {
+      status: '',
+      message: '',
+    },
+    initialResponseAdminLogin: {
+      image: '',
+      adminName: '',
+      adminEmail: '',
+    },
+    adminInfo: JSON.parse(localStorage.getItem('adminInfo')),
+    loginAdminToken: localStorage.getItem('loginAdminToken') || null,
+     getResponseRegister(state) {
       return state.responseRegister;
     },
     getResponseLogin(state) {
@@ -34,8 +47,19 @@ export default new Vuex.Store({
     },
     loggedInStatus(state) {
       return state.loginToken !== null;
+  },
+    getResponseAdminLogin(state) {
+      return state.responseAdminLogin;
     },
-    loginToken: localStorage.getItem('loginToken') || null,
+    getAdminInfo(state) {
+      if (!state.adminInfo) {
+        return state.initialResponseAdminLogin;
+      }
+      return state.adminInfo;
+    },
+    loggedInStatusAdmin(state) {
+      return state.loginAdminToken !== null;
+    },
   },
 
   mutations: {
@@ -53,6 +77,23 @@ export default new Vuex.Store({
     },
     retrieveLoginToken(state, payload) {
       state.loginToken = payload;
+    },
+    updateResponseAdminLogin(state, payload) {
+      state.responseAdminLogin = {
+        status: payload.status,
+        message: payload.message,
+      };
+    },
+    updateAdminInfo(state, payload) {
+      state.initialResponseAdminLogin.image = payload.image;
+      state.initialResponseAdminLogin.adminName = payload.adminName;
+      state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+    },
+    retrieveLoginAdminToken(state, payload) {
+      state.loginAdminToken = payload;
+    },
+    destroyLoginAdminToken(state) {
+      state.loginAdminToken = null;
     },
   },
   actions: {
@@ -93,10 +134,45 @@ export default new Vuex.Store({
             status: error.response.data.status,
             message: error.response.data.message,
           };
-          console.log(error, failObject);
           commit('updateResponseLogin', failObject);
         })
         .finally(() => {});
+    },
+    async adminLogin({ commit }, userData) {
+      await axios
+        .post('https://team-async.herokuapp.com/adminlogin', userData)
+        .then((response) => {
+          const successObject = {
+            status: response.data.status,
+            message: response.data.message,
+          };
+          const { token, deets } = response.data;
+          localStorage.setItem('loginAdminToken', token);
+          commit('retrieveLoginAdminToken', token);
+          commit('updateResponseAdminLogin', successObject);
+          commit('updateAdminInfo', deets);
+          localStorage.setItem('adminInfo', JSON.stringify(deets));
+        })
+        .catch((error) => {
+          console.log(error);
+          const failObject = {
+            status: error.response.data.status,
+            message: error.response.data.message,
+          };
+          commit('updateResponseAdminLogin', failObject);
+        })
+        .finally(() => {});
+    },
+    async adminFetchPage(context) {
+      backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginAdminToken}`;
+      await backend
+        .get('')
+        .finally(() => {});
+    },
+    adminLogout({ commit }) {
+      localStorage.removeItem('loginAdminToken');
+      localStorage.removeItem('adminInfo');
+      commit('destroyLoginAdminToken');
     },
   },
 });
