@@ -285,7 +285,7 @@ export default {
       return this.feedbackPhoneNumber;
     },
     validatePassword() {
-      const strongPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$^!%#*?&])[A-Za-z\d@$^!%#*?&]{8,}$/;
+      const strongPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$^!%#*?&.,/+-_])[A-Za-z\d@$^!%#*?&.,/+-_]{8,}$/;
       if (this.userDetails.password.match(strongPassword)) {
         this.feedbackPassword = true;
         this.checkPasswords();

@@ -30,14 +30,14 @@
             <i class="fas fa-eye"></i>
           </span>
         </div>
-        <b-form-invalid-feedback :state="feedbackPassword">
+        <b-form-invalid-feedback class="error" :state="feedbackPassword">
           Minimum of 8 characters.
         </b-form-invalid-feedback>
         <b-form-valid-feedback :state="feedbackPassword">
         </b-form-valid-feedback>
       </b-form-group>
 
-       <b-form-invalid-feedback style="font-size: 15px" :state="loginStatus">
+       <b-form-invalid-feedback class="error" style="font-size: 15px" :state="loginStatus">
        <b>{{ getResponseAdminLogin.message }}</b>
       </b-form-invalid-feedback>
       <b-form-valid-feedback style="font-size: 15px" :state="loginStatus">
@@ -45,9 +45,6 @@
       </b-form-valid-feedback>
 
       <b-button block type="submit" class="button" :disabled="valid">Sign In</b-button>
-      <div class="login-form-small-text">
-        <span>Forgot Password?</span>
-      </div>
     </b-form>
   </div>
 </template>
@@ -125,7 +122,7 @@ export default {
     box-sizing: border-box;
     border-radius: 4px;
     margin-bottom: 19px;
-    background-color: #111E2B;
+    background-color: #7557D3;
     color: #FFFFFF;
   }
   .login-form-password{
@@ -145,15 +142,11 @@ export default {
     height: 50px;
     margin-top: 20px;
     background-color: #FFFFFF;
-    color: #2b3c4e;
+    color: #7557d3;
     font-style: normal;
     font-weight: bold;
     font-size: 16px;
     line-height: 19px;
-  }
-  .login-form-small-text{
-    text-align: right;
-    margin-top: 12px;
   }
   span {
     font-style: italic;
@@ -161,5 +154,8 @@ export default {
     font-size: 14px;
     line-height: 17px;
     color: #FFFFFF;
+  }
+  .error {
+    color: yellow;
   }
 </style>
