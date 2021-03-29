@@ -33,6 +33,7 @@
             <b-button
               type="submit"
               class="text-white button"
+              @click="quizPage"
             >
               Take Assessment
             </b-button>
@@ -50,6 +51,11 @@ export default {
   name: 'TakeAssessment',
   components: {
     Sidebar,
+  },
+  methods: {
+    quizPage() {
+      this.$router.push({ name: 'Questions' });
+    },
   },
 };
 </script>

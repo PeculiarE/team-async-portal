@@ -48,6 +48,7 @@
             <b-button
               type="submit"
               class="text-white button"
+              @click="beforeAssessment"
             >
               Take Assessment
             </b-button>
@@ -65,6 +66,11 @@ export default {
   name: 'TakeAssessment',
   components: {
     Sidebar,
+  },
+  methods: {
+    beforeAssessment() {
+      this.$router.push({ name: 'TakeAssessment' });
+    },
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="aside">
-      <AdminSidebar />
+      <AdminSidebar :toggleApplicationBorder="toggleApplicationBorder" />
     </div>
     <div class="contents">
         <AdminCreateApplication />
@@ -15,9 +15,17 @@ import AdminCreateApplication from '@/components/AdminCreateApplication.vue';
 
 export default {
   name: 'SignUp',
+  data() {
+    return {
+      toggleApplicationBorder: false,
+    };
+  },
   components: {
     AdminSidebar,
     AdminCreateApplication,
+  },
+  mounted() {
+    this.toggleApplicationBorder = true;
   },
 };
 </script>

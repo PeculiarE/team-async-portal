@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <div class="aside">
-            <AdminSidebar />
+            <AdminSidebar :toggleSettingsBorder="toggleSettingsBorder" />
         </div>
         <div class="contents">
           <div class="contents-top">
@@ -10,8 +10,8 @@
               <p>Helps you set admin profile and give other users permissions</p>
             </div>
             <div class="buttons-div">
-              <button class="btn1">Admin Profile</button>
-              <button class="btn2">Timer Settings</button>
+              <button @click="openProfileSettings" class="btn1">Admin Profile</button>
+              <button class="btn2"><a href="#">Timer Settings</a></button>
             </div>
           </div>
           <div class="contents-bottom">
@@ -27,9 +27,22 @@ import TimerComponent from '@/components/TimerComponent.vue';
 
 export default {
   name: 'TimerSettings',
+  data() {
+    return {
+      toggleSettingsBorder: false,
+    };
+  },
   components: {
     AdminSidebar,
     TimerComponent,
+  },
+  methods: {
+    openProfileSettings() {
+      this.$router.push({ name: 'ProfileSettings' });
+    },
+  },
+  mounted() {
+    this.toggleSettingsBorder = true;
   },
 };
 </script>
