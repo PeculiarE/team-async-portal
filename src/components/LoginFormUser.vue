@@ -44,7 +44,8 @@
        <b>{{ getResponseLogin.message }}</b>
       </b-form-valid-feedback>
 
-      <b-button block type="submit" variant="dark" class="button">Sign In</b-button>
+      <b-button block type="submit" variant="dark" class="button"
+      :disabled="valid">Sign In</b-button>
       <div class="login-form-small-text">
         <span>Don't have an account yet? <a href="http://localhost:8080/signup">Sign Up</a></span>
         <span>Forgot Password?</span>
@@ -67,6 +68,7 @@ export default {
       showPassword: false,
       feedbackPassword: null,
       loginStatus: null,
+      valid: true,
     };
   },
   computed: {
@@ -89,11 +91,11 @@ export default {
     validatePassword() {
       if (this.userDetails.password.length >= 8) {
         this.feedbackPassword = true;
-        this.checkPasswords();
+        this.valid = false;
         return this.feedbackPassword;
       }
       this.feedbackPassword = false;
-      this.checkPasswords();
+      this.valid = true;
       return this.feedbackPassword;
     },
     togglePassword() {
