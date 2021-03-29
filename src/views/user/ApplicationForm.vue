@@ -95,7 +95,7 @@
             </div>
         </div>
         <div class="form-row justify-content-center">
-          <button type="submit" class="btn d-flex text-center mt-5 align-items-center
+          <button type="submit" class="btn d-flex text-center align-items-center
           justify-content-center text-white"
           >Submit</button>
           <!-- :disabled="!fileRecordsForCV.length" -->
