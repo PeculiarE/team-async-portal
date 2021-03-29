@@ -116,7 +116,8 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex';
 
 import {
   validateTextField,
@@ -131,7 +132,6 @@ export default {
     return {
       fileRecordsCV: [],
       fileRecordsImage: [],
-      uploadUrl: 'https://www.mocky.io/v2/5d4fb20b3000005c111099e3',
       uploadHeaders: { 'X-Test-Header': 'vue-file-agent' },
       fileRecordsForCV: [],
       fileRecordsForPhoto: [],
@@ -151,7 +151,21 @@ export default {
       },
       valid: true,
       errors: {},
+      loginStatus: null,
     };
+  },
+
+  computed: {
+    ...mapGetters(['loggedInStatus', 'getLoginToken']),
+  },
+
+  watch: {
+    loggedInStatus(res) {
+      if (res) {
+        this.loginStatus = true;
+      }
+      this.loginStatus = false;
+    },
   },
   methods: {
     filesSelectedCV(fileRecordsNewlySelected) {
@@ -271,35 +285,40 @@ export default {
       console.log(this.valid);
       return this.valid;
     },
+    ...mapActions(['mountApplyPage']),
     async apply() {
-      this.$router.push({ name: 'Dashboard' });
-      // if (this.validateFields() === false) {
-      //   this.errors.fields = 'Refresh the page and fill all fields correctly';
-      // } else {
-      //   console.log(this.user);
-      //   const newUserObj =
-      // { ...this.user, fullName: `${this.user.firstName} ${this.user.lastName}` };
-      //   const formData = new FormData();
-      //   Object.entries(newUserObj).forEach(([key, value]) => {
-      //     formData.append(key, value);
-      //   });
-      //   console.log({ formData });
-      //   const res = await axios({
-      //     method: 'post',
-      //     url: 'https://team-async.herokuapp.com/application',
-      //     data: formData,
-      //     headers: { 'Content-Type': 'multipart/form-data' },
-      //   })
-      //     .then((response) => {
-      //       console.log(response);
-      //       this.success = 'You have successfully applied for Enyata Academy 5.0';
-      //       this.reset();
-      //     })
-      //     .catch((error) => {
-      //       console.log(error);
-      //     });
-      //   console.log({ res });
-      // }
+      if (this.validateFields() === false) {
+        this.errors.fields = 'Refresh the page and fill all fields correctly';
+      } else {
+        const newUserObj = { ...this.user, fullName: `${this.user.firstName} ${this.user.lastName}` };
+        delete newUserObj.firstName;
+        delete newUserObj.lastName;
+        console.log(newUserObj);
+        const formData = new FormData();
+        Object.entries(newUserObj).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        console.log({ formData });
+        const res = await axios({
+          method: 'post',
+          url: 'https://team-async.herokuapp.com/application',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${this.getLoginToken}`,
+          },
+        })
+          .then((response) => {
+            console.log(response);
+            this.success = 'You have successfully applied for Enyata Academy 5.0';
+            this.$router.push({ name: 'Dashboard' });
+            this.reset();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        console.log({ res });
+      }
     },
   },
 };

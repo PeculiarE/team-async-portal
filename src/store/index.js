@@ -42,6 +42,9 @@ export default new Vuex.Store({
     getResponseRegister(state) {
       return state.responseRegister;
     },
+    getLoginToken(state) {
+      return state.loginToken;
+    },
     getResponseLogin(state) {
       return state.responseLogin;
     },
@@ -174,5 +177,23 @@ export default new Vuex.Store({
       localStorage.removeItem('adminInfo');
       commit('destroyLoginAdminToken');
     },
+    async userApplyPage(context) {
+      backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginToken}`;
+      await backend
+        .get('')
+        .finally(() => {});
+    },
+
+    // async userApply({ commit }, userDetails) {
+    //   await axios
+    //     .post('https://team-async.herokuapp.com/login', userDetails)
+    //     .then((response) => {
+    //       const successResponseObject = {
+    //         status: response.data.status,
+    //         message: response.data.message,
+    //       };
+    //   })
+    // },
+
   },
 });
