@@ -29,6 +29,7 @@ const routes = [
     path: '/application',
     name: 'ApplicationForm',
     component: () => import('../views/user/ApplicationForm.vue'),
+    meta: { requiresApplyAuth: true },
   },
   {
     path: '/user/dashboard',
@@ -123,7 +124,18 @@ router.beforeEach(async (to, from, next) => {
     next();
   }
 });
-
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresApplyAuth)) {
+    await store.dispatch('userApplyPage');
+    if (store.getters.loggedInStatus) {
+      next();
+    } else {
+      next('/user/login');
+    }
+  } else {
+    next();
+  }
+});
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.guest)) {
     if (store.getters.loggedInStatusAdmin) {

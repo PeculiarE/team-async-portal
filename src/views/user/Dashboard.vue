@@ -38,10 +38,10 @@
                   <hr class="w-75">
               </div>
           </div>
-          <div class="col-5 px-0 dashb-info assessment">
-              Take assessment
+          <div class="col-5 p-3 dashb-info assessment">
+              <p class="pt-2"><b>Take assessment</b></p>
               <div>
-                  <p class="text-center mb-3">
+                  <p class="text-center mt-5 mb-2">
               We have 4 days left until the next assessment. <br />
               Watch this space
             </p>
