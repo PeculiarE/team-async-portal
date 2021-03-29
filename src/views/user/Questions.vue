@@ -35,7 +35,7 @@
               </b-button>
             </div>
             <div class="d-flex justify-content-center">
-              <b-button type="submit" class="text-white w-25" disabled> Finish </b-button>
+              <b-button @click="submitQuiz" class="text-white w-25"> Finish </b-button>
             </div>
         </div>
       </div>
@@ -52,6 +52,11 @@ export default {
   components: {
     Sidebar,
     UserQuestions,
+  },
+  methods: {
+    submitQuiz() {
+      this.$router.push({ name: 'SuccessPage' });
+    },
   },
 };
 </script>
