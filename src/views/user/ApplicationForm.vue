@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 
 import {
   validateTextField,
@@ -272,31 +272,34 @@ export default {
       return this.valid;
     },
     async apply() {
-      if (this.validateFields() === false) {
-        this.errors.fields = 'Refresh the page and fill all fields correctly';
-      } else {
-        console.log(this.user);
-        const formData = new FormData();
-        Object.entries(this.user).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
-        console.log({ formData });
-        const res = await axios({
-          method: 'post',
-          url: 'http://localhost:3000/application',
-          data: formData,
-          headers: { 'Content-Type': 'multipart/form-data' },
-        })
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-        console.log({ res });
-        this.success = 'You have successfully applied for Enyata Academy 5.0';
-        this.reset();
-      }
+      this.$router.push({ name: 'Dashboard' });
+      // if (this.validateFields() === false) {
+      //   this.errors.fields = 'Refresh the page and fill all fields correctly';
+      // } else {
+      //   console.log(this.user);
+      //   const newUserObj =
+      // { ...this.user, fullName: `${this.user.firstName} ${this.user.lastName}` };
+      //   const formData = new FormData();
+      //   Object.entries(newUserObj).forEach(([key, value]) => {
+      //     formData.append(key, value);
+      //   });
+      //   console.log({ formData });
+      //   const res = await axios({
+      //     method: 'post',
+      //     url: 'https://team-async.herokuapp.com/application',
+      //     data: formData,
+      //     headers: { 'Content-Type': 'multipart/form-data' },
+      //   })
+      //     .then((response) => {
+      //       console.log(response);
+      //       this.success = 'You have successfully applied for Enyata Academy 5.0';
+      //       this.reset();
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      //   console.log({ res });
+      // }
     },
   },
 };
@@ -355,11 +358,11 @@ input {
 
 small {
   margin: 25px;
-  color: red;
+  color: #7557D3;
 }
 
 button {
-    background-color: #2B3C4E;
+    background-color: #7557D3;
     width: 379px;
     height: 50px
 }

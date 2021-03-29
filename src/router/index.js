@@ -43,12 +43,12 @@ const routes = [
   {
     path: '/user/questions',
     name: 'Questions',
-    component: () => import('../views/user/SuccessPage.vue'),
+    component: () => import('../views/user/Questions.vue'),
   },
   {
     path: '/user/success',
     name: 'SuccessPage',
-    component: () => import('../views/user/Questions.vue'),
+    component: () => import('../views/user/SuccessPage.vue'),
   },
   {
     path: '/admin/login',

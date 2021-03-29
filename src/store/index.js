@@ -17,8 +17,6 @@ export default new Vuex.Store({
     course: '',
     dob: '',
     cgpa: '',
-  },
-  getters: {
     responseRegister: {
       status: '',
       message: '',
@@ -39,7 +37,9 @@ export default new Vuex.Store({
     },
     adminInfo: JSON.parse(localStorage.getItem('adminInfo')),
     loginAdminToken: localStorage.getItem('loginAdminToken') || null,
-     getResponseRegister(state) {
+  },
+  getters: {
+    getResponseRegister(state) {
       return state.responseRegister;
     },
     getResponseLogin(state) {
@@ -47,7 +47,7 @@ export default new Vuex.Store({
     },
     loggedInStatus(state) {
       return state.loginToken !== null;
-  },
+    },
     getResponseAdminLogin(state) {
       return state.responseAdminLogin;
     },
