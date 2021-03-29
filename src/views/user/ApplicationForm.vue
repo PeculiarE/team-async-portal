@@ -1,29 +1,22 @@
 <template>
-  <div class="d-flex flex-column justify-content-center align-items-center m-5">
-    <div class="d-flex flex-column justify-content-center align-items-center mb-2">
-      <div>
-        <img src="../../assets/logo.svg" alt="" />
-      </div>
-      <div>
-        <h3>enyata</h3>
-      </div>
-      <div>
-        <p><i>Application Form</i></p>
-      </div>
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <div class="enyata-logo">
+      <img src="../../assets/enyata-logo.svg" alt="Enyata Logo">
     </div>
-
+    <div class="title">Application Form</div>
     <div class="form-container p-5">
       <form>
+        <!-- <div class="form-row justify-content-around d-flex mb-4"> -->
         <div class="form-row justify-content-around d-flex mb-4">
             <div>
-                <label for="upload-cv" class="justify-content-center d-flex align-items-center">
+              <label for="upload-cv" class="justify-content-center d-flex align-items-center">
                 + Upload CV</label>
-            <input type="file" name="CV" id="upload-cv" />
+              <input type="file" name="CV" id="upload-cv" />
             </div>
             <div>
-                <label for="upload-photo" class="justify-content-center d-flex align-items-center">
+              <label for="upload-photo" class="justify-content-center d-flex align-items-center">
                 + Upload Image</label>
-            <input type="file" name="photo" id="upload-photo" />
+              <input type="file" name="photo" id="upload-photo" />
             </div>
         </div>
         <div>
@@ -93,7 +86,26 @@ export default {
   color: #2B3C4E;
   overflow: hidden;
 }
-
+.enyata-logo {
+    width: 110.1px;
+    height: 20.84px;
+    margin: auto;
+    margin-top: 80px;
+    margin-bottom: 24px;
+  }
+   .enyata-logo img {
+    height: 100%;
+    width: 100%;
+  }
+  .title {
+    font-style: italic;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    color: #2B3C4E;
+    margin: auto;
+    margin-bottom: 68px;
+  }
 p {
     font-size: 24px;
 }
@@ -129,7 +141,7 @@ input {
 }
 
 button {
-    background-color: #2B3C4E;
+    background-color: var(--enyata-purple);
     width: 379px;
     height: 50px
 }

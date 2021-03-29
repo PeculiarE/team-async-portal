@@ -3,8 +3,7 @@
     <div class="user-login-icon">
       <img alt="Enyata logo" src="../../assets/enyata-logo.svg">
     </div>
-    <h1>enyata</h1>
-    <h2>Applicant Log In</h2>
+    <p>Applicant Log In</p>
     <LoginFormUser />
   </div>
 </template>
@@ -23,36 +22,29 @@ export default {
 
 <style scoped>
   .user-login {
-    max-height: 100vh;
+    height: 100vh;
     width: 400px;
     margin: auto;
     text-align: center;
     margin-top: 100px;
   }
   .user-login-icon {
-    height: 52px;
-    width: 49px;
+    width: 110.1px;
+    height: 20.84px;
     margin: auto;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
   }
   .user-login-icon img {
     height: 100%;
     width: 100%;
   }
-  .user-login h1 {
-    font-style: normal;
-    font-weight: 700;
-    font-size: 31px;
-    line-height: 38px;
-    letter-spacing: -0.02em;
+  .user-login p {
+    font-style: italic;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
     color: #2B3C4E;
+    margin: auto;
+    margin-bottom: 68px;
   }
-.user-login h2 {
-  font-style: italic;
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 29px;
-  color: #2B3C4E;
-  margin-bottom: 56px;
-}
 </style>

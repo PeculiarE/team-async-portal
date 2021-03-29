@@ -3,7 +3,6 @@
     <div class="enyata-logo">
       <img src="../../assets/enyata-logo.svg" alt="Enyata Logo">
     </div>
-    <div class="name">enyata</div>
     <div class="title">Applicant Sign Up</div>
     <SignUpForm />
   </div>
@@ -22,37 +21,29 @@ export default {
 
 <style scoped>
   .signup-container {
-    max-height: 100vh;
+    height: 100vh;
     width: 820px;
     margin: auto;
     text-align: center;
   }
   .enyata-logo {
-    width: 48.84px;
-    height: 51.87px;
+    width: 110.1px;
+    height: 20.84px;
     margin: auto;
-    margin-top: 150px;
-    margin-bottom: 16.13px;
+    margin-top: 120px;
+    margin-bottom: 24px;
   }
-  .enyata-logo img {
+   .enyata-logo img {
     height: 100%;
     width: 100%;
   }
-  .name {
-    width: 90px;
+  .title {
+    font-style: italic;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    color: #2B3C4E;
     margin: auto;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 31.3954px;
-    line-height: 38px;
+    margin-bottom: 68px;
   }
-.title {
-  margin: auto;
-  margin-bottom: 56px;
-  width: 179px;
-  height: 29px;
-  font-style: italic;
-  font-size: 24px;
-  line-height: 29px;
-}
 </style>

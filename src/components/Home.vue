@@ -91,7 +91,6 @@ export default {
   position: absolute;
   right: 0;
   max-width: 570px;
-  /* width: 926px; */
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 .navbar {
@@ -112,11 +111,9 @@ export default {
 }
 .contents {
   padding: 0 130px;
-  /* height: 900px; */
 }
 .row1 {
   box-sizing: border-box;
-  /* margin-top: 100px; */
 }
 .main-text {
   margin-top: 190px;
@@ -137,8 +134,6 @@ export default {
   color: rgba(33, 31, 38, 0.71);
 }
 .mentor {
-  /* right: 0; */
-  /* width: 370px; */
   position: relative;
   width: 500px;
   height: 350px;
@@ -200,7 +195,10 @@ h4 {
   background-color: var(--enyata-purple);
   width: 100%;
   height: 100px;
-  align-items: center;
-  justify-content: center;
+  display: flex;
+  align-items: center
+}
+.footer p {
+  margin: auto;
 }
 </style>

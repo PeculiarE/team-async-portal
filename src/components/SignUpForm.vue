@@ -354,31 +354,16 @@ export default {
     height: 50px;
     margin-top: 20px;
     background-color: var(--enyata-purple);
+    border: none;
   }
-  .already{
-    display: flex;
-    align-items: center;
-    margin: auto;
-    justify-content: space-between;
-    margin-top: 12px;
-    width: 191px;
-    height: 17px;
+  .already, .already-two {
     font-style: italic;
     font-weight: normal;
     font-size: 14px;
     line-height: 17px;
-    color: var(--text-secondary-small);
-  }
-  .already-two {
-    margin-top: 20px;
+    color: var(--text-secondary);
     margin: auto;
-    width: 191px;
-    height: 17px;
-    font-style: italic;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    color: var(--text-secondary-small);
+    margin-bottom: 10px;
   }
   .already a, .already-two a{
     text-decoration-line: underline;
