@@ -47,7 +47,7 @@
       <b-button block type="submit" variant="dark" class="button">Sign In</b-button>
       <div class="login-form-small-text">
         <span>Don't have an account yet? <a href="http://localhost:8080/signup">Sign Up</a></span>
-        <span>Forgot Password?</span>
+        <span class="forgot-password"><a href="/forgot-password">Forgot Password?</a></span>
       </div>
     </b-form>
   </div>
@@ -142,26 +142,26 @@ export default {
   .button {
     height: 50px;
     margin-top: 20px;
+    background-color: var(--enyata-purple);
+    border: none;
   }
   .login-form-small-text{
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 12px;
-  }
-  .login-form-small-text a{
-    font-style: italic;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    text-decoration-line: underline;
-    color: #1A2C56;
-  }
-  span {
+    font-family: Lato;
     font-style: italic;
     font-weight: normal;
     font-size: 14px;
     line-height: 17px;
     color: #4F4F4F;
+  }
+  .login-form-small-text a{
+    text-decoration-line: underline;
+    color: #1A2C56;
+  }
+  .forgot-password a{
+    text-decoration: none;
   }
 </style>

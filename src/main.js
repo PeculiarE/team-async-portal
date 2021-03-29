@@ -8,6 +8,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import VModal from 'vue-js-modal';
 
 import App from './App.vue';
 import router from './router';
@@ -21,6 +22,7 @@ Vue.use(Vuex);
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
+Vue.use(VModal);
 Vue.use(VueFileAgent);
 Vue.use(VueFileAgentStyles);
 

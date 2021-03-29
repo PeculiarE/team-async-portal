@@ -1,19 +1,9 @@
 <template>
-  <div class="container d-flex flex-column justify-content-center align-items-center m-5">
-    <div class="d-flex flex-column justify-content-center align-items-center mb-2">
-      <div>
-        <img src="../../assets/logo.svg" alt="" />
-      </div>
-      <div>
-        <h3>enyata</h3>
-      </div>
-      <div>
-        <p><i>Application Form</i></p>
-      </div>
-        <small>{{ errors.fields }}</small>
-        <p>{{ success }}</p>
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <div class="enyata-logo">
+      <img src="../../assets/enyata-logo.svg" alt="Enyata Logo">
     </div>
-
+    <div class="title">Application Form</div>
     <div class="form-container p-5">
       <form enctype="multipart/form-data"
        @submit.prevent="apply()">
@@ -321,7 +311,26 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
 }
-
+.enyata-logo {
+    width: 110.1px;
+    height: 20.84px;
+    margin: auto;
+    margin-top: 80px;
+    margin-bottom: 24px;
+  }
+   .enyata-logo img {
+    height: 100%;
+    width: 100%;
+  }
+  .title {
+    font-style: italic;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    color: #2B3C4E;
+    margin: auto;
+    margin-bottom: 68px;
+  }
 p {
     font-size: 24px;
 }
@@ -362,6 +371,7 @@ small {
 }
 
 button {
+    background-color: var(--enyata-purple);
     background-color: #7557D3;
     width: 379px;
     height: 50px

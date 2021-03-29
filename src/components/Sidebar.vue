@@ -51,7 +51,9 @@ export default {
     font-size: 16px;
     font-weight: 400;
  }
-
+#sidebar-top-section {
+  background-color: var(--enyata-purple);
+}
  a {
     color: #2B3C4E;
  }
