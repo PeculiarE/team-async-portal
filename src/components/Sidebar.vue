@@ -16,10 +16,12 @@
         <div class="p-3 pl-0">
           <nav class="m-3">
             <b-nav vertical>
-              <b-nav-item active class="sidebar-menu">
+              <b-nav-item to="dashboard" active class="sidebar-menu"
+              :class="dashboardMenuSelected ? 'selected_menu' : ''">
                   <img src="../assets/dashboard-icon.svg"
                     class="d-inline-block mr-3">Dashboard</b-nav-item>
-              <b-nav-item to="" class="sidebar-menu">
+              <b-nav-item to="assessment" class="sidebar-menu"
+              :class="assessmentMenuSelected ? 'selected_menu' : ''">
                   <img src="../assets/assessment-icon.svg"
                     class="d-inline-block mr-3">Assesment</b-nav-item>
               <b-nav-item to="" class="sidebar-menu mt-5">
@@ -35,6 +37,14 @@
 <script>
 export default {
   name: 'Sidebar',
+  props: {
+    dashboardMenuSelected: {
+      type: Boolean,
+    },
+    assessmentMenuSelected: {
+      type: Boolean,
+    },
+  },
   data() {
     return {
       visible: true,
@@ -43,10 +53,14 @@ export default {
       },
     };
   },
+  methods: {},
 };
 </script>
 
 <style scoped>
+.selected_menu {
+  border-left: 4px solid blueviolet;
+}
  .sidebar-menu {
     font-size: 16px;
     font-weight: 400;

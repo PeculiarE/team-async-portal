@@ -1,12 +1,12 @@
 <template>
-    <div class="wrapper">
-        <div class="aside">
-            <AdminSidebar :toggleEntriesBorder="toggleEntriesBorder" />
-        </div>
-        <div class="contents">
-            <EntriesTable />
-        </div>
+  <div class='wrapper'>
+    <div>
+      <AdminSidebar :toggleEntriesBorder="toggleEntriesBorder" />
     </div>
+    <div>
+      <EntriesTable />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -32,19 +32,14 @@ export default {
 
 <style scoped>
 .wrapper {
-    width: 100%;
-    height: 100vh;
-    /* box-sizing: border-box; */
-    display: flex;
-    align-items: stretch;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: space-around;
+  /* box-sizing: border-box; */
+  /* align-items: ; */
 }
 .aside {
-    width: 25%;
-}
-.contents {
-    width: 75%;
-    box-sizing: border-box;
-    margin: 0 30px;
-
+  width: 25%;
 }
 </style>

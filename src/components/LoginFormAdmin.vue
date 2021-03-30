@@ -106,6 +106,7 @@ export default {
 <style scoped>
   .login-form {
     width: 379px;
+    margin: auto;
   }
   #input-group-1, #input-group-2 {
     font-style: normal;

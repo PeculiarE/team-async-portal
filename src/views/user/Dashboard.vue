@@ -1,7 +1,7 @@
 <template>
   <div class="row g-0" style="overflow: hidden">
     <div class="col-3 w-100 px-0">
-      <Sidebar />
+      <Sidebar :dashboardMenuSelected="dashboardMenuSelected" />
     </div>
     <div class="col-9 px-0 mt-4">
       <div class="row mt-5 mb-3">
@@ -28,31 +28,34 @@
             <p class="p6">We wil get back to you</p>
         </div>
       </div>
-      <div class="row d-flex justify-content-between">
-          <div class="col-5 px-0 dashb-info updates">
-              Updates
-              <div class="d-flex justify-content">
-                  <hr class="w-75">
-                  <hr class="w-75">
-                  <hr class="w-75">
-                  <hr class="w-75">
+      <div class="row d-flex justify-content-start ml-2">
+          <div class="col-5 pr-5 d-flex flex-column justify-content-between dashb-info updates">
+              <p class="pt-2"><b>Updates</b></p>
+              <div class="d-flex flex-column justify-content-between">
+                  <hr class="hr-updates w-75 my-5">
+                  <hr class="hr-updates w-75 my-5">
+                  <hr class="hr-updates w-75 my-5">
+                  <hr class="hr-updates w-75 my-5">
               </div>
+              <div></div>
           </div>
-          <div class="col-5 p-3 dashb-info assessment">
+          <div class="col-5 offset-1 pr-5 d-flex flex-column
+           justify-content-between dashb-info assessment">
               <p class="pt-2"><b>Take assessment</b></p>
-              <div>
-                  <p class="text-center mt-5 mb-2">
+              <div class="text-center">
+                  <p class="mb-2">
               We have 4 days left until the next assessment. <br />
               Watch this space
             </p>
             <b-button
               type="submit"
-              class="text-white button"
+              class="text-white button mt-2"
               @click="beforeAssessment"
             >
               Take Assessment
             </b-button>
               </div>
+              <div></div>
           </div>
       </div>
     </div>
@@ -66,6 +69,14 @@ export default {
   name: 'TakeAssessment',
   components: {
     Sidebar,
+  },
+  data() {
+    return {
+      dashboardMenuSelected: false,
+    };
+  },
+  mounted() {
+    this.dashboardMenuSelected = true;
   },
   methods: {
     beforeAssessment() {
@@ -116,6 +127,11 @@ hr {
 }
 .hr2 {
     background-color: #F09000;;
+}
+.hr-updates {
+  border:1px solid #CECECE;
+  width: 412.5px;
+  height: 0px;
 }
 .dashb-info {
     width: 482px;
