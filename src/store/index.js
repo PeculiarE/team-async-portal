@@ -7,16 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    cv: '',
-    photo: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    address: '',
-    university: '',
-    course: '',
-    dob: '',
-    cgpa: '',
+    userDeets: {},
     responseRegister: {
       status: '',
       message: '',
@@ -37,8 +28,15 @@ export default new Vuex.Store({
     },
     adminInfo: JSON.parse(localStorage.getItem('adminInfo')),
     loginAdminToken: localStorage.getItem('loginAdminToken') || null,
+    questionsDetailsToSend: [],
   },
   getters: {
+    getUserDeets(state) {
+      return state.userDeets;
+    },
+    getQuestionsDetailsToSend(state) {
+      return state.questionsDetailsToSend;
+    },
     getResponseRegister(state) {
       return state.responseRegister;
     },
@@ -66,6 +64,14 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    updateUserDeets(state, payload) {
+      console.log(payload);
+      state.userDeets = { ...payload };
+      console.log(state.userDeets);
+    },
+    updateQuestionsDetails(state, payload) {
+      state.questionsDetailsToSend.push(payload);
+    },
     updateResponseRegister(state, payload) {
       state.responseRegister = {
         status: payload.status,
@@ -79,6 +85,7 @@ export default new Vuex.Store({
       };
     },
     retrieveLoginToken(state, payload) {
+      console.log({ payload });
       state.loginToken = payload;
     },
     updateResponseAdminLogin(state, payload) {
@@ -127,8 +134,9 @@ export default new Vuex.Store({
             status: response.data.status,
             message: response.data.message,
           };
-          const { token } = response.data;
+          const { token, userId } = response.data;
           localStorage.setItem('loginToken', token);
+          localStorage.setItem('userId', userId);
           commit('retrieveLoginToken', token);
           commit('updateResponseLogin', successObject);
         })
@@ -184,16 +192,22 @@ export default new Vuex.Store({
         .finally(() => {});
     },
 
-    // async userApply({ commit }, userDetails) {
-    //   await axios
-    //     .post('https://team-async.herokuapp.com/login', userDetails)
-    //     .then((response) => {
-    //       const successResponseObject = {
-    //         status: response.data.status,
-    //         message: response.data.message,
-    //       };
-    //   })
-    // },
-
+    bringUserDeetstoState({ commit }, payload) {
+      const newpayload = payload.data.data;
+      commit('updateUserDeets', newpayload);
+      console.log(newpayload);
+    },
+    async populateUserDeets({ dispatch }) {
+      if (localStorage.getItem('loginToken')) {
+        const id = localStorage.getItem('userId');
+        await axios.get(`https://team-async.herokuapp.com/user/dashboard/${id}`)
+          .then((response) => {
+            console.log(response);
+            dispatch('bringUserDeetstoState', response);
+          })
+          .catch((error) => console.log(error))
+          .finally(() => console.log('finally loading'));
+      }
+    },
   },
 });

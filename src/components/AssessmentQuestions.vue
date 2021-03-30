@@ -1,14 +1,20 @@
 <template>
   <div class="assessment-form mt-5">
     <h1>Compose Assessment</h1>
-    <b-form>
-      <p class="text-left">15/30</p>
+    <b-form @submit.prevent=sendQuestions>
+      <!-- <p class="text-left">15/30</p> -->
+      <input class="for_questions" type="number" name="currentQuestion"
+      id="" v-model="currentQuestion">/
+      <input class="for_questions" type="number" name="totalQuestions"
+      id="" v-model="totalQuestions">
       <div class="d-flex justify-content-evenly align-items-center">
         <div>
           <input type="file" hidden id="upload-btn" />
           <label for="upload-btn"
             ><small class="mr-3">+</small>Choose file</label
           >
+        </div>
+        <div class="ml-5">
         </div>
       </div>
       <b-form-group
@@ -49,10 +55,20 @@
 <script>
 export default {
   name: 'AssessmentQuestions',
+  data() {
+    // on clicking next, pushes all deets into object.
+    return {
+      currentQuestion: 0,
+      totalQuestions: 0,
+    };
+  },
 };
 </script>
 
 <style scoped>
+.for_questions {
+  width: 30px;
+}
 .assessment-form h1 {
   font-style: normal;
   font-weight: 300;

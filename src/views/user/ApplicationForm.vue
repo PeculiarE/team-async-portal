@@ -135,7 +135,7 @@ export default {
         address: '',
         university: '',
         course: '',
-        cgpa: null,
+        cgpa: '',
         cv: null,
         photo: null,
       },
@@ -179,7 +179,7 @@ export default {
         address: '',
         university: '',
         course: '',
-        cgpa: null,
+        cgpa: '',
         cv: null,
         photo: null,
       };

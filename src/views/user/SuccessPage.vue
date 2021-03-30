@@ -32,7 +32,7 @@
               <br />
               Best of luck.
             </p>
-            <b-button type="submit" class="text-white button"> Home </b-button>
+            <b-button type="submit" class="text-white button" @click="toHome"> Home </b-button>
           </div>
         </div>
       </div>
@@ -47,6 +47,11 @@ export default {
   name: 'SuccessPage',
   components: {
     Sidebar,
+  },
+  methods: {
+    toHome() {
+      this.$router.push({ name: 'HomePage' });
+    },
   },
 };
 </script>

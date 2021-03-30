@@ -1,7 +1,7 @@
 <template>
   <div class="row g-0" style="overflow: hidden">
     <div class="col-3 w-100 px-0">
-      <Sidebar />
+      <Sidebar :assessmentMenuSelected="assessmentMenuSelected" />
     </div>
     <div class="col-9 px-0 mt-4">
       <div class="row my-5">
@@ -51,6 +51,14 @@ export default {
   name: 'TakeAssessment',
   components: {
     Sidebar,
+  },
+  data() {
+    return {
+      assessmentMenuSelected: false,
+    };
+  },
+  mounted() {
+    this.assessmentMenuSelected = true;
   },
   methods: {
     quizPage() {
