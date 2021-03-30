@@ -4,7 +4,6 @@
     bg-variant='white' width='20%' no-header shadow class="border border-dark">
         <div id="sidebar-top-section">
             <b-img v-bind="mainProps" rounded="circle" alt="Circle image"
-            :src="photoUrlFrombackend/database"
             class="mb-2"></b-img>
             <div class="text-white">
                 <p>
