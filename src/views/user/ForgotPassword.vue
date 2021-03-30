@@ -17,7 +17,7 @@
                     <img src="../../assets/mark.svg" alt="check-icon">
                 </div>
             </div>
-            <div class="box-2">
+            <div class="box-2" @click="noSMS">
                 <div class="sms-icon">
                     <img src="../../assets/calling-icon.svg" alt="calling-icon">
                 </div>
@@ -26,7 +26,8 @@
                     <p>Password reset link will be sent to your registered phone number</p>
                 </div>
             </div>
-            <button type="submit">Send Link</button>
+            <!-- <button type="submit">Send Link</button> -->
+            <PasswordModal />
             <div class="resend">
                 <p>Didn't receive link? <a href="#" class="purple-text">Resend</a></p>
             </div>
@@ -35,8 +36,23 @@
 </template>
 
 <script>
+import PasswordModal from '@/components/PasswordModal.vue';
+
 export default {
   name: 'ForgotPassword',
+  components: {
+    PasswordModal,
+  },
+  data() {
+    return {
+      showModal: true,
+    };
+  },
+  methods: {
+    noSMS() {
+      alert('This feature is not available at the moment');
+    },
+  },
 };
 </script>
 
@@ -96,10 +112,12 @@ p {
     align-items: center;
     margin: auto;
 }
+.box-1:hover, .box-2:hover {
+    border: 1px solid var(--enyata-purple);
+}
 .box-1 {
     margin-top: 48px;
     margin-bottom: 24px;
-    border: 1px solid var(--enyata-purple);
 }
 .box-2 {
     margin-bottom: 32px;

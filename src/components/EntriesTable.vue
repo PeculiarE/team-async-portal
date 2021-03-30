@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="entries-container">
     <div class="title d-flex">
         <span pt-5 pl-5>Entries - Batch 2</span>
         <div class="image"><img src="../assets/arrow-down-icon.svg" alt="arrow"></div>
@@ -19,8 +19,8 @@
     >
     <template #cell(selected)="{ rowSelected }">
         <template v-if="rowSelected" >
-          <b-button @click="modalShow = !modalShow">Show details</b-button>
-          <b-modal v-model="modalShow" class="modal-container">
+          <!-- <b-button @click.capture="modalShow = !modalShow">Show details</b-button> -->
+          <b-modal v-model="modalShow">
             <EntriesModal />
           </b-modal>
         </template>
@@ -115,6 +115,7 @@ export default {
   methods: {
     onRowSelected(items) {
       this.selected = items;
+      this.modalShow = !this.modalShow;
     },
     clearSelected() {
       this.$refs.selectableTable.clearSelected();
@@ -146,13 +147,16 @@ export default {
     text-align: left;
     color: var(--text-secondary-small);
 }
-.container table {
+.entries-table {
+  height: 100%;
+}
+.entries-container table {
   margin-top: 100px;
   text-align: center;
 }
-.entry-details {
+/* .entry-details {
   width: 600px;
   height: 100vh;
   margin: 0 50px;
-}
+} */
 </style>

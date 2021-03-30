@@ -15,6 +15,8 @@ export default new Vuex.Store({
       message: '',
     },
     loginToken: localStorage.getItem('loginToken') || null,
+    users: [],
+    userPassword: [],
   },
   getters: {
     getResponseRegister(state) {
@@ -43,11 +45,17 @@ export default new Vuex.Store({
     retrieveLoginToken(state, payload) {
       state.loginToken = payload;
     },
+    reset(state, payload) {
+      state.userPassword.push(payload);
+    },
+    setNewPassword(state, payload) {
+      state.userPassword = payload;
+    },
   },
   actions: {
     async register({ commit }, userData) {
       await axios
-        .post('https://team-async.herokuapp.com/register', userData)
+        .post('https://success-portal.herokuapp.com/register', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -64,9 +72,10 @@ export default new Vuex.Store({
         })
         .finally(() => {});
     },
+
     async login({ commit }, userData) {
       await axios
-        .post('https://team-async.herokuapp.com/login', userData)
+        .post('https://success-portal.herokuapp.com/login', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -87,6 +96,29 @@ export default new Vuex.Store({
         })
         .finally(() => {});
     },
+
+    async resetPassword({ commit }, payload) {
+      const formdata = new FormData();
+      await axios.post('https://localhost:8080/user/reset', payload, formdata)
+        .then((response) => {
+          commit('reset', response.data);
+        }).catch((error) => {
+          console.log(error);
+          console.log(payload);
+        });
+    },
+
+    async newPassword({ commit }, { password, token }) {
+      await axios.put(`https://localhost:8080/resetPassword/${token}`, { password })
+        .then((response) => {
+          console.log(response);
+          commit('setNewPassword', response.data);
+        }).catch((error) => {
+          console.log(error);
+          console.log(password);
+        });
+    },
+
   },
   modules: {
   },

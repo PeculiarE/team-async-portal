@@ -4,7 +4,6 @@
       v-model="visible"
       aria-labelledby="admin-sidebar-no-header-title"
       bg-variant="white"
-      width="25%"
       no-header
       shadow
       class="border"
