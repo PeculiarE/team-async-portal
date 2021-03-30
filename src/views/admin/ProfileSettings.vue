@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <div class="aside">
-            <AdminSidebar />
+            <AdminSidebar :toggleSettingsBorder="toggleSettingsBorder" />
         </div>
         <div class="contents">
           <div class="contents-top">
@@ -10,8 +10,8 @@
               <p>Helps you set admin profile and give other users permissions</p>
             </div>
             <div class="buttons-div">
-              <button class="btn1">Admin Profile</button>
-              <button class="btn2">Timer Settings</button>
+              <button class="btn1"><a href="#">Admin Profile</a></button>
+              <button @click="openTimerSettings" class="btn2">Timer Settings</button>
             </div>
           </div>
           <div class="contents-bottom">
@@ -27,9 +27,22 @@ import ProfileComponent from '@/components/ProfileComponent.vue';
 
 export default {
   name: 'ProfileSettings',
+  data() {
+    return {
+      toggleSettingsBorder: false,
+    };
+  },
   components: {
     AdminSidebar,
     ProfileComponent,
+  },
+  methods: {
+    openTimerSettings() {
+      this.$router.push({ name: 'TimerSettings' });
+    },
+  },
+  mounted() {
+    this.toggleSettingsBorder = true;
   },
 };
 </script>
@@ -37,7 +50,7 @@ export default {
 <style scoped>
 .wrapper {
   width: 100%;
-  height: 100vh;
+  height: 900px;
   display: flex;
   font-family: Lato;
   font-style: normal;
@@ -48,15 +61,17 @@ export default {
 .contents {
   width: 75%;
   padding-left: 37px;
+  height: 750px;
 }
 .contents-top {
   width: 365px;
-  margin-top: 101px;
+  margin-top: 50px;
   box-sizing: border-box;
 }
 .contents-bottom {
   width: 724px;
   margin-top: 58px;
+  margin-bottom: 58px;
 }
 .heading h1 {
   font-weight: 300;

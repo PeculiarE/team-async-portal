@@ -1,76 +1,104 @@
 <template>
-  <div class="d-flex flex-column justify-content-center align-items-center m-5">
-    <div class="d-flex flex-column justify-content-center align-items-center mb-2">
-      <div>
-        <img src="../../assets/logo.svg" alt="" />
-      </div>
-      <div>
-        <h3>enyata</h3>
-      </div>
-      <div>
-        <p><i>Application Form</i></p>
-      </div>
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <div class="enyata-logo">
+      <img src="../../assets/enyata-logo.svg" alt="Enyata Logo">
     </div>
-
+    <div class="title">Application Form</div>
     <div class="form-container p-5">
-      <form>
+      <form enctype="multipart/form-data"
+       @submit.prevent="apply()">
         <div class="form-row justify-content-around d-flex mb-4">
-            <div>
-                <label for="upload-cv" class="justify-content-center d-flex align-items-center">
-                + Upload CV</label>
-            <input type="file" name="CV" id="upload-cv" />
-            </div>
-            <div>
-                <label for="upload-photo" class="justify-content-center d-flex align-items-center">
-                + Upload Image</label>
-            <input type="file" name="photo" id="upload-photo" />
-            </div>
+            <VueFileAgent
+    ref="vueFileAgent"
+    :theme="'list'"
+    :multiple="false"
+    :meta="true"
+    :accept="'.pdf'"
+    :maxSize="'2MB'"
+    :maxFiles="1"
+    :helpText="'+ Upload CV (pdf)'"
+    :errorText="{
+      type: 'Invalid file type. Only files with pdf extension are allowed',
+      size: 'Files should not exceed 2MB in size',
+    }"
+    @select="filesSelectedCV($event)"
+    v-model="user.cv"
+  ></VueFileAgent>
+                <VueFileAgent
+    ref="vueFileAgent"
+    :theme="'list'"
+    :multiple="false"
+    :meta="true"
+    :accept="'image/*'"
+    :maxSize="'2MB'"
+    :maxFiles="1"
+    :helpText="'+ Upload Image (png)'"
+    :errorText="{
+      type: 'Invalid file type. Only images allowed',
+      size: 'Files should not exceed 2MB in size',
+    }"
+    @select="filesSelectedImage($event)"
+    v-model="user.photo"
+  ></VueFileAgent>
         </div>
         <div>
             <div class="form-row justify-content-between mb-4">
           <div class="col-12 col-md-6">
             <label for="firstName">First Name</label>
-            <input type="text" class="form-control" />
+            <input v-model="user.firstName" type="text" name="firstName"  class="form-control" />
+            <small>{{ errors.firstName }}</small>
           </div>
           <div class="col-12 col-md-6">
             <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" />
+            <input v-model="user.lastName" type="text" name="lastName"  class="form-control" />
+            <small>{{ errors.lastName }}</small>
           </div>
             </div>
             <div class="form-row justify-content-between mb-4">
             <div class="col-12 col-md-6">
                 <label for="email">Email</label>
-                <input type="text" class="form-control" />
+                <input v-model="user.email" type="text" name="email"  class="form-control" />
+            <small>{{ errors.email }}</small>
             </div>
             <div class="col-12 col-md-6">
                 <label for="dob">Date of Birth</label>
-                <input type="text" class="form-control" placeholder="dd/mm/yyyy" />
+                <input v-model="user.dob" type="text" name="dob"
+                class="form-control" placeholder="yyyy-mm-dd" />
+            <small>{{ errors.dob }}</small>
             </div>
             </div>
             <div class="form-row justify-content-between mb-4">
             <div class="col-12 col-md-6">
                 <label for="address">Address</label>
-                <input type="text" class="form-control" />
+                <input v-model="user.address" type="text" name="address" class="form-control" />
+            <small>{{ errors.address }}</small>
             </div>
             <div class="col-12 col-md-6">
                 <label for="university">University</label>
-                <input type="text" class="form-control" />
+                <input v-model="user.university" type="text"
+                name="university" class="form-control" />
+            <small>{{ errors.university }}</small>
             </div>
             </div>
             <div class="form-row justify-content-between mb-3">
             <div class="col-12 col-md-6">
                 <label for="course">Course of Study</label>
-                <input type="text" class="form-control" />
+                <input v-model="user.course" type="text" name="course" class="form-control" />
+            <small>{{ errors.course }}</small>
             </div>
             <div class="col-12 col-md-6">
                 <label for="cgpa">CGPA</label>
-                <input type="text" class="form-control" />
+                <input v-model="user.cgpa" type="text"
+                name="cgpa" placeholder="5.00" class="form-control" />
+            <small>{{ errors.cgpa }}</small>
             </div>
             </div>
         </div>
         <div class="form-row justify-content-center">
-          <button type="submit" class="btn d-flex text-center mt-5 align-items-center
-          justify-content-center text-white">Submit</button>
+          <button type="submit" class="btn d-flex text-center align-items-center
+          justify-content-center text-white"
+          >Submit</button>
+          <!-- :disabled="!fileRecordsForCV.length" -->
         </div>
       </form>
     </div>
@@ -78,22 +106,253 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex';
+
+import {
+  validateTextField,
+  validateEmail,
+  validateDob,
+  validateCgpa,
+} from './validation';
+
 export default {
   name: 'ApplicationForm',
+  data() {
+    return {
+      fileRecordsCV: [],
+      fileRecordsImage: [],
+      uploadHeaders: { 'X-Test-Header': 'vue-file-agent' },
+      fileRecordsForCV: [],
+      fileRecordsForPhoto: [],
+      success: '',
+      user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        dob: '',
+        age: 0,
+        address: '',
+        university: '',
+        course: '',
+        cgpa: '',
+        cv: null,
+        photo: null,
+      },
+      valid: true,
+      errors: {},
+      loginStatus: null,
+    };
+  },
+
+  computed: {
+    ...mapGetters(['loggedInStatus', 'getLoginToken']),
+  },
+
+  watch: {
+    loggedInStatus(res) {
+      if (res) {
+        this.loginStatus = true;
+      }
+      this.loginStatus = false;
+    },
+  },
+  methods: {
+    filesSelectedCV(fileRecordsNewlySelected) {
+      this.user.cv = fileRecordsNewlySelected.length > 0
+        ? fileRecordsNewlySelected[0]
+        : null;
+    },
+    filesSelectedImage(fileRecordsNewlySelected) {
+      this.user.photo = fileRecordsNewlySelected.length > 0
+        ? fileRecordsNewlySelected[0]
+        : null;
+    },
+
+    reset() {
+      this.user = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        dob: '',
+        age: 0,
+        address: '',
+        university: '',
+        course: '',
+        cgpa: '',
+        cv: null,
+        photo: null,
+      };
+    },
+
+    validateFields() {
+      this.errors = {};
+      const {
+        firstName, lastName, email, dob, address, university, course, cgpa, cv, photo,
+      } = this.user;
+
+      if (cv && photo !== null) {
+        console.log(this.valid);
+        this.valid = true;
+        console.log(this.user.cv);
+        console.log(this.user.photo);
+      } else {
+        this.valid = false;
+        console.log(this.valid);
+        this.errors.file = 'Either CV or Image not Uploaded';
+        return this.valid;
+      }
+
+      const validFirstName = validateTextField(firstName);
+      this.errors.firstName = validFirstName.error;
+      if (this.valid) {
+        this.valid = validFirstName.valid;
+        const fname = { ...validFirstName, firstName };
+        this.user.firstName = fname.firstName;
+      }
+
+      const validLastName = validateTextField(lastName);
+      this.errors.lastName = validLastName.error;
+      if (this.valid) {
+        this.valid = validLastName.valid;
+        const lname = { ...validLastName, lastName };
+        this.user.lastName = lname.lastName;
+      }
+
+      const validEmail = validateEmail(email);
+      this.errors.email = validEmail.error;
+      if (this.valid) {
+        this.valid = validEmail.valid;
+        const emailCopy = { ...validEmail, email };
+        this.user.email = emailCopy.email;
+      }
+
+      const validDob = validateDob(dob);
+      this.errors.dob = validDob.error;
+      if (this.valid) {
+        this.valid = validDob.valid;
+        const dobCopy = { ...validDob, dob };
+        this.user.dob = dobCopy.dob;
+        // age calculation
+        const currentYear = new Date().getFullYear();
+        const dobYear = this.user.dob.slice(0, 4);
+        const age = Number(currentYear - dobYear);
+        this.user.age = age;
+      }
+
+      const validAddress = validateTextField(address);
+      this.errors.address = validAddress.error;
+      if (this.valid) {
+        this.valid = validAddress.valid;
+        const addressCopy = { ...validAddress, address };
+        this.user.address = addressCopy.address;
+      }
+
+      const validUniversity = validateTextField(university);
+      this.errors.university = validUniversity.error;
+      if (this.valid) {
+        this.valid = validUniversity.valid;
+        const universityCopy = { ...validUniversity, university };
+        this.user.university = universityCopy.university;
+      }
+
+      const validCourse = validateTextField(course);
+      this.errors.course = validCourse.error;
+      if (this.valid) {
+        this.valid = validCourse.valid;
+        const courseCopy = { ...validCourse, course };
+        this.user.course = courseCopy.course;
+      }
+
+      const validCgpa = validateCgpa(cgpa);
+      this.errors.cgpa = validCgpa.error;
+      if (this.valid) {
+        this.valid = validCgpa.valid;
+        const cgpaCopy = { ...validCgpa, cgpa };
+        this.user.cgpa = cgpaCopy.cgpa;
+      }
+
+      console.log(this.user);
+      console.log(this.valid);
+      return this.valid;
+    },
+    ...mapActions(['mountApplyPage']),
+    async apply() {
+      if (this.validateFields() === false) {
+        this.errors.fields = 'Refresh the page and fill all fields correctly';
+      } else {
+        const newUserObj = { ...this.user, fullName: `${this.user.firstName} ${this.user.lastName}` };
+        newUserObj.cv = this.user.cv.file;
+        newUserObj.photo = this.user.photo.file;
+        delete newUserObj.firstName;
+        delete newUserObj.lastName;
+        console.log(newUserObj);
+        const formData = new FormData();
+        Object.entries(newUserObj).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        console.log({ formData });
+        const res = await axios({
+          method: 'post',
+          url: 'https://team-async.herokuapp.com/application',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${this.getLoginToken}`,
+          },
+        })
+          .then((response) => {
+            console.log(response);
+            this.success = 'You have successfully applied for Enyata Academy 5.0';
+            this.$router.push({ name: 'Dashboard' });
+            this.reset();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        console.log({ res });
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
+/* .container {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+} */
 .form-container {
   width: 965px;
-  height: 645px;
+  height: 100vh;
   background-color: #ffffff;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   color: #2B3C4E;
+  box-sizing: border-box;
   overflow: hidden;
 }
-
+.enyata-logo {
+    width: 110.1px;
+    height: 20.84px;
+    margin: auto;
+    margin-top: 80px;
+    margin-bottom: 24px;
+  }
+   .enyata-logo img {
+    height: 100%;
+    width: 100%;
+  }
+  .title {
+    font-style: italic;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    color: #2B3C4E;
+    margin: auto;
+    margin-bottom: 68px;
+  }
 p {
     font-size: 24px;
 }
@@ -128,8 +387,14 @@ input {
     height: 41px;
 }
 
+small {
+  margin: 25px;
+  color: #7557D3;
+}
+
 button {
-    background-color: #2B3C4E;
+    background-color: var(--enyata-purple);
+    background-color: #7557D3;
     width: 379px;
     height: 50px
 }

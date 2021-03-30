@@ -135,7 +135,7 @@
           </div>
         </div>
         <div class="set-application-closure-date">
-          <h4>Set Application Closure Date</h4>
+          <h4>Set Test Expiration Date</h4>
           <input type="date" class="date">
         </div>
       </div>

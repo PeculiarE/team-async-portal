@@ -1,7 +1,7 @@
 <template>
   <div class="admin-results">
       <div class="admin-results-sidebar">
-        <AdminSidebar />
+        <AdminSidebar :toggleResultsBorder="toggleResultsBorder" />
       </div>
       <div class="admin-results-content">
         <ResultsTable />
@@ -16,9 +16,17 @@ import ResultsTable from '@/components/ResultsTable.vue';
 
 export default {
   name: 'AssessmentHistory',
+  data() {
+    return {
+      toggleResultsBorder: false,
+    };
+  },
   components: {
     AdminSidebar,
     ResultsTable,
+  },
+  mounted() {
+    this.toggleResultsBorder = true;
   },
 };
 </script>

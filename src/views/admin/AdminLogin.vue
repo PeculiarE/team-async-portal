@@ -3,9 +3,8 @@
   <div class="admin-login-background-image">
     <div class="admin-login-content">
       <div class="admin-login-content-icon">
-          <img alt="Enyata logo" src="../../assets/enyata-white-icon.svg">
+          <img alt="Enyata logo" src="../../assets/enyata-white-logo.svg">
       </div>
-      <h1>enyata</h1>
       <h2>Admin Log In</h2>
       <LoginFormAdmin />
     </div>
@@ -29,19 +28,20 @@ export default {
   .admin-login-background {
     max-width: 1440px;
     min-height: 100vh;
-    background: #111E2B;
-    padding-top: 100px;
+    background: #7557D3;
+    padding-top: 60px;
     box-sizing: border-box;
     overflow: visible;
-    padding-bottom: 50px;
+    padding-bottom: 10px;
   }
   .admin-login-background-image {
-    background-image: url("../../assets/laptop-background.svg");
+    background-image: url("../../assets/laptop.svg");
     background-repeat: no-repeat;
+    background-size: auto;
     /* width: 1086px; */
-    height: 724px;
-    background-position: 820px 0;
-    margin-bottom: 50px;
+    /* height: 724px; */
+    background-position: 920px 0;
+    margin-bottom: 31px;
   }
   .admin-login-background-image img {
     height: 100%;
@@ -52,12 +52,14 @@ export default {
     width: 379px;
     margin: auto;
     text-align: center;
+    padding-top: 30px;
   }
   .admin-login-content-icon {
-    height: 52px;
-    width: 49px;
+    height: 21px;
+    width: 110px;
     margin: auto;
-    margin-bottom: 16px;
+    margin-top: 50px;
+    margin-bottom: 15px;
   }
   .admin-login-content-icon img {
     height: 100%;

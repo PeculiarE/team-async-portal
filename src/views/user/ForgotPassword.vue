@@ -18,6 +18,7 @@
                 </div>
             </div>
             <div class="box-2" @click="noSMS">
+            <div class="box-2"  @click.prevent="noSMS">
                 <div class="sms-icon">
                     <img src="../../assets/calling-icon.svg" alt="calling-icon">
                 </div>
@@ -50,7 +51,7 @@ export default {
   },
   methods: {
     noSMS() {
-      alert('This feature is not available at the moment');
+      alert('This option is not available at the moment');
     },
   },
 };
@@ -64,9 +65,9 @@ export default {
     margin: 0 auto;
 }
 .form {
-    position: absolute;
+    position: fixed;
     width: 614px;
-    height: 623px;
+    height: 500px;
     background: #FFFFFF;
     box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
     border-radius: 8px;
@@ -112,6 +113,7 @@ p {
     align-items: center;
     margin: auto;
 }
+<<<<<<< HEAD
 .box-1:hover, .box-2:hover {
     border: 1px solid var(--enyata-purple);
 }
@@ -120,7 +122,7 @@ p {
     margin-bottom: 24px;
 }
 .box-2 {
-    margin-bottom: 32px;
+    margin-bottom: 25px;
 }
 .email-icon, .sms-icon, .check-icon {
     width: 48px;

@@ -6,6 +6,7 @@
     </div>
     <span class="description">Comprises of all that applied for Batch 2</span>
     <b-table
+      id="entries-table"
       :items="items"
       :fields="fields"
       head-variant="dark"
@@ -138,7 +139,7 @@ export default {
   line-height: 52px;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  margin-top: 30px;
+  margin-top: 50px;
 }
 .description {
     font-weight: normal;
@@ -146,6 +147,7 @@ export default {
     line-height: 16px;
     text-align: left;
     color: var(--text-secondary-small);
+    margin-bottom: 50px;
 }
 .entries-table {
   height: 100%;
@@ -159,4 +161,7 @@ export default {
   height: 100vh;
   margin: 0 50px;
 } */
+#entries-table {
+  margin-top: 100px;
+}
 </style>

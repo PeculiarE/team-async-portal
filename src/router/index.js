@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from '../store';
 
 Vue.use(VueRouter);
 
@@ -28,11 +29,13 @@ const routes = [
     path: '/application',
     name: 'ApplicationForm',
     component: () => import('../views/user/ApplicationForm.vue'),
+    meta: { requiresApplyAuth: true },
   },
   {
     path: '/user/dashboard',
     name: 'Dashboard',
     component: () => import('../views/user/Dashboard.vue'),
+    meta: { requiresApplyAuth: true },
   },
   {
     path: '/user/assessment',
@@ -42,57 +45,66 @@ const routes = [
   {
     path: '/user/questions',
     name: 'Questions',
-    component: () => import('../views/user/SuccessPage.vue'),
+    component: () => import('../views/user/Questions.vue'),
   },
   {
     path: '/user/success',
     name: 'SuccessPage',
-    component: () => import('../views/user/Questions.vue'),
+    component: () => import('../views/user/SuccessPage.vue'),
   },
   {
     path: '/admin/login',
     name: 'AdminLogin',
     component: () => import('../views/admin/AdminLogin.vue'),
+    meta: { guest: true },
   },
   {
     path: '/admin/dashboard',
     name: 'AdminDashboard',
     component: () => import('../views/admin/AdminDashboard.vue'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/create-application',
     name: 'CreateApplication',
     component: () => import('../views/admin/CreateApplication.vue'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/entries',
     name: 'ApplicationEntries',
     component: () => import('../views/admin/ApplicationEntries.vue'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/assessment',
     name: 'ComposeAssessment',
     component: () => import('../views/admin/ComposeAssessment.vue'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/history',
     name: 'AssessmentHistory',
     component: () => import('../views/admin/AssessmentHistory.vue'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/results/:batchId',
     name: 'AssessmentResults',
     component: () => import('../views/admin/AssessmentResults.vue'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/profile-settings',
     name: 'ProfileSettings',
     component: () => import('../views/admin/ProfileSettings.vue'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/admin/timer-settings',
     name: 'TimerSettings',
     component: () => import('../views/admin/TimerSettings.vue'),
+    meta: { requiresAuth: true },
   },
 ];
 
@@ -101,5 +113,52 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    await store.dispatch('adminFetchPage');
+    if (store.getters.loggedInStatusAdmin) {
+      next();
+    } else {
+      next('/admin/login');
+    }
+  } else {
+    next();
+  }
+});
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresApplyAuth)) {
+    await store.dispatch('userApplyPage');
+    if (store.getters.loggedInStatus) {
+      next();
+    } else {
+      next('/user/login');
+    }
+  } else {
+    next();
+  }
+});
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.guest)) {
+    if (store.getters.loggedInStatusAdmin) {
+      next('/admin/dashboard');
+      return;
+    }
+    next();
+  } else {
+    next();
+  }
+});
+
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => record.meta.guest)) {
+//     if (!store.getters.loggedInStatus) {
+//       next('/user/login');
+//       return;
+//     }
+//     next();
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;
