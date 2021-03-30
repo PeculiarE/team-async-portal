@@ -160,12 +160,12 @@ export default {
   methods: {
     filesSelectedCV(fileRecordsNewlySelected) {
       this.user.cv = fileRecordsNewlySelected.length > 0
-        ? fileRecordsNewlySelected[0].file
+        ? fileRecordsNewlySelected[0]
         : null;
     },
     filesSelectedImage(fileRecordsNewlySelected) {
       this.user.photo = fileRecordsNewlySelected.length > 0
-        ? fileRecordsNewlySelected[0].file
+        ? fileRecordsNewlySelected[0]
         : null;
     },
 
@@ -282,6 +282,8 @@ export default {
         this.errors.fields = 'Refresh the page and fill all fields correctly';
       } else {
         const newUserObj = { ...this.user, fullName: `${this.user.firstName} ${this.user.lastName}` };
+        newUserObj.cv = this.user.cv.file;
+        newUserObj.photo = this.user.photo.file;
         delete newUserObj.firstName;
         delete newUserObj.lastName;
         console.log(newUserObj);
