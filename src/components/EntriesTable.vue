@@ -1,11 +1,12 @@
 <template>
-  <div class="container">
+  <div class="entries-container">
     <div class="title d-flex">
         <span pt-5 pl-5>Entries - Batch 2</span>
         <div class="image"><img src="../assets/arrow-down-icon.svg" alt="arrow"></div>
     </div>
     <span class="description">Comprises of all that applied for Batch 2</span>
     <b-table
+      id="entries-table"
       :items="items"
       :fields="fields"
       head-variant="dark"
@@ -137,7 +138,7 @@ export default {
   line-height: 52px;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  margin-top: 30px;
+  margin-top: 50px;
 }
 .description {
     font-weight: normal;
@@ -145,8 +146,9 @@ export default {
     line-height: 16px;
     text-align: left;
     color: var(--text-secondary-small);
+    margin-bottom: 50px;
 }
-.container table {
+.entries-container table {
   margin-top: 100px;
   text-align: center;
 }
@@ -154,5 +156,8 @@ export default {
   width: 600px;
   height: 100vh;
   margin: 0 50px;
+}
+#entries-table {
+  margin-top: 100px;
 }
 </style>
