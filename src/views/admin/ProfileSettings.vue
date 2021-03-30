@@ -50,7 +50,7 @@ export default {
 <style scoped>
 .wrapper {
   width: 100%;
-  height: 100vh;
+  height: 900px;
   display: flex;
   font-family: Lato;
   font-style: normal;
@@ -61,15 +61,17 @@ export default {
 .contents {
   width: 75%;
   padding-left: 37px;
+  height: 750px;
 }
 .contents-top {
   width: 365px;
-  margin-top: 101px;
+  margin-top: 50px;
   box-sizing: border-box;
 }
 .contents-bottom {
   width: 724px;
   margin-top: 58px;
+  margin-bottom: 58px;
 }
 .heading h1 {
   font-weight: 300;

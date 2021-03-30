@@ -42,6 +42,7 @@ export default {
   }
   .admin-assessment-content {
     width: 70%;
+    height: 750px;
     padding-right: 90px;
     box-sizing: border-box;
   }

@@ -57,7 +57,7 @@
             <div class="form-row justify-content-between mb-4">
             <div class="col-12 col-md-6">
                 <label for="email">Email</label>
-                <input v-model="user.email" type="email" name="email"  class="form-control" />
+                <input v-model="user.email" type="text" name="email"  class="form-control" />
             <small>{{ errors.email }}</small>
             </div>
             <div class="col-12 col-md-6">
@@ -199,6 +199,7 @@ export default {
       } else {
         this.valid = false;
         console.log(this.valid);
+        this.errors.file = 'Either CV or Image not Uploaded';
         return this.valid;
       }
 

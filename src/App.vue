@@ -30,12 +30,13 @@ export default {
 
 #admin-sidebar-top-section {
   height: 33%;
+  width: 100%;
   padding-top: 15%;
   background: #5ABEFD;
   text-align: center;
 }
 #sidebar-top-section {
-  height: 25%;
+  height: 33%;
   width: 100%;
   background: #2B3C4E;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);

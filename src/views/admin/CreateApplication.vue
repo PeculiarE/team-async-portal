@@ -1,10 +1,10 @@
 <template>
-  <div class="wrapper">
-    <div class="aside">
+<div class="admin-application">
+    <div class="admin-application-sidebar">
       <AdminSidebar :toggleApplicationBorder="toggleApplicationBorder" />
     </div>
-    <div class="contents">
-        <AdminCreateApplication />
+    <div class="admin-application-content">
+      <AdminCreateApplication />
     </div>
   </div>
 </template>
@@ -31,19 +31,17 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
-    height: 100vh;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
+.admin-application {
+  display: flex;
+  width: 100%;
+  /* align-items: stretch; */
 }
-.aside {
-    width: 20.28%
+.admin-application-sidebar {
+  width: 30%;
 }
-.contents {
-    width: 79.72%;
-    padding-right: 90px;
-    padding-left: 75px;
-    box-sizing: border-box;
+.admin-application-content {
+  height: 750px;
+  padding-right: 30px;
+  box-sizing: border-box;
 }
 </style>
