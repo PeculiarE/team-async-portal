@@ -1,64 +1,65 @@
 <template>
-  <div class="row g-0" style="overflow: hidden">
-    <div class="aside col-3 w-100 px-0">
-      <AdminSidebar :toggleDashboardBorder="toggleDashboardBorder" />
-    </div>
-    <div class="contents col-9 px-0 mt-4 pl-5">
-      <div class="row mt-5 mb-3">
-        <div class="col-8">
-          <p class="p1">Dashboard</p>
-        </div>
+  <div class="admin-dashboard">
+      <div class="admin-dashboard-sidebar">
+        <AdminSidebar :toggleDashboardBorder="toggleDashboardBorder" />
       </div>
-      <div class="row mb-5">
-        <div class="col-3 d-flex flex-column">
+      <div class="admin-dashboard-content">
+        <div class="row mt-5 mb-3">
+          <div class="col-8">
+            <p class="p1">Dashboard</p>
+          </div>
+        </div>
+        <div class="row mb-5">
+          <div class="col-3 d-flex flex-column">
             <p class="p5">Current Applications</p>
             <p class="p4">233</p>
             <hr class="hr1 m-0 mb-1">
             <p class="p6">Academy 2.0</p>
-        </div>
-        <div class="col-3 d-flex flex-column">
+          </div>
+          <div class="col-3 d-flex flex-column">
             <p class="p5">Total Application</p>
             <p class="p4">4253</p>
             <hr class="hr2 m-0 mb-1">
             <p class="p6">All entries so far</p>
-        </div>
-        <div class="col-3 d-flex flex-column">
+          </div>
+          <div class="col-3 d-flex flex-column">
             <p class="p5">Academy</p>
             <p class="p4">4</p>
             <hr class="hr3 m-0 mb-1">
             <p class="p6">So far</p>
+          </div>
         </div>
-      </div>
-      <div class="row d-flex justify-content-between">
+        <div class="row d-flex justify-content-between">
           <div class="col-5 px-0 dashb-info history">
-              <p sub-head pl-5>History<br><small class="p6">Last Update 18:24, 22/02/19</small> </p>
-              <div class="d-flex justify-content">
-                  <b-table
-                    :items="items"
-                    :fields="fields"
-                    head-variant="dark"
-                    table-variant="light"
-                    thead-class="d-none"
-                    ></b-table>
-              </div>
+            <p sub-head pl-5>History<br><small class="p6">
+            Last Update 18:24, 22/02/19</small></p>
+            <div class="d-flex justify-content">
+            <b-table
+            :items="items"
+            :fields="fields"
+            head-variant="dark"
+            table-variant="light"
+            thead-class="d-none"
+            ></b-table>
+            </div>
           </div>
           <div class="col-5 px-0 pr-3 dashb-info assessment">
-              <p sub-head class="pl-4 text-left mt-3 mb-5">Create Assessment</p>
-              <p class="text-center mb-3">
-                    Create test questions for incoming academy<br>students
-              </p>
-             <div class="button mt-3 mb-5">
-                  <b-button
-                    type="submit"
-                    class="text-white button"
-                    disabled
-                    >
-                        Create Assessment
-                  </b-button>
-             </div>
+            <p sub-head class="pl-4 text-left mt-3 mb-5">Create Assessment</p>
+            <p class="text-center mb-3">
+              Create test questions for incoming academy<br>students
+            </p>
+            <div class="button mt-3 mb-5">
+              <b-button
+              type="submit"
+              class="text-white button"
+              disabled
+              >
+                Create Assessment
+              </b-button>
+            </div>
           </div>
+        </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -100,9 +101,19 @@ export default {
 </script>
 
 <style scoped>
-/* .aside {
-  height: 100vh;
-} */
+.admin-dashboard {
+  display: flex;
+  width: 100%;
+  /* align-items: stretch; */
+}
+.admin-dashboard-sidebar {
+  width: 30%;
+}
+.admin-dashboard-content {
+  height: 750px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
 p {
     font-style: normal;
 }

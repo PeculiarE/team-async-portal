@@ -1,7 +1,7 @@
 <template>
     <div create-application mt-5>
         <div class="title">Create Application</div>
-        <b-form>
+        <b-form class="form">
             <div class="d-flex justify-content-evenly align-items-center">
                 <div class="choose-file">
                     <input type="file" hidden id="choose-file" />
@@ -46,12 +46,15 @@ export default {
 <style scoped>
 .title {
     font-weight: 300;
-    margin-top: 15.22%;
+    margin-top: 50px;
     font-size: 43.5555px;
     font-style: normal;
     line-height: 52px;
     letter-spacing: -0.02em;
     color: var(--text-primary);
+}
+.form {
+    margin-top: -20px;
 }
 .choose-file {
     width: 456px;
@@ -95,7 +98,7 @@ export default {
 #submit-btn {
     width: 379px;
     height: 50px;
-    background-color: var(--text-primary);
+    background-color: var(--enyata-purple);
     font-style: normal;
     font-weight: bold;
     font-size: 16px;

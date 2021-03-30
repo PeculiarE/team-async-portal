@@ -40,7 +40,7 @@
        <b-form-invalid-feedback class="error" style="font-size: 15px" :state="loginStatus">
        <b>{{ getResponseAdminLogin.message }}</b>
       </b-form-invalid-feedback>
-      <b-form-valid-feedback style="font-size: 15px" :state="loginStatus">
+      <b-form-valid-feedback class="no-error" style="font-size: 15px" :state="loginStatus">
        <b>{{ getResponseAdminLogin.message }}</b>
       </b-form-valid-feedback>
 
@@ -157,5 +157,8 @@ export default {
   }
   .error {
     color: yellow;
+  }
+  .no-error {
+    color: white;
   }
 </style>

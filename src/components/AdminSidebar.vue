@@ -4,7 +4,6 @@
       v-model="visible"
       aria-labelledby="admin-sidebar-no-header-title"
       bg-variant="white"
-      width="25%"
       no-header
       shadow
       class="border"
@@ -24,15 +23,15 @@
           </p>
         </div>
       </div>
-      <div class="p-3 pl-0">
-        <nav class="m-3">
+      <div class="mt-4">
+        <nav>
           <b-nav vertical>
             <b-nav-item active class="admin-sidebar-menu mb-2"
             :class="toggleDashboardBorder ? 'purple-border' : null"
             @click="selectDashboard">
               <img
                 src="../assets/dashboard-icon.svg"
-                class="d-inline-block mr-3"
+                class="d-inline-block ml-4 mr-3"
               />Dashboard</b-nav-item
             >
             <b-nav-item class="admin-sidebar-menu mb-2"
@@ -40,32 +39,32 @@
             @click="selectApplication">
               <img
                 src="../assets/create-application-icon.svg"
-                class="d-inline-block mr-3"
+                class="d-inline-block ml-4 mr-3"
               />Create Application</b-nav-item
             >
             <b-nav-item to="/admin/entries" class="admin-sidebar-menu mb-2"
             :class="toggleEntriesBorder ? 'purple-border' : null">
               <img
                 src="../assets/application-entries-icon.svg"
-                class="d-inline-block mr-3"
+                class="d-inline-block ml-4 mr-3"
               />Application Entries</b-nav-item
             >
             <b-nav-item to="/admin/assessment" class="admin-sidebar-menu mb-2"
             :class="toggleComposeBorder ? 'purple-border' : null">
               <img
                 src="../assets/compose-assessment-icon.svg"
-                class="d-inline-block mr-3"
+                class="d-inline-block ml-4 mr-3"
               />Compose Assessment</b-nav-item
             >
             <b-nav-item
               to="/admin/history"
               class="admin-sidebar-menu mb-2"
-              :class="toggleHistoryBorder ? 'purple-border' : null"
+              :class="toggleHistoryBorder ? 'purple-border-history' : null"
               id="admin-sidebar-menu-history"
             >
               <img
                 src="../assets/assessment-history-icon.svg"
-                class="d-inline-block mr-3"
+                class="d-inline-block ml-4 mr-3"
               />Assessment History</b-nav-item
             >
             <b-nav-item class="admin-sidebar-menu mb-2"
@@ -73,20 +72,20 @@
             @click="selectResults">
               <img
                 src="../assets/results-icon.svg"
-                class="d-inline-block mr-3"
+                class="d-inline-block ml-4 mr-3"
               />Results</b-nav-item
             >
             <b-nav-item to="/admin/profile-settings" class="admin-sidebar-menu mb-2"
             :class="toggleSettingsBorder ? 'purple-border' : null">
               <img
                 src="../assets/settings-icon.svg"
-                class="d-inline-block mr-3"
+                class="d-inline-block ml-4 mr-3"
               />Settings</b-nav-item
             >
             <b-nav-item @click="logoutNow" class="admin-sidebar-menu mb-2 log-out">
               <img
                 src="../assets/log-out-icon.svg"
-                class="d-inline-block mr-3"
+                class="d-inline-block ml-4 mr-3"
               />Log Out</b-nav-item
             >
           </b-nav>
@@ -166,9 +165,10 @@ export default {
 #admin-sidebar-top-section {
   background: var(--enyata-purple);
 }
-a,
 p {
-
+  color: #ffffff;
+}
+a {
   color: var(--text-primary);
 }
 a:hover {
@@ -177,6 +177,9 @@ a:hover {
 }
 .purple-border {
   border-left: 4px #7557D3 solid;
+}
+.purple-border-history {
+  border-left: 6px #7557D3 solid;
 }
 .log-out {
   margin-top: 100px;

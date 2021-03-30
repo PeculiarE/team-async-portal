@@ -30,6 +30,7 @@ export default {
 
 #admin-sidebar-top-section {
   height: 33%;
+  width: 100%;
   padding-top: 15%;
   background: #5ABEFD;
   text-align: center;
