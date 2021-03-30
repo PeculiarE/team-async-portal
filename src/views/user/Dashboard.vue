@@ -64,6 +64,7 @@
 
 <script>
 import Sidebar from '@/components/Sidebar.vue';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'TakeAssessment',
@@ -75,13 +76,16 @@ export default {
       dashboardMenuSelected: false,
     };
   },
-  mounted() {
-    this.dashboardMenuSelected = true;
-  },
+  computed: {},
   methods: {
+    ...mapActions(['populateUserDeets']),
     beforeAssessment() {
       this.$router.push({ name: 'TakeAssessment' });
     },
+  },
+  mounted() {
+    this.dashboardMenuSelected = true;
+    this.populateUserDeets();
   },
 };
 </script>

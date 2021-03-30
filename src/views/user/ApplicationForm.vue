@@ -95,7 +95,7 @@
             </div>
         </div>
         <div class="form-row justify-content-center">
-          <button type="submit" class="btn d-flex text-center mt-5 align-items-center
+          <button type="submit" class="btn d-flex text-center align-items-center
           justify-content-center text-white"
           >Submit</button>
           <!-- :disabled="!fileRecordsForCV.length" -->
@@ -135,7 +135,7 @@ export default {
         address: '',
         university: '',
         course: '',
-        cgpa: null,
+        cgpa: '',
         cv: null,
         photo: null,
       },
@@ -179,7 +179,7 @@ export default {
         address: '',
         university: '',
         course: '',
-        cgpa: null,
+        cgpa: '',
         cv: null,
         photo: null,
       };
