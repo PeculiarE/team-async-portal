@@ -30,6 +30,17 @@ export default new Vuex.Store({
     },
     adminInfo: JSON.parse(localStorage.getItem('adminInfo')),
     loginAdminToken: localStorage.getItem('loginAdminToken') || null,
+    questionsDetailsToSend: [],
+    ongoingApplication: localStorage.getItem('ongoingApplication') || null,
+    hasBatchEnded: 0,
+    responseAdminAd: {
+      status: '',
+      message: '',
+    },
+    responseAdminUpdate: {
+      status: '',
+      message: '',
+    },
     singleQuestion: {
       question: '',
       optionA: '',
@@ -77,6 +88,18 @@ export default new Vuex.Store({
     },
     loggedInStatusAdmin(state) {
       return state.loginAdminToken !== null;
+    },
+    openApplicationStatus(state) {
+      return state.ongoingApplication !== null;
+    },
+    batchEnded(state) {
+      return state.hasBatchEnded !== 0;
+    },
+    getResponseAdminAd(state) {
+      return state.responseAdminAd;
+    },
+    getResponseAdminUpdate(state) {
+      return state.responseAdminUpdate;
     },
   },
 
@@ -146,6 +169,21 @@ export default new Vuex.Store({
     destroyLoginAdminToken(state) {
       state.loginAdminToken = null;
     },
+    updateResponseAdminAd(state, payload) {
+      state.responseAdminAd = {
+        status: payload.status,
+        message: payload.message,
+      };
+    },
+    updateResponseAdminUpdate(state, payload) {
+      state.responseAdminUpdate = {
+        status: payload.status,
+        message: payload.message,
+      };
+    },
+    updateApplicationStatus(state, payload) {
+      state.ongoingApplication = payload;
+    },
   },
   actions: {
     async register({ commit }, userData) {
@@ -194,7 +232,7 @@ export default new Vuex.Store({
 
     async resetPassword({ commit }, payload) {
       const formdata = new FormData();
-      await axios.post('https://localhost:8080/user/reset', payload, formdata)
+      await axios.post('https://async-backend.herokuapp.com/user/reset', payload, formdata)
         .then((response) => {
           commit('reset', response.data);
         }).catch((error) => {
@@ -204,7 +242,7 @@ export default new Vuex.Store({
     },
 
     async newPassword({ commit }, { password, token }) {
-      await axios.put(`https://localhost:8080/resetPassword/${token}`, { password })
+      await axios.put(`https://async-backend.herokuapp.com/resetPassword/${token}`, { password })
         .then((response) => {
           console.log(response);
           commit('setNewPassword', response.data);
@@ -232,7 +270,6 @@ export default new Vuex.Store({
           localStorage.setItem('adminInfo', JSON.stringify(deets));
         })
         .catch((error) => {
-          console.log(error);
           const failObject = {
             status: error.response.data.status,
             message: error.response.data.message,
@@ -282,7 +319,7 @@ export default new Vuex.Store({
 
     async populateAllUsers({ dispatch }) {
       if (localStorage.getItem('loginAdminToken')) {
-        await axios.get('https://localhost:8080/admin/allusers')
+        await axios.get('https://async-backend.herokuapp.com/admin/allusers')
           .then((response) => {
             console.log(response);
             dispatch('bringUserDeetstoState', response);
@@ -291,6 +328,78 @@ export default new Vuex.Store({
           .finally(() => console.log('finally loading'));
       }
     },
+    async adminCreateAd(context, userData) {
+      console.log(userData);
+      const formData = new FormData();
+      Object.entries(userData).forEach(([key, value]) => {
+        formData.append(key, value);
+        console.log(formData.getAll);
+      });
+      console.log({ formData });
+      await axios({
+        method: 'post',
+        url: 'https://async-backend.herokuapp.com/adminapplication',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${context.state.loginAdminToken}`,
+        },
+      })
+        .then((response) => {
+          const successObject = {
+            status: response.data.status,
+            message: response.data.message,
+          };
+          context.commit('updateResponseAdminAd', successObject);
+        })
+        .catch((error) => {
+          const failObject = {
+            status: error.response.data.status,
+            message: error.response.data.message,
+          };
+          context.commit('updateResponseAdminAd', failObject);
+        })
+        .finally(() => {});
+    },
+    openApplication(context, batchId) {
+      localStorage.setItem('ongoingApplication', batchId);
+      context.commit('updateApplicationStatus', batchId);
+    },
+    async adminUpdate(context, userData) {
+      console.log(userData);
+      const formData = new FormData();
+      Object.entries(userData).forEach(([key, value]) => {
+        formData.append(key, value);
+        console.log(formData.getAll);
+      });
+      console.log({ formData });
+      await axios({
+        method: 'post',
+        url: 'https://async-backend.herokuapp.com/adminupdate',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${context.state.loginAdminToken}`,
+        },
+      })
+        .then((response) => {
+          const successObject = {
+            status: response.data.status,
+            message: response.data.message,
+          };
+          const { deets } = response.data;
+          context.commit('updateAdminInfo', deets);
+          localStorage.setItem('adminInfo', JSON.stringify(deets));
+          context.commit('updateResponseAdminUpdate', successObject);
+        })
+        .catch((error) => {
+          const failObject = {
+            status: error.response.data.status,
+            message: error.response.data.message,
+          };
+          context.commit('updateResponseAdminUpdate', failObject);
+        })
+        .finally(() => {});
 
     nextAfterFirstNext(context) {
       console.log(context.state.singleQuestion);

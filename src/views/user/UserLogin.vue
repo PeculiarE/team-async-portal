@@ -3,19 +3,26 @@
     <div class="user-login-icon">
       <img alt="Enyata logo" src="../../assets/enyata-logo.svg">
     </div>
-    <p>Applicant Log In</p>
-    <LoginFormUser />
+    <div v-if="batchEnded">
+      <p>Applicant Log In</p>
+      <LoginFormUser />
+    </div>
+    <p id="batch-ended" v-else>This batch has ended.</p>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import LoginFormUser from '@/components/LoginFormUser.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'UserLogin',
   components: {
     LoginFormUser,
+  },
+  computed: {
+    ...mapGetters(['batchEnded']),
   },
 };
 </script>
@@ -46,5 +53,10 @@ export default {
     color: #2B3C4E;
     margin: auto;
     margin-bottom: 68px;
+  }
+  #batch-ended {
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
   }
 </style>
