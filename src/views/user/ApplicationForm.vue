@@ -294,7 +294,7 @@ export default {
         console.log({ formData });
         const res = await axios({
           method: 'post',
-          url: 'https://team-async.herokuapp.com/application',
+          url: 'https://async-peks.herokuapp.com/application',
           data: formData,
           headers: {
             'Content-Type': 'multipart/form-data',

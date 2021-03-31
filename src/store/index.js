@@ -29,6 +29,16 @@ export default new Vuex.Store({
     adminInfo: JSON.parse(localStorage.getItem('adminInfo')),
     loginAdminToken: localStorage.getItem('loginAdminToken') || null,
     questionsDetailsToSend: [],
+    ongoingApplication: localStorage.getItem('ongoingApplication') || null,
+    hasBatchEnded: 0,
+    responseAdminAd: {
+      status: '',
+      message: '',
+    },
+    responseAdminUpdate: {
+      status: '',
+      message: '',
+    },
   },
   getters: {
     getUserDeets(state) {
@@ -60,6 +70,18 @@ export default new Vuex.Store({
     },
     loggedInStatusAdmin(state) {
       return state.loginAdminToken !== null;
+    },
+    openApplicationStatus(state) {
+      return state.ongoingApplication !== null;
+    },
+    batchEnded(state) {
+      return state.hasBatchEnded !== 0;
+    },
+    getResponseAdminAd(state) {
+      return state.responseAdminAd;
+    },
+    getResponseAdminUpdate(state) {
+      return state.responseAdminUpdate;
     },
   },
 
@@ -105,11 +127,26 @@ export default new Vuex.Store({
     destroyLoginAdminToken(state) {
       state.loginAdminToken = null;
     },
+    updateResponseAdminAd(state, payload) {
+      state.responseAdminAd = {
+        status: payload.status,
+        message: payload.message,
+      };
+    },
+    updateResponseAdminUpdate(state, payload) {
+      state.responseAdminUpdate = {
+        status: payload.status,
+        message: payload.message,
+      };
+    },
+    updateApplicationStatus(state, payload) {
+      state.ongoingApplication = payload;
+    },
   },
   actions: {
     async register({ commit }, userData) {
       await axios
-        .post('https://team-async.herokuapp.com/register', userData)
+        .post('https://async-peks.herokuapp.com/register', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -128,7 +165,7 @@ export default new Vuex.Store({
     },
     async login({ commit }, userData) {
       await axios
-        .post('https://team-async.herokuapp.com/login', userData)
+        .post('https://async-peks.herokuapp.com/login', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -151,7 +188,7 @@ export default new Vuex.Store({
     },
     async adminLogin({ commit }, userData) {
       await axios
-        .post('https://team-async.herokuapp.com/adminlogin', userData)
+        .post('https://async-peks.herokuapp.com/adminlogin', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -165,7 +202,6 @@ export default new Vuex.Store({
           localStorage.setItem('adminInfo', JSON.stringify(deets));
         })
         .catch((error) => {
-          console.log(error);
           const failObject = {
             status: error.response.data.status,
             message: error.response.data.message,
@@ -200,7 +236,7 @@ export default new Vuex.Store({
     async populateUserDeets({ dispatch }) {
       if (localStorage.getItem('loginToken')) {
         const id = localStorage.getItem('userId');
-        await axios.get(`https://team-async.herokuapp.com/user/dashboard/${id}`)
+        await axios.get(`https://async-peks.herokuapp.com/user/dashboard/${id}`)
           .then((response) => {
             console.log(response);
             dispatch('bringUserDeetstoState', response);
@@ -208,6 +244,79 @@ export default new Vuex.Store({
           .catch((error) => console.log(error))
           .finally(() => console.log('finally loading'));
       }
+    },
+    async adminCreateAd(context, userData) {
+      console.log(userData);
+      const formData = new FormData();
+      Object.entries(userData).forEach(([key, value]) => {
+        formData.append(key, value);
+        console.log(formData.getAll);
+      });
+      console.log({ formData });
+      await axios({
+        method: 'post',
+        url: 'https://async-peks.herokuapp.com/adminapplication',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${context.state.loginAdminToken}`,
+        },
+      })
+        .then((response) => {
+          const successObject = {
+            status: response.data.status,
+            message: response.data.message,
+          };
+          context.commit('updateResponseAdminAd', successObject);
+        })
+        .catch((error) => {
+          const failObject = {
+            status: error.response.data.status,
+            message: error.response.data.message,
+          };
+          context.commit('updateResponseAdminAd', failObject);
+        })
+        .finally(() => {});
+    },
+    openApplication(context, batchId) {
+      localStorage.setItem('ongoingApplication', batchId);
+      context.commit('updateApplicationStatus', batchId);
+    },
+    async adminUpdate(context, userData) {
+      console.log(userData);
+      const formData = new FormData();
+      Object.entries(userData).forEach(([key, value]) => {
+        formData.append(key, value);
+        console.log(formData.getAll);
+      });
+      console.log({ formData });
+      await axios({
+        method: 'post',
+        url: 'https://async-peks.herokuapp.com/adminupdate',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${context.state.loginAdminToken}`,
+        },
+      })
+        .then((response) => {
+          const successObject = {
+            status: response.data.status,
+            message: response.data.message,
+          };
+          const { deets } = response.data;
+          context.commit('updateAdminInfo', deets);
+          localStorage.setItem('adminInfo', JSON.stringify(deets));
+          context.commit('updateResponseAdminUpdate', successObject);
+        })
+        .catch((error) => {
+          const failObject = {
+            status: error.response.data.status,
+            message: error.response.data.message,
+          };
+          context.commit('updateResponseAdminUpdate', failObject);
+        })
+        .finally(() => {});
     },
   },
 });
