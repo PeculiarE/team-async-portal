@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <div>
-      <div>
+         <div class="modal-container">
         <form>
           <div class="profile-picture"></div>
           <div class="title">Personal Details</div>
@@ -47,24 +45,53 @@
                 <span></span>
               </div>
             </div>
-            <div class="buttons-div">
-              <b-button id="approve-btn" v-b-modal="'my-modal'">Approve</b-button>
-              <b-modal id="my-modal">
+            <!-- <div class="buttons-div">
+              <div class="approve">
+                <b-button
+                @click.capture="showModal" id="approve-btn" v-b-modal="'my-modal'">
+                Approve</b-button>
+              <b-modal v-model="showModal" id="my-modal">
                 Are you sure you want to approve this application?</b-modal>
-              <b-button id="decline-btn" v-b-modal="'my-modal'">Decline</b-button>
-              <b-modal id="my-modal">
+              </div>
+              <div class="decline">
+                 <b-button
+                 @click.capture="showModal" id="decline-btn" v-b-modal="'my-modal'">
+                 Decline</b-button>
+              <b-modal id="my-modal" v-model="showModal">
                 Are you sure you want to decline this application?</b-modal>
+              </div>
+            </div> -->
+            <div class="btn-wrapper">
+                <div>
+                    <ApproveModal/>
+                </div>
+                <div>
+                    <DeclineModal/>
+                </div>
             </div>
           </div>
         </form>
       </div>
-    </div>
-    </div>
 </template>
 
 <script>
+import ApproveModal from '@/components/ApproveModal.vue';
+import DeclineModal from '@/components/DeclineModal.vue';
+
 export default {
   name: 'EntriesModal',
+  components: {
+    ApproveModal,
+    DeclineModal,
+  },
+  methods: {
+    show() {
+      this.$modal.show('modal-entries');
+    },
+    hide() {
+      this.$modal.hide('modal-entries');
+    },
+  },
 };
 </script>
 
@@ -72,7 +99,6 @@ export default {
 .modal-container {
     width: 600px;
     height: 100%;
-    background: rosybrown;
     margin: 95px 58px 145px 48px;
     font-family: Lato;
     font-style: normal;
@@ -125,15 +151,15 @@ button {
     line-height: 19px;
     color: #4F4F4F;
 }
-#approve-btn {
+button:hover {
     background-color: var(--enyatapurple);
-    color: #ffffff;
+    /* color: #ffffff; */
 }
 label {
     font-weight: normal;
     font-size: 14px;
     line-height: 17px;
     text-align: center;
-    color: #B1B1B1;
+    /* color: #B1B1B1; */
 }
 </style>

@@ -17,7 +17,7 @@
       <div class="row mb-5">
         <div class="col-3 d-flex flex-column">
             <p class="p5">Date of application</p>
-            <p class="p4">09.09.19</p>
+            <p class="p4">{{ getUserDeets.updated_at</p>
             <hr class="hr1 m-0 mb-1">
             <p class="p6">4 days since applied</p>
         </div>
