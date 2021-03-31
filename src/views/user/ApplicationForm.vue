@@ -1,103 +1,145 @@
 <template>
   <div class="d-flex flex-column justify-content-center align-items-center">
     <div class="enyata-logo">
-      <img src="../../assets/enyata-logo.svg" alt="Enyata Logo">
+      <img src="../../assets/enyata-logo.svg" alt="Enyata Logo" />
     </div>
     <div class="title">Application Form</div>
     <div class="form-container p-5">
-      <form enctype="multipart/form-data"
-       @submit.prevent="apply()">
+      <form enctype="multipart/form-data" @submit.prevent="apply()">
         <div class="form-row justify-content-around d-flex mb-4">
-            <VueFileAgent
-    ref="vueFileAgent"
-    :theme="'list'"
-    :multiple="false"
-    :meta="true"
-    :accept="'.pdf'"
-    :maxSize="'2MB'"
-    :maxFiles="1"
-    :helpText="'+ Upload CV (pdf)'"
-    :errorText="{
-      type: 'Invalid file type. Only files with pdf extension are allowed',
-      size: 'Files should not exceed 2MB in size',
-    }"
-    @select="filesSelectedCV($event)"
-    v-model="user.cv"
-  ></VueFileAgent>
-                <VueFileAgent
-    ref="vueFileAgent"
-    :theme="'list'"
-    :multiple="false"
-    :meta="true"
-    :accept="'image/*'"
-    :maxSize="'2MB'"
-    :maxFiles="1"
-    :helpText="'+ Upload Image (png)'"
-    :errorText="{
-      type: 'Invalid file type. Only images allowed',
-      size: 'Files should not exceed 2MB in size',
-    }"
-    @select="filesSelectedImage($event)"
-    v-model="user.photo"
-  ></VueFileAgent>
+          <VueFileAgent
+            ref="vueFileAgent"
+            :theme="'list'"
+            :multiple="false"
+            :meta="true"
+            :accept="'.pdf'"
+            :maxSize="'2MB'"
+            :maxFiles="1"
+            :helpText="'+ Upload CV (pdf)'"
+            :errorText="{
+              type:
+                'Invalid file type. Only files with pdf extension are allowed',
+              size: 'Files should not exceed 2MB in size',
+            }"
+            @select="filesSelectedCV($event)"
+            v-model="user.cv"
+          ></VueFileAgent>
+          <VueFileAgent
+            ref="vueFileAgent"
+            :theme="'list'"
+            :multiple="false"
+            :meta="true"
+            :accept="'image/*'"
+            :maxSize="'2MB'"
+            :maxFiles="1"
+            :helpText="'+ Upload Image (png)'"
+            :errorText="{
+              type: 'Invalid file type. Only images allowed',
+              size: 'Files should not exceed 2MB in size',
+            }"
+            @select="filesSelectedImage($event)"
+            v-model="user.photo"
+          ></VueFileAgent>
         </div>
         <div>
-            <div class="form-row justify-content-between mb-4">
-          <div class="col-12 col-md-6">
-            <label for="firstName">First Name</label>
-            <input v-model="user.firstName" type="text" name="firstName"  class="form-control" />
-            <small>{{ errors.firstName }}</small>
+          <div class="form-row justify-content-between mb-4">
+            <div class="col-12 col-md-6">
+              <label for="firstName">First Name</label>
+              <input
+                v-model="user.firstName"
+                type="text"
+                name="firstName"
+                class="form-control"
+              />
+              <small>{{ errors.firstName }}</small>
+            </div>
+            <div class="col-12 col-md-6">
+              <label for="lastName">Last Name</label>
+              <input
+                v-model="user.lastName"
+                type="text"
+                name="lastName"
+                class="form-control"
+              />
+              <small>{{ errors.lastName }}</small>
+            </div>
           </div>
-          <div class="col-12 col-md-6">
-            <label for="lastName">Last Name</label>
-            <input v-model="user.lastName" type="text" name="lastName"  class="form-control" />
-            <small>{{ errors.lastName }}</small>
+          <div class="form-row justify-content-between mb-4">
+            <div class="col-12 col-md-6">
+              <label for="email">Email</label>
+              <input
+                v-model="user.email"
+                type="text"
+                name="email"
+                class="form-control"
+              />
+              <small>{{ errors.email }}</small>
+            </div>
+            <div class="col-12 col-md-6">
+              <label for="dob">Date of Birth</label>
+              <input
+                v-model="user.dob"
+                type="text"
+                name="dob"
+                class="form-control"
+                placeholder="yyyy-mm-dd"
+              />
+              <small>{{ errors.dob }}</small>
+            </div>
           </div>
-            </div>
-            <div class="form-row justify-content-between mb-4">
+          <div class="form-row justify-content-between mb-4">
             <div class="col-12 col-md-6">
-                <label for="email">Email</label>
-                <input v-model="user.email" type="text" name="email"  class="form-control" />
-            <small>{{ errors.email }}</small>
-            </div>
-            <div class="col-12 col-md-6">
-                <label for="dob">Date of Birth</label>
-                <input v-model="user.dob" type="text" name="dob"
-                class="form-control" placeholder="yyyy-mm-dd" />
-            <small>{{ errors.dob }}</small>
-            </div>
-            </div>
-            <div class="form-row justify-content-between mb-4">
-            <div class="col-12 col-md-6">
-                <label for="address">Address</label>
-                <input v-model="user.address" type="text" name="address" class="form-control" />
-            <small>{{ errors.address }}</small>
+              <label for="address">Address</label>
+              <input
+                v-model="user.address"
+                type="text"
+                name="address"
+                class="form-control"
+              />
+              <small>{{ errors.address }}</small>
             </div>
             <div class="col-12 col-md-6">
-                <label for="university">University</label>
-                <input v-model="user.university" type="text"
-                name="university" class="form-control" />
-            <small>{{ errors.university }}</small>
+              <label for="university">University</label>
+              <input
+                v-model="user.university"
+                type="text"
+                name="university"
+                class="form-control"
+              />
+              <small>{{ errors.university }}</small>
             </div>
-            </div>
-            <div class="form-row justify-content-between mb-3">
+          </div>
+          <div class="form-row justify-content-between mb-3">
             <div class="col-12 col-md-6">
-                <label for="course">Course of Study</label>
-                <input v-model="user.course" type="text" name="course" class="form-control" />
-            <small>{{ errors.course }}</small>
+              <label for="course">Course of Study</label>
+              <input
+                v-model="user.course"
+                type="text"
+                name="course"
+                class="form-control"
+              />
+              <small>{{ errors.course }}</small>
             </div>
             <div class="col-12 col-md-6">
-                <label for="cgpa">CGPA</label>
-                <input v-model="user.cgpa" type="text"
-                name="cgpa" placeholder="5.00" class="form-control" />
-            <small>{{ errors.cgpa }}</small>
+              <label for="cgpa">CGPA</label>
+              <input
+                v-model="user.cgpa"
+                type="text"
+                name="cgpa"
+                placeholder="5.00"
+                class="form-control"
+              />
+              <small>{{ errors.cgpa }}</small>
             </div>
-            </div>
+          </div>
         </div>
         <div class="form-row justify-content-center">
-          <button type="submit" class="btn d-flex text-center align-items-center
-          justify-content-center text-white"
-          >Submit</button>
+          <button
+            type="submit"
+            class="btn d-flex text-center align-items-center justify-content-center text-white"
+          >
+            Submit
+          </button>
           <!-- :disabled="!fileRecordsForCV.length" -->
         </div>
       </form>
@@ -188,7 +230,16 @@ export default {
     validateFields() {
       this.errors = {};
       const {
-        firstName, lastName, email, dob, address, university, course, cgpa, cv, photo,
+        firstName,
+        lastName,
+        email,
+        dob,
+        address,
+        university,
+        course,
+        cgpa,
+        cv,
+        photo,
       } = this.user;
 
       if (cv && photo !== null) {
@@ -281,7 +332,10 @@ export default {
       if (this.validateFields() === false) {
         this.errors.fields = 'Refresh the page and fill all fields correctly';
       } else {
-        const newUserObj = { ...this.user, fullName: `${this.user.firstName} ${this.user.lastName}` };
+        const newUserObj = {
+          ...this.user,
+          fullName: `${this.user.firstName} ${this.user.lastName}`,
+        };
         newUserObj.cv = this.user.cv.file;
         newUserObj.photo = this.user.photo.file;
         delete newUserObj.firstName;
@@ -294,7 +348,7 @@ export default {
         console.log({ formData });
         const res = await axios({
           method: 'post',
-          url: 'https://async-peks.herokuapp.com/application',
+          url: 'https://async-backend.herokuapp.com/application',
           data: formData,
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -329,74 +383,77 @@ export default {
   background-color: #ffffff;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  color: #2B3C4E;
+  color: #2b3c4e;
   box-sizing: border-box;
   overflow: hidden;
 }
 .enyata-logo {
-    width: 110.1px;
-    height: 20.84px;
-    margin: auto;
-    margin-top: 80px;
-    margin-bottom: 24px;
-  }
-   .enyata-logo img {
-    height: 100%;
-    width: 100%;
-  }
-  .title {
-    font-style: italic;
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 29px;
-    color: #2B3C4E;
-    margin: auto;
-    margin-bottom: 68px;
-  }
+  width: 110.1px;
+  height: 20.84px;
+  margin: auto;
+  margin-top: 80px;
+  margin-bottom: 24px;
+}
+.enyata-logo img {
+  height: 100%;
+  width: 100%;
+}
+.title {
+  font-style: italic;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  color: #2b3c4e;
+  margin: auto;
+  margin-bottom: 68px;
+}
 p {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 h3 {
-    font-size: 32px;
+  font-size: 32px;
 }
 label {
- margin-left: 25px;
+  margin-left: 25px;
 }
 
-label[for="upload-photo"], label[for="upload-cv"], input[type="file"] {
-   cursor: pointer;
-   border-radius: 3px;
-   border: 1.5px dashed #2B3C4E;
-   width: 211px;
-   height: 49.97px;
+label[for="upload-photo"],
+label[for="upload-cv"],
+input[type="file"] {
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1.5px dashed #2b3c4e;
+  width: 211px;
+  height: 49.97px;
 }
 
-#upload-photo, #upload-cv {
-   opacity: 0;
-   position: absolute;
-   z-index: -1;
+#upload-photo,
+#upload-cv {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
 }
 
 input {
-    border: 1.5px solid #2B3C4E;
-    outline: none;
-    margin: auto;
-    border-radius: 4px;
-    width: 379px;
-    height: 41px;
+  border: 1.5px solid #2b3c4e;
+  outline: none;
+  margin: auto;
+  border-radius: 4px;
+  width: 379px;
+  height: 41px;
 }
 
 small {
   margin: 25px;
-  color: #7557D3;
+  color: #7557d3;
 }
 
 button {
-    background-color: var(--enyata-purple);
-    background-color: #7557D3;
-    width: 379px;
-    height: 50px
+  background-color: var(--enyata-purple);
+  background-color: #7557d3;
+  width: 379px;
+  height: 50px;
 }
 
 @media only screen and (max-width: 768px) {

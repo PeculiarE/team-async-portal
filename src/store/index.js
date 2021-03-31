@@ -8,6 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     userDeets: {},
+    allUsers: [],
     responseRegister: {
       status: '',
       message: '',
@@ -17,6 +18,7 @@ export default new Vuex.Store({
       message: '',
     },
     loginToken: localStorage.getItem('loginToken') || null,
+    userPassword: [],
     responseAdminLogin: {
       status: '',
       message: '',
@@ -39,10 +41,26 @@ export default new Vuex.Store({
       status: '',
       message: '',
     },
+    singleQuestion: {
+      question: '',
+      optionA: '',
+      optionB: '',
+      optionC: '',
+      optionD: '',
+      correctOption: '',
+    },
+    allQuestions: [],
+    // questionsDetailsToSend: [],
   },
   getters: {
+    getSingleQuestion(state) {
+      return state.singleQuestion;
+    },
     getUserDeets(state) {
       return state.userDeets;
+    },
+    getAllUsers(state) {
+      return state.allUsers;
     },
     getQuestionsDetailsToSend(state) {
       return state.questionsDetailsToSend;
@@ -86,6 +104,24 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    resetSingleQuestionState(state) {
+      state.singleQuestion = {
+        question: '',
+        optionA: '',
+        optionB: '',
+        optionC: '',
+        optionD: '',
+        correctOption: '',
+      };
+    },
+    updateAllQuestionsArray(state, payload) {
+      console.log(state.allQuestions);
+      state.allQuestions = payload;
+      console.log(state.allQuestions);
+    },
+    updateQuestionsDetailsToSend(state, payload) {
+      state.questionsDetailsToSend = state.questionsDetailsToSend.push(payload);
+    },
     updateUserDeets(state, payload) {
       console.log(payload);
       state.userDeets = { ...payload };
@@ -109,6 +145,12 @@ export default new Vuex.Store({
     retrieveLoginToken(state, payload) {
       console.log({ payload });
       state.loginToken = payload;
+    },
+    reset(state, payload) {
+      state.userPassword.push(payload);
+    },
+    setNewPassword(state, payload) {
+      state.userPassword = payload;
     },
     updateResponseAdminLogin(state, payload) {
       state.responseAdminLogin = {
@@ -146,7 +188,7 @@ export default new Vuex.Store({
   actions: {
     async register({ commit }, userData) {
       await axios
-        .post('https://async-peks.herokuapp.com/register', userData)
+        .post('https://async-backend.herokuapp.com/register', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -163,9 +205,10 @@ export default new Vuex.Store({
         })
         .finally(() => {});
     },
+
     async login({ commit }, userData) {
       await axios
-        .post('https://async-peks.herokuapp.com/login', userData)
+        .post('https://async-backend.herokuapp.com/login', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -186,10 +229,35 @@ export default new Vuex.Store({
         })
         .finally(() => {});
     },
-    async adminLogin({ commit }, userData) {
-      await axios
-        .post('https://async-peks.herokuapp.com/adminlogin', userData)
+
+    async resetPassword({ commit }, payload) {
+      const formdata = new FormData();
+      await axios.post('https://async-backend.herokuapp.com/user/reset', payload, formdata)
         .then((response) => {
+          commit('reset', response.data);
+        }).catch((error) => {
+          console.log(error);
+          console.log(payload);
+        });
+    },
+
+    async newPassword({ commit }, { password, token }) {
+      await axios.put(`https://async-backend.herokuapp.com/resetPassword/${token}`, { password })
+        .then((response) => {
+          console.log(response);
+          commit('setNewPassword', response.data);
+        }).catch((error) => {
+          console.log(error);
+          console.log(password);
+        });
+    },
+
+    async adminLogin({ commit }, userData) {
+      console.log(userData);
+      await axios
+        .post('https://async-backend.herokuapp.com/adminlogin', userData)
+        .then((response) => {
+          console.log(response);
           const successObject = {
             status: response.data.status,
             message: response.data.message,
@@ -210,6 +278,7 @@ export default new Vuex.Store({
         })
         .finally(() => {});
     },
+
     async adminFetchPage(context) {
       backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginAdminToken}`;
       await backend
@@ -221,6 +290,7 @@ export default new Vuex.Store({
       localStorage.removeItem('adminInfo');
       commit('destroyLoginAdminToken');
     },
+
     async userApplyPage(context) {
       backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginToken}`;
       await backend
@@ -228,15 +298,28 @@ export default new Vuex.Store({
         .finally(() => {});
     },
 
-    bringUserDeetstoState({ commit }, payload) {
+    async bringUserDeetstoState({ commit }, payload) {
       const newpayload = payload.data.data;
       commit('updateUserDeets', newpayload);
       console.log(newpayload);
     },
+
     async populateUserDeets({ dispatch }) {
       if (localStorage.getItem('loginToken')) {
         const id = localStorage.getItem('userId');
-        await axios.get(`https://async-peks.herokuapp.com/user/dashboard/${id}`)
+        await axios.get(`https://async-backend.herokuapp.com/user/dashboard/${id}`)
+          .then((response) => {
+            console.log(response);
+            dispatch('bringUserDeetstoState', response);
+          })
+          .catch((error) => console.log(error))
+          .finally(() => console.log('finally loading'));
+      }
+    },
+
+    async populateAllUsers({ dispatch }) {
+      if (localStorage.getItem('loginAdminToken')) {
+        await axios.get('https://async-backend.herokuapp.com/admin/allusers')
           .then((response) => {
             console.log(response);
             dispatch('bringUserDeetstoState', response);
@@ -255,7 +338,7 @@ export default new Vuex.Store({
       console.log({ formData });
       await axios({
         method: 'post',
-        url: 'https://async-peks.herokuapp.com/adminapplication',
+        url: 'https://async-backend.herokuapp.com/adminapplication',
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -292,7 +375,7 @@ export default new Vuex.Store({
       console.log({ formData });
       await axios({
         method: 'post',
-        url: 'https://async-peks.herokuapp.com/adminupdate',
+        url: 'https://async-backend.herokuapp.com/adminupdate',
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -317,6 +400,37 @@ export default new Vuex.Store({
           context.commit('updateResponseAdminUpdate', failObject);
         })
         .finally(() => {});
+
+    nextAfterFirstNext(context) {
+      console.log(context.state.singleQuestion);
+      console.log(context.state.allQuestions);
+      context.state.allQuestions.push(context.state.singleQuestion);
+      console.log(context.state.allQuestions);
+      context.commit('updateAllQuestionsArray', context.state.allQuestions);
+      console.log(context.state.allQuestions);
+      console.log(context.state.singleQuestion);
+      // context.commit('resetSingleQuestionState');
+    },
+    arrayDeclare(context) {
+      const allQuestions = [];
+      console.log(context.state.singleQuestion);
+      allQuestions.push(context.state.singleQuestion);
+      console.log(allQuestions);
+      context.commit('updateAllQuestionsArray', allQuestions);
+      console.log(context.state.allQuestions);
+      // context.commit('resetSingleQuestionState');
+      // return allQuestions;
+    },
+    adminNextQuestionButton({ dispatch, state }) {
+      if (state.allQuestions.length === 0) {
+        dispatch('arrayDeclare');
+      } else {
+        dispatch('nextAfterFirstNext');
+      }
+    },
+    adminFinishSettingQuestions(state) {
+      console.log('I was clicked');
+      state.questionsDetailsToSend.push(state.allQuestions);
     },
   },
 });

@@ -26,8 +26,8 @@
                     <p>Password reset link will be sent to your registered phone number</p>
                 </div>
             </div>
-            <PasswordModal />
             <!-- <button type="submit">Send Link</button> -->
+            <PasswordModal />
             <div class="resend">
                 <p>Didn't receive link? <a href="#" class="purple-text">Resend</a></p>
             </div>
@@ -112,13 +112,12 @@ p {
     align-items: center;
     margin: auto;
 }
-.box1:hover, .box2:hover {
+.box-1:hover, .box-2:hover {
     border: 1px solid var(--enyata-purple);
-    /* box-shadow: 0px 8px 30px 10px rgba(117, 87, 211, 0.04); */
 }
 .box-1 {
-    margin-top: 30px;
-    margin-bottom: 18px;
+    margin-top: 48px;
+    margin-bottom: 24px;
 }
 .box-2 {
     margin-bottom: 25px;

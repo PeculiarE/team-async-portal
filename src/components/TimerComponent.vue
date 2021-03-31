@@ -8,7 +8,7 @@
         <div class="set-time">
           <h4>Set Time</h4>
           <div class="custom-select mr-5">
-            <select name="minutes" id="minutes">
+            <select v-model="time" name="minutes" id="minutes">
               <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>

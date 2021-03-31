@@ -1,42 +1,58 @@
 <template>
-    <div>
-      <modal name="forgot-pass-modal" @append="opened">
-        <b-form
-        class="form-body"
-        id ="modalForm"
-        method="post"
-        @submit.prevent="sendLink">
-            <p>Kindly input your email address below.</p>
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <b-form-input
-                id="inline-form-input-email"
-                class="input"
-                name="email"
-                type="text"
-                ref="email"
-                v-model="form.email">
-                </b-form-input>
+<div>
+            <div class=" d-flex btn" @click.capture="show">
+            <button>Send Link</button>
             </div>
-            <div class="d-flex btn-body">
-                <button class="ok-btn" type="submit">OK</button>
-            </div>
-        </b-form>
-      </modal>
+            <modal name="forgot-password-modal" @append="opened">
+                <b-form class="form-body" id ="modalForm" method="post" @submit.prevent="sendLink">
+                    <p>Please enter your registered email address</p>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <b-form-input
+                        class="input"
+                        name="email"
+                        type="email"
+                        ref="email"
+                        @keydown.shift.tab.prevent="">
+                        </b-form-input>
+                    </div>
+                    <div class="d-flex btn-body">
+                        <button class="getLinkBtn" type="submit"
+                        >Get Link</button>
+                    </div>
+                </b-form>
+            </modal>
     </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
+  name: 'PasswordModal',
+  data() {
+    return {
+      form: {
+      },
+    };
+  },
   methods: {
+    ...mapActions(['resetPassword']),
+    sendLink() {
+      this.resetPassword(this.form);
+      this.form = {
+        email: '',
+      };
+      this.$modal.hide('forgot-password-modal');
+    },
     show() {
-      this.$modal.show('forgot-pass-modal');
+      this.$modal.show('forgot-password-modal');
     },
     opened() {
       this.$refs.email.focus();
     },
     hide() {
-      this.$modal.hide('forgot-pass-modal');
+      this.$modal.hide('modal-forgot-password');
     },
   },
 };
@@ -44,15 +60,8 @@ export default {
 
 <style scoped>
 /* .form-body{
-    padding: 30px;
-    justify-content: center;
-}
-p, label{
-    font-size: 14px;
-    font-weight: 700;
-    font-style: bold;
-    color: #2b3c4e;
-}
+    padding: 50px;
+    }
 label{
     font-weight: 400;
     font-style: normal;
