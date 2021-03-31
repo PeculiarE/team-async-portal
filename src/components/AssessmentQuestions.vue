@@ -1,12 +1,8 @@
 <template>
   <div class="assessment-form mt-5">
     <h1>Compose Assessment</h1>
-    <b-form @submit.prevent=sendQuestions>
-      <!-- <p class="text-left">15/30</p> -->
-      <input class="for_questions" type="number" name="currentQuestion"
-      id="" v-model="currentQuestion">/
-      <input class="for_questions" type="number" name="totalQuestions"
-      id="" v-model="totalQuestions">
+    <b-form>
+      <p class="text-left">'currentQuestion'/'totalQuestions'</p>
       <div class="d-flex justify-content-evenly align-items-center">
         <div>
           <input type="file" hidden id="upload-btn" />
@@ -15,44 +11,56 @@
           >
         </div>
         <div class="ml-5">
+          <b-form-group id="correctOption" label="correctOption" label-for="correctOption">
+            <b-form-input id="inputCorrectOption" type="text"
+            required
+            v-model="getSingleQuestion.correctOption"></b-form-input>
+        </b-form-group>
         </div>
-      </div>
+        </div>
       <b-form-group
         label="Question"
         label-for="textarea"
         id="textarea-label"
         rows="8"
       >
-        <b-form-textarea id="textarea"></b-form-textarea>
+        <b-form-textarea id="textarea" v-model="getSingleQuestion.question"></b-form-textarea>
       </b-form-group>
       <div class="d-flex justify-content-between">
         <b-form-group id="input-group-1" label="Option A" label-for="input-1">
-            <b-form-input id="input-1" type="text" required></b-form-input>
+            <b-form-input id="input-1" type="text" required
+            v-model="getSingleQuestion.optionA"></b-form-input>
         </b-form-group>
         <b-form-group id="input-group-2" label="Option B" label-for="input-2">
-            <b-form-input id="input-2" required></b-form-input>
+            <b-form-input id="input-2" required
+            v-model="getSingleQuestion.optionB"></b-form-input>
         </b-form-group>
       </div>
       <div class="d-flex justify-content-between">
         <b-form-group id="input-group-3" label="Option C" label-for="input-3">
-            <b-form-input id="input-3" type="text" required></b-form-input>
+            <b-form-input id="input-3" type="text" required
+            v-model="getSingleQuestion.optionC"></b-form-input>
         </b-form-group>
         <b-form-group id="input-group-4" label="Option D" label-for="input-4">
-            <b-form-input id="input-4" required></b-form-input>
+            <b-form-input id="input-4" required
+            v-model="getSingleQuestion.optionD"></b-form-input>
         </b-form-group>
       </div>
       <div class="btn-grp d-flex justify-content-between">
         <b-button id="prev-btn" variant="dark">Previous</b-button>
-        <b-button id="next-btn" variant="dark">Next</b-button>
+        <b-button id="next-btn" variant="dark" @click="next">Next</b-button>
       </div>
       <div class="text-center">
-        <b-button id="finish-btn" type="submit" disabled variant="dark">Finish</b-button>
+        <b-button id="finish-btn" type="submit" variant="dark"
+        @click="finish">Finish</b-button>
       </div>
     </b-form>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'AssessmentQuestions',
   data() {
@@ -62,12 +70,26 @@ export default {
       totalQuestions: 0,
     };
   },
+  computed: {
+    ...mapGetters(['getSingleQuestion']),
+  },
+  methods: {
+    ...mapActions(['adminNextQuestionButton', 'adminFinishSettingQuestions']),
+
+    next() {
+      this.adminNextQuestionButton();
+    },
+    finish() {
+      this.adminFinishSettingQuestions();
+      this.$router.push({ name: 'TimerSettings' });
+    },
+  },
 };
 </script>
 
 <style scoped>
 .for_questions {
-  width: 30px;
+  width: 50px;
 }
 .assessment-form h1 {
   font-style: normal;
@@ -107,6 +129,7 @@ label {
 #input-group-2,
 #input-group-3,
 #input-group-4,
+#correctAnswer,
 #textarea-label {
   font-style: normal;
   font-weight: normal;
