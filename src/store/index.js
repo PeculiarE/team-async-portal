@@ -28,9 +28,21 @@ export default new Vuex.Store({
     },
     adminInfo: JSON.parse(localStorage.getItem('adminInfo')),
     loginAdminToken: localStorage.getItem('loginAdminToken') || null,
-    questionsDetailsToSend: [],
+    singleQuestion: {
+      question: '',
+      optionA: '',
+      optionB: '',
+      optionC: '',
+      optionD: '',
+      correctOption: '',
+    },
+    allQuestions: [],
+    // questionsDetailsToSend: [],
   },
   getters: {
+    getSingleQuestion(state) {
+      return state.singleQuestion;
+    },
     getUserDeets(state) {
       return state.userDeets;
     },
@@ -64,6 +76,24 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    resetSingleQuestionState(state) {
+      state.singleQuestion = {
+        question: '',
+        optionA: '',
+        optionB: '',
+        optionC: '',
+        optionD: '',
+        correctOption: '',
+      };
+    },
+    updateAllQuestionsArray(state, payload) {
+      console.log(state.allQuestions);
+      state.allQuestions = payload;
+      console.log(state.allQuestions);
+    },
+    updateQuestionsDetailsToSend(state, payload) {
+      state.questionsDetailsToSend = state.questionsDetailsToSend.push(payload);
+    },
     updateUserDeets(state, payload) {
       console.log(payload);
       state.userDeets = { ...payload };
@@ -109,7 +139,7 @@ export default new Vuex.Store({
   actions: {
     async register({ commit }, userData) {
       await axios
-        .post('https://team-async.herokuapp.com/register', userData)
+        .post('https://async-backend.herokuapp.com/register', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -128,7 +158,7 @@ export default new Vuex.Store({
     },
     async login({ commit }, userData) {
       await axios
-        .post('https://team-async.herokuapp.com/login', userData)
+        .post('https://async-backend.herokuapp.com/login', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -151,7 +181,7 @@ export default new Vuex.Store({
     },
     async adminLogin({ commit }, userData) {
       await axios
-        .post('https://team-async.herokuapp.com/adminlogin', userData)
+        .post('https://async-backend.herokuapp.com/adminlogin', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -185,6 +215,7 @@ export default new Vuex.Store({
       localStorage.removeItem('adminInfo');
       commit('destroyLoginAdminToken');
     },
+
     async userApplyPage(context) {
       backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginToken}`;
       await backend
@@ -200,7 +231,7 @@ export default new Vuex.Store({
     async populateUserDeets({ dispatch }) {
       if (localStorage.getItem('loginToken')) {
         const id = localStorage.getItem('userId');
-        await axios.get(`https://team-async.herokuapp.com/user/dashboard/${id}`)
+        await axios.get(`https://async-backend.herokuapp.com/user/dashboard/${id}`)
           .then((response) => {
             console.log(response);
             dispatch('bringUserDeetstoState', response);
@@ -208,6 +239,38 @@ export default new Vuex.Store({
           .catch((error) => console.log(error))
           .finally(() => console.log('finally loading'));
       }
+    },
+
+    nextAfterFirstNext(context) {
+      console.log(context.state.singleQuestion);
+      console.log(context.state.allQuestions);
+      context.state.allQuestions.push(context.state.singleQuestion);
+      console.log(context.state.allQuestions);
+      context.commit('updateAllQuestionsArray', context.state.allQuestions);
+      console.log(context.state.allQuestions);
+      console.log(context.state.singleQuestion);
+      // context.commit('resetSingleQuestionState');
+    },
+    arrayDeclare(context) {
+      const allQuestions = [];
+      console.log(context.state.singleQuestion);
+      allQuestions.push(context.state.singleQuestion);
+      console.log(allQuestions);
+      context.commit('updateAllQuestionsArray', allQuestions);
+      console.log(context.state.allQuestions);
+      // context.commit('resetSingleQuestionState');
+      // return allQuestions;
+    },
+    adminNextQuestionButton({ dispatch, state }) {
+      if (state.allQuestions.length === 0) {
+        dispatch('arrayDeclare');
+      } else {
+        dispatch('nextAfterFirstNext');
+      }
+    },
+    adminFinishSettingQuestions(state) {
+      console.log('I was clicked');
+      state.questionsDetailsToSend.push(state.allQuestions);
     },
   },
 });
