@@ -45,7 +45,7 @@
                 <span></span>
               </div>
             </div>
-            <div class="buttons-div">
+            <!-- <div class="buttons-div">
               <div class="approve">
                 <b-button
                 @click.capture="showModal" id="approve-btn" v-b-modal="'my-modal'">
@@ -60,6 +60,14 @@
               <b-modal id="my-modal" v-model="showModal">
                 Are you sure you want to decline this application?</b-modal>
               </div>
+            </div> -->
+            <div class="btn-wrapper">
+                <div>
+                    <ApproveModal/>
+                </div>
+                <div>
+                    <DeclineModal/>
+                </div>
             </div>
           </div>
         </form>
@@ -67,12 +75,22 @@
 </template>
 
 <script>
+import ApproveModal from '@/components/ApproveModal.vue';
+import DeclineModal from '@/components/DeclineModal.vue';
+
 export default {
   name: 'EntriesModal',
-  data() {
-    return {
-      showModal: false,
-    };
+  components: {
+    ApproveModal,
+    DeclineModal,
+  },
+  methods: {
+    show() {
+      this.$modal.show('modal-entries');
+    },
+    hide() {
+      this.$modal.hide('modal-entries');
+    },
   },
 };
 </script>

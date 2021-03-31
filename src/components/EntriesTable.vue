@@ -20,10 +20,7 @@
     >
     <template #cell(selected)="{ rowSelected }">
         <template v-if="rowSelected" >
-          <!-- <b-button @click.capture="modalShow = !modalShow">Show details</b-button> -->
-          <b-modal v-model="modalShow">
             <EntriesModal />
-          </b-modal>
         </template>
       </template>
     </b-table>
@@ -31,6 +28,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import EntriesModal from '@/components/EntriesModal.vue';
 
 export default {
@@ -81,30 +79,21 @@ export default {
         {
           name: 'Ify Chinke',
           email: 'ify@enyata.com',
-          dob: '12/09/19 - 23',
-          address: '3, Sabo Ave, Yaba Lagos',
-          university: 'University of Nigeria',
-          cgpa: 4.0,
-          status: 'pending',
-        },
-        {
-          name: 'Ify Chinke',
-          email: 'ify@enyata.com',
-          dob: '12/09/19 - 22',
-          address: '3, Sabo Ave, Yaba Lagos',
-          university: 'University of Nigeria',
-          cgpa: 5.0,
-          status: 'approved',
-        },
-        {
-          name: 'Ify Chinke',
-          email: 'ify@enyata.com',
           dob: '12/09/19 - 22',
           address: '3, Sabo Ave, Yaba Lagos',
           university: 'University of Nigeria',
           cgpa: 5.0,
           status: 'pending',
         },
+        // {
+        //   name: {{ getUserDeets.fullName }},
+        //   email: '{{ getUserDeets.email }},
+        //   dob: {{ getUserDeets.dob }},
+        //   address: {{ getUserDeets.address }},
+        //   university: {{ getUserDeets.university }},
+        //   cgpa: {{ getUserDeets.cgpa }},
+        //   status: 'pending',
+        // },
       ],
       modes: ['single'],
       selectMode: 'single',
@@ -113,10 +102,14 @@ export default {
       declineApplication: false,
     };
   },
+  computed: {
+    ...mapGetters(['getUserDeets']),
+  },
   methods: {
-    onRowSelected(items) {
-      this.selected = items;
-      this.modalShow = !this.modalShow;
+    onRowSelected() {
+      // this.selected = items;
+      // this.modalShow = !this.modalShow;
+      this.$modal.show('EntriesModal');
     },
     clearSelected() {
       this.$refs.selectableTable.clearSelected();

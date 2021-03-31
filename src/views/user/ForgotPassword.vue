@@ -17,7 +17,6 @@
                     <img src="../../assets/mark.svg" alt="check-icon">
                 </div>
             </div>
-            <div class="box-2" @click="noSMS">
             <div class="box-2"  @click.prevent="noSMS">
                 <div class="sms-icon">
                     <img src="../../assets/calling-icon.svg" alt="calling-icon">
@@ -113,7 +112,6 @@ p {
     align-items: center;
     margin: auto;
 }
-<<<<<<< HEAD
 .box-1:hover, .box-2:hover {
     border: 1px solid var(--enyata-purple);
 }

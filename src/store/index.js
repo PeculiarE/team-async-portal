@@ -8,6 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     userDeets: {},
+    allUsers: [],
     responseRegister: {
       status: '',
       message: '',
@@ -17,7 +18,6 @@ export default new Vuex.Store({
       message: '',
     },
     loginToken: localStorage.getItem('loginToken') || null,
-    users: [],
     userPassword: [],
     responseAdminLogin: {
       status: '',
@@ -35,6 +35,9 @@ export default new Vuex.Store({
   getters: {
     getUserDeets(state) {
       return state.userDeets;
+    },
+    getAllUsers(state) {
+      return state.allUsers;
     },
     getQuestionsDetailsToSend(state) {
       return state.questionsDetailsToSend;
@@ -95,6 +98,7 @@ export default new Vuex.Store({
     },
     setNewPassword(state, payload) {
       state.userPassword = payload;
+    },
     updateResponseAdminLogin(state, payload) {
       state.responseAdminLogin = {
         status: payload.status,
@@ -116,7 +120,7 @@ export default new Vuex.Store({
   actions: {
     async register({ commit }, userData) {
       await axios
-        .post('https://success-portal.herokuapp.com/register', userData)
+        .post('https://async-backend.herokuapp.com/register', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -136,7 +140,7 @@ export default new Vuex.Store({
 
     async login({ commit }, userData) {
       await axios
-        .post('https://success-portal.herokuapp.com/login', userData)
+        .post('https://async-backend.herokuapp.com/login', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -180,12 +184,12 @@ export default new Vuex.Store({
         });
     },
 
-  },
-  modules: {
     async adminLogin({ commit }, userData) {
+      console.log(userData);
       await axios
-        .post('https://team-async.herokuapp.com/adminlogin', userData)
+        .post('https://async-backend.herokuapp.com/adminlogin', userData)
         .then((response) => {
+          console.log(response);
           const successObject = {
             status: response.data.status,
             message: response.data.message,
@@ -207,6 +211,7 @@ export default new Vuex.Store({
         })
         .finally(() => {});
     },
+
     async adminFetchPage(context) {
       backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginAdminToken}`;
       await backend
@@ -225,15 +230,28 @@ export default new Vuex.Store({
         .finally(() => {});
     },
 
-    bringUserDeetstoState({ commit }, payload) {
+    async bringUserDeetstoState({ commit }, payload) {
       const newpayload = payload.data.data;
       commit('updateUserDeets', newpayload);
       console.log(newpayload);
     },
+
     async populateUserDeets({ dispatch }) {
       if (localStorage.getItem('loginToken')) {
         const id = localStorage.getItem('userId');
-        await axios.get(`https://team-async.herokuapp.com/user/dashboard/${id}`)
+        await axios.get(`https://async-backend.herokuapp.com/user/dashboard/${id}`)
+          .then((response) => {
+            console.log(response);
+            dispatch('bringUserDeetstoState', response);
+          })
+          .catch((error) => console.log(error))
+          .finally(() => console.log('finally loading'));
+      }
+    },
+
+    async populateAllUsers({ dispatch }) {
+      if (localStorage.getItem('loginAdminToken')) {
+        await axios.get('https://localhost:8080/admin/allusers')
           .then((response) => {
             console.log(response);
             dispatch('bringUserDeetstoState', response);

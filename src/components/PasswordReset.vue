@@ -10,7 +10,7 @@
     </div>
     <div class="row no-gutters justify-content-center mt-4">
       <div class="col-lg-4 mb-5">
-      <b-form @submit.prevent = "resetPassword" method= 'put'>
+      <b-form @submit.prevent="resetPassword" method= 'put'>
         <b-form-group
         id="input-group-2"
         label="Password"
@@ -40,7 +40,7 @@
 import { mapActions } from 'vuex';
 
 export default {
-  name: 'ResetPassword',
+  name: 'PasswordReset',
   data() {
     return {
       password: '',
@@ -56,9 +56,6 @@ export default {
         token: this.$route.params.token,
       };
       this.newPassword(obj);
-      // this.form = {
-      //   password: '',
-      // };
     },
   },
 };

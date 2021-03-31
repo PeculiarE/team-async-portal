@@ -29,6 +29,7 @@
 import { mapActions } from 'vuex';
 
 export default {
+  name: 'PasswordModal',
   data() {
     return {
       form: {
@@ -46,38 +47,21 @@ export default {
     },
     show() {
       this.$modal.show('forgot-password-modal');
-
-      this.$modal.hide('forgot-password-modal');
+    },
+    opened() {
+      this.$refs.email.focus();
+    },
+    hide() {
+      this.$modal.hide('modal-forgot-password');
     },
   },
 };
 </script>
 
 <style scoped>
-.form-body{
-    padding: 50px;
 /* .form-body{
-    padding: 30px;
->>>>>>> 0b8dd9ce07e42207159d40867ecbd8a4dc042cf5
-    justify-content: center;
-}
-p, label{
-    font-size: 14px;
-    font-weight: 700;
-    font-style: bold;
-    color: #2b3c4e;
-}
-.btn{
-    margin-top: 20px;
-    justify-content: center;
-}
-button, .getLinkBtn{
-    /* width: 379px;
-    height: 50px; */
-    background-color: #7557d3;
-    color: #fff;
-    font-size: 20px;
-}
+    padding: 50px;
+    }
 label{
     font-weight: 400;
     font-style: normal;
@@ -98,5 +82,5 @@ button, .ok-btn{
 }
 .btn-body{
     justify-content: center;
-}
+} */
 </style>
