@@ -163,9 +163,17 @@ export default new Vuex.Store({
       };
     },
     updateAdminInfo(state, payload) {
-      state.initialResponseAdminLogin.image = payload.image;
-      state.initialResponseAdminLogin.adminName = payload.adminName;
-      state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+      console.log(payload.image);
+      if (payload.image === null) {
+        /* eslint-disable global-require */
+        state.initialResponseAdminLogin.image = require('@/assets/account.svg');
+        state.initialResponseAdminLogin.adminName = payload.adminName;
+        state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+      } else {
+        state.initialResponseAdminLogin.image = payload.image;
+        state.initialResponseAdminLogin.adminName = payload.adminName;
+        state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+      }
     },
     retrieveLoginAdminToken(state, payload) {
       state.loginAdminToken = payload;
@@ -256,7 +264,7 @@ export default new Vuex.Store({
         });
     },
 
-    async adminLogin({ commit }, userData) {
+    async adminLogin(context, userData) {
       console.log(userData);
       await axios
         .post('https://async-backend.herokuapp.com/adminlogin', userData)
@@ -268,17 +276,17 @@ export default new Vuex.Store({
           };
           const { token, deets } = response.data;
           localStorage.setItem('loginAdminToken', token);
-          commit('retrieveLoginAdminToken', token);
-          commit('updateResponseAdminLogin', successObject);
-          commit('updateAdminInfo', deets);
-          localStorage.setItem('adminInfo', JSON.stringify(deets));
+          context.commit('retrieveLoginAdminToken', token);
+          context.commit('updateResponseAdminLogin', successObject);
+          context.commit('updateAdminInfo', deets);
+          localStorage.setItem('adminInfo', JSON.stringify(context.state.initialResponseAdminLogin));
         })
         .catch((error) => {
           const failObject = {
             status: error.response.data.status,
             message: error.response.data.message,
           };
-          commit('updateResponseAdminLogin', failObject);
+          context.commit('updateResponseAdminLogin', failObject);
         })
         .finally(() => {});
     },
@@ -419,7 +427,7 @@ export default new Vuex.Store({
       if (localStorage.getItem('loginAdminToken')) {
         await axios({
           method: 'POST',
-          url: 'http://localhost:3000/question',
+          url: 'https://async-backend.herokuapp.com/question',
           data: context.state.singleQuestion,
           headers: {
             Authorization: `Bearer ${context.state.loginAdminToken}`,
@@ -432,8 +440,7 @@ export default new Vuex.Store({
         }).catch((error) => console.log('error', error)).finally(() => {
           console.log('done');
         });
-      }
-    },
+        
     adminFinishSettingQuestions() {
       console.log('I was clicked');
     },

@@ -12,19 +12,19 @@
         <div class="row mb-5">
           <div class="col-3 d-flex flex-column">
             <p class="p5">Current Applications</p>
-            <p class="p4">233</p>
+            <p class="p4">{{getCountofRowsTableByBatchId}}</p>
             <hr class="hr1 m-0 mb-1">
-            <p class="p6">Academy 2.0</p>
+            <p class="p6">Academy {{getBatchId}}.0</p>
           </div>
           <div class="col-3 d-flex flex-column">
             <p class="p5">Total Application</p>
-            <p class="p4">4253</p>
+            <p class="p4">{{getCountofRowsTable}}</p>
             <hr class="hr2 m-0 mb-1">
             <p class="p6">All entries so far</p>
           </div>
           <div class="col-3 d-flex flex-column">
             <p class="p5">Academy</p>
-            <p class="p4">4</p>
+            <p class="p4">{{getTotalBatches}}</p>
             <hr class="hr3 m-0 mb-1">
             <p class="p6">So far</p>
           </div>
@@ -32,7 +32,7 @@
         <div class="row d-flex justify-content-between">
           <div class="col-5 px-0 dashb-info history">
             <p sub-head pl-5>History<br><small class="p6">
-            Last Update 18:24, 22/02/19</small></p>
+            {{getConverteddate&TimefromUserTable}}</small></p>
             <div class="d-flex justify-content">
             <b-table
             :items="items"
@@ -52,7 +52,7 @@
               <b-button
               type="submit"
               class="text-white button"
-              disabled
+              :disabled="applicationEnded"
               >
                 Create Assessment
               </b-button>
@@ -80,18 +80,9 @@ export default {
           figures: '15 applicants',
           start_date: 'Started 11/09/15',
         },
-        {
-          batch: 'Academy Batch 1',
-          figures: '15 applicants',
-          start_date: 'Started 11/09/15',
-        },
-        {
-          batch: 'Academy Batch 1',
-          figures: '15 applicants',
-          start_date: 'Started 11/09/15',
-        },
       ],
       toggleDashboardBorder: false,
+      applicationEnded: true,
     };
   },
   mounted() {
