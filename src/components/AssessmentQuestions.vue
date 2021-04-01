@@ -2,7 +2,7 @@
   <div class="assessment-form mt-5">
     <h1>Compose Assessment</h1>
     <b-form>
-      <p class="text-left">'currentQuestion'/'totalQuestions'</p>
+      <p class="text-left">currentQuestion/{{ getQuestionCount }}</p>
       <div class="d-flex justify-content-evenly align-items-center">
         <div>
           <input type="file" hidden id="upload-btn" />
@@ -71,7 +71,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getSingleQuestion']),
+    ...mapGetters(['getSingleQuestion', 'getQuestionCount']),
   },
   methods: {
     ...mapActions(['adminNextQuestionButton', 'adminFinishSettingQuestions']),
