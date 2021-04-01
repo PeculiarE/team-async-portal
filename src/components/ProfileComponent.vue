@@ -11,7 +11,7 @@
           :theme="'list'"
           :multiple="false"
           :meta="true"
-          :accept="'.png'"
+          :accept="'.jpg'"
           :maxSize="'2MB'"
           :maxFiles="1"
           :helpText="'Upload a new image'"
@@ -37,7 +37,7 @@
           </div>
           <div class="input-2">
             <label for="name">Email</label>
-            <input type="text" v-model="update.email">
+            <input type="text" v-model="update.email" disabled>
           </div>
           <div class="input-3">
             <label for="name">Phone number</label>
@@ -95,6 +95,8 @@ export default {
     getResponseAdminUpdate(val) {
       if (val.status === 'Success') {
         this.updateStatus = true;
+        // eslint-disable-next-line no-restricted-globals
+        location.reload();
       } else {
         this.updateStatus = false;
       }

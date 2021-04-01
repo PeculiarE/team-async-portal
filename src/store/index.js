@@ -159,9 +159,17 @@ export default new Vuex.Store({
       };
     },
     updateAdminInfo(state, payload) {
-      state.initialResponseAdminLogin.image = payload.image;
-      state.initialResponseAdminLogin.adminName = payload.adminName;
-      state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+      console.log(payload.image);
+      if (payload.image === null) {
+        /* eslint-disable global-require */
+        state.initialResponseAdminLogin.image = require('@/assets/account.svg');
+        state.initialResponseAdminLogin.adminName = payload.adminName;
+        state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+      } else {
+        state.initialResponseAdminLogin.image = payload.image;
+        state.initialResponseAdminLogin.adminName = payload.adminName;
+        state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+      }
     },
     retrieveLoginAdminToken(state, payload) {
       state.loginAdminToken = payload;
@@ -188,7 +196,7 @@ export default new Vuex.Store({
   actions: {
     async register({ commit }, userData) {
       await axios
-        .post('https://async-backend.herokuapp.com/register', userData)
+        .post('https://async-peks.herokuapp.com/register', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -208,7 +216,7 @@ export default new Vuex.Store({
 
     async login({ commit }, userData) {
       await axios
-        .post('https://async-backend.herokuapp.com/login', userData)
+        .post('https://async-peks.herokuapp.com/login', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -252,10 +260,10 @@ export default new Vuex.Store({
         });
     },
 
-    async adminLogin({ commit }, userData) {
+    async adminLogin(context, userData) {
       console.log(userData);
       await axios
-        .post('https://async-backend.herokuapp.com/adminlogin', userData)
+        .post('https://async-peks.herokuapp.com/adminlogin', userData)
         .then((response) => {
           console.log(response);
           const successObject = {
@@ -264,17 +272,17 @@ export default new Vuex.Store({
           };
           const { token, deets } = response.data;
           localStorage.setItem('loginAdminToken', token);
-          commit('retrieveLoginAdminToken', token);
-          commit('updateResponseAdminLogin', successObject);
-          commit('updateAdminInfo', deets);
-          localStorage.setItem('adminInfo', JSON.stringify(deets));
+          context.commit('retrieveLoginAdminToken', token);
+          context.commit('updateResponseAdminLogin', successObject);
+          context.commit('updateAdminInfo', deets);
+          localStorage.setItem('adminInfo', JSON.stringify(context.state.initialResponseAdminLogin));
         })
         .catch((error) => {
           const failObject = {
             status: error.response.data.status,
             message: error.response.data.message,
           };
-          commit('updateResponseAdminLogin', failObject);
+          context.commit('updateResponseAdminLogin', failObject);
         })
         .finally(() => {});
     },
@@ -307,7 +315,7 @@ export default new Vuex.Store({
     async populateUserDeets({ dispatch }) {
       if (localStorage.getItem('loginToken')) {
         const id = localStorage.getItem('userId');
-        await axios.get(`https://async-backend.herokuapp.com/user/dashboard/${id}`)
+        await axios.get(`https://async-peks.herokuapp.com/user/dashboard/${id}`)
           .then((response) => {
             console.log(response);
             dispatch('bringUserDeetstoState', response);
@@ -319,7 +327,7 @@ export default new Vuex.Store({
 
     async populateAllUsers({ dispatch }) {
       if (localStorage.getItem('loginAdminToken')) {
-        await axios.get('https://async-backend.herokuapp.com/admin/allusers')
+        await axios.get('https://async-peks.herokuapp.com/admin/allusers')
           .then((response) => {
             console.log(response);
             dispatch('bringUserDeetstoState', response);
@@ -338,7 +346,7 @@ export default new Vuex.Store({
       console.log({ formData });
       await axios({
         method: 'post',
-        url: 'https://async-backend.herokuapp.com/adminapplication',
+        url: 'https://async-peks.herokuapp.com/adminapplication',
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -375,7 +383,7 @@ export default new Vuex.Store({
       console.log({ formData });
       await axios({
         method: 'post',
-        url: 'https://async-backend.herokuapp.com/adminupdate',
+        url: 'https://async-peks.herokuapp.com/adminupdate',
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -400,7 +408,7 @@ export default new Vuex.Store({
           context.commit('updateResponseAdminUpdate', failObject);
         })
         .finally(() => {});
-
+    },
     nextAfterFirstNext(context) {
       console.log(context.state.singleQuestion);
       console.log(context.state.allQuestions);
