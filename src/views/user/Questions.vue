@@ -83,7 +83,6 @@ export default {
       this.$router.push({ name: 'SuccessPage' });
     },
 
-
     async getAllQuestionsByBatchInDB() {
       if (localStorage.getItem('loginToken')) {
         await axios({
