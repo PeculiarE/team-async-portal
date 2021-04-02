@@ -189,9 +189,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['loggedInStatus', 'getLoginToken', 'getUserDeetsApplicationStatus']),
+    ...mapGetters(['loggedInStatus', 'getLoginToken', 'getUserDeets', 'getUserDeetsApplicationStatus']),
   },
-
+  mounted() {
+    this.populateUserDeets();
+  },
   watch: {
     loggedInStatus(res) {
       if (res) {
@@ -337,6 +339,7 @@ export default {
       return this.valid;
     },
     ...mapActions(['mountApplyPage', 'populateUserDeets']),
+
     async apply() {
       if (this.validateFields() === false) {
         this.errors.fields = 'Refresh the page and fill all fields correctly';
@@ -384,12 +387,6 @@ export default {
 </script>
 
 <style scoped>
-/* .container {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-} */
-.contains {}
 .form-container {
   width: 965px;
   height: 700px;

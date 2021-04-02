@@ -59,8 +59,12 @@ export default new Vuex.Store({
     },
     questionCount: 0,
     setTime: 0,
+    allQuestionsInDb: [],
   },
   getters: {
+    getAllQuestions(state) {
+      return state.allQuestionsInDb;
+    },
     getSetTime(state) {
       return state.setTime;
     },
@@ -148,6 +152,10 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    renderAllBatchQuestionsInDb(state, payload) {
+      state.allQuestionsInDb = [...payload];
+      console.log(state.allQuestionsInDb);
+    },
     updateQuestionCount(state, payload) {
       console.log(state.questionCount);
       state.questionCount += payload;
@@ -168,6 +176,7 @@ export default new Vuex.Store({
       state.userDeets = { ...payload };
       console.log(state.userDeets);
     },
+
     updateAllUsersDeets(state, payload) {
       console.log(payload);
       payload.forEach((el) => {
@@ -267,6 +276,7 @@ export default new Vuex.Store({
       state.summaryTable = payload;
     },
   },
+
   actions: {
     async register({ commit }, userData) {
       await axios
@@ -313,10 +323,10 @@ export default new Vuex.Store({
     },
 
     async resetPassword({ commit }, payload) {
-      const formdata = new FormData();
-      await axios.post('http://localhost:8080/user/reset', payload, formdata)
+      await axios.post('https://team-async.herokuapp.com/user/reset', payload)
         .then((response) => {
           commit('reset', response.data);
+          console.log(response);
         }).catch((error) => {
           console.log(error);
           console.log(payload);
@@ -324,7 +334,7 @@ export default new Vuex.Store({
     },
 
     async newPassword({ commit }, { password, token }) {
-      await axios.put(`http://localhost:8080/resetPassword/${token}`, { password })
+      await axios.post(`https://team-async.herokuapp.com/resetpassword/${token}`, { password })
         .then((response) => {
           console.log(response);
           commit('setNewPassword', response.data);
@@ -333,7 +343,6 @@ export default new Vuex.Store({
           console.log(password);
         });
     },
-
     async adminLogin(context, userData) {
       console.log(userData);
       await axios
@@ -400,14 +409,19 @@ export default new Vuex.Store({
         const id = localStorage.getItem('userId');
         await axios.get(`https://async-backend.herokuapp.com/user/dashboard/${id}`)
           .then((response) => {
-            // console.log(response);
             dispatch('bringUserDeetstoState', response);
           })
           .catch((error) => console.log(error))
           .finally(() => console.log('finally loading'));
       }
     },
-
+    
+    async bringAllQuestionsToState({ commit }, payload) {
+      const newpayload = payload.data;
+      commit('renderAllBatchQuestionsInDb', newpayload);
+      console.log(newpayload);
+    },
+                              
     async populateAllUsers({ dispatch, state }) {
       if (localStorage.getItem('loginAdminToken')) {
         axios.defaults.headers.common.Authorization = `Bearer ${state.loginAdminToken}`;
@@ -420,6 +434,7 @@ export default new Vuex.Store({
           .finally(() => console.log('finally loading'));
       }
     },
+    
     async adminCreateAd(context, userData) {
       console.log(userData);
       const formData = new FormData();
@@ -500,8 +515,16 @@ export default new Vuex.Store({
         })
         .finally(() => {});
     },
+
     // validateQuestionFields()
     // dispatch('validateQuestionFields');
+
+    getQuestionsByBatchInDb() {
+      console.log('here!');
+      if (localStorage.getItem('loginToken')) {
+        console.log(localStorage.getItem('loginToken'));
+      }
+    },
 
     resetSingleQuestionState({ commit }) {
       commit('resetSingleQuestion');
@@ -512,9 +535,10 @@ export default new Vuex.Store({
     },
     async adminNextQuestionButton(context) {
       if (localStorage.getItem('loginAdminToken')) {
+        console.log(context.state.loginAdminToken);
         await axios({
           method: 'POST',
-          url: 'https://async-backend.herokuapp.com/question',
+          url: 'http://localhost:3000/question',
           data: context.state.singleQuestion,
           headers: {
             Authorization: `Bearer ${context.state.loginAdminToken}`,
@@ -529,9 +553,7 @@ export default new Vuex.Store({
         });
       }
     },
-    // adminFinishSettingQuestions() {
-    //   console.log('I was clicked');
-    // },
+   
     async changeStatus({ dispatch, state }, userData) {
       axios.defaults.headers.common.Authorization = `Bearer ${state.loginAdminToken}`;
       await axios.post('https://async-backend.herokuapp.com/update', userData)

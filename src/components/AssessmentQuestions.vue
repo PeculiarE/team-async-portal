@@ -2,7 +2,7 @@
   <div class="assessment-form mt-5">
     <h1>Compose Assessment</h1>
     <b-form>
-      <p class="text-left">currentQuestion/{{ getQuestionCount }}</p>
+      <p class="text-left">{{ getQuestionCount }}/{{ getQuestionCount }}</p>
       <div class="d-flex justify-content-evenly align-items-center">
         <div>
           <input type="file" hidden id="upload-btn" />
@@ -64,7 +64,6 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'AssessmentQuestions',
   data() {
-    // on clicking next, pushes all deets into object.
     return {
       currentQuestion: 0,
       totalQuestions: 0,
