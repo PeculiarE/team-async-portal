@@ -12,30 +12,30 @@
         <div class="row mb-5">
           <div class="col-3 d-flex flex-column">
             <p class="p5">Current Applications</p>
-            <p class="p4">{{getCountofRowsTableByBatchId}}</p>
+            <p class="p4">{{getCurrentApplications}}</p>
             <hr class="hr1 m-0 mb-1">
-            <p class="p6">Academy {{getBatchId}}.0</p>
+            <p class="p6">Academy {{getUpdatedCurrentBatch}}.0</p>
           </div>
           <div class="col-3 d-flex flex-column">
             <p class="p5">Total Application</p>
-            <p class="p4">{{getCountofRowsTable}}</p>
+            <p class="p4">{{getTotalApplications}}</p>
             <hr class="hr2 m-0 mb-1">
             <p class="p6">All entries so far</p>
           </div>
           <div class="col-3 d-flex flex-column">
             <p class="p5">Academy</p>
-            <p class="p4">{{getTotalBatches}}</p>
+            <p class="p4">{{getUpdatedCurrentBatch}}</p>
             <hr class="hr3 m-0 mb-1">
             <p class="p6">So far</p>
           </div>
         </div>
         <div class="row d-flex justify-content-between">
           <div class="col-5 px-0 dashb-info history">
-            <p sub-head pl-5>History<br><small class="p6">
-            {{getConverteddate&TimefromUserTable}}</small></p>
+            <p sub-head pl-5><b>History</b><br><small class="p6">
+            Last Update {{getLatestApplication}}</small></p>
             <div class="d-flex justify-content">
             <b-table
-            :items="items"
+            :items="getSummaryTable"
             :fields="fields"
             head-variant="dark"
             table-variant="light"
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import AdminSidebar from '@/components/AdminSidebar.vue';
 
 export default {
@@ -73,20 +74,21 @@ export default {
   },
   data() {
     return {
-      fields: ['batch', 'figures', 'start_date'],
-      items: [
-        {
-          batch: 'Academy Batch 1',
-          figures: '15 applicants',
-          start_date: 'Started 11/09/15',
-        },
-      ],
+      fields: ['batch', 'applicants', 'date'],
       toggleDashboardBorder: false,
       applicationEnded: true,
     };
   },
+  computed: {
+    ...mapGetters(['getUpdatedCurrentBatch', 'getCurrentApplications',
+      'getTotalApplications', 'getLatestApplication', 'getSummaryTable']),
+  },
+  methods: {
+    ...mapActions(['getSummary']),
+  },
   mounted() {
     this.toggleDashboardBorder = true;
+    this.getSummary();
   },
 };
 </script>

@@ -91,10 +91,18 @@ export default {
     getResponseAdminAd(val) {
       if (val.status === 'Success') {
         this.applicationStatus = true;
-        this.openApplication(this.application.batchId);
+        const applicationStartDate = new Date().toLocaleDateString();
+        const dateAndBatch = {
+          openDate: applicationStartDate,
+          batchId: this.application.batchId,
+        }
+        this.openApplication(dateAndBatch);
+        this.openBatch(1);
         // disable form or hide it till the test expiration date reaches
       } else {
         this.applicationStatus = false;
+        // eslint-disable-next-line no-restricted-globals
+        location.reload();
       }
     },
   },

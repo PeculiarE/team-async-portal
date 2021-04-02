@@ -1,13 +1,13 @@
 <template>
   <div class="entries-container">
     <div class="title d-flex">
-        <span pt-5 pl-5>Entries - Batch 2</span>
+        <span pt-5 pl-5>Entries - Batch 1</span>
         <div class="image"><img src="../assets/arrow-down-icon.svg" alt="arrow"></div>
     </div>
-    <span class="description">Comprises of all that applied for Batch 2</span>
+    <span class="description">Comprises of all that applied for Batch 1</span>
     <b-table
       id="entries-table"
-      :items="items"
+      :items="getAllUsers"
       :fields="fields"
       head-variant="dark"
       table-variant="light"
@@ -16,19 +16,18 @@
       responsive="sm"
       ref="selectableTable"
       selectable
-      @row-selected="onRowSelected"
+      @row-clicked="(item, index, event) => onRowSelected(item, index, event)"
+      v-if="dontShowModal"
     >
-    <template #cell(selected)="{ rowSelected }">
-        <template v-if="rowSelected" >
-            <EntriesModal />
-        </template>
-      </template>
     </b-table>
+    <div v-else>
+      <EntriesModal @closeModal="closeModal" :data="data" />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import EntriesModal from '@/components/EntriesModal.vue';
 
 export default {
@@ -40,7 +39,8 @@ export default {
     return {
       fields: [
         {
-          key: 'name',
+          key: 'full_name',
+          label: 'Name',
           sortable: false,
         },
         {
@@ -53,7 +53,7 @@ export default {
           sortable: true,
         },
         {
-          key: 'course',
+          key: 'address',
           sortable: false,
         },
         {
@@ -66,54 +66,36 @@ export default {
           sortable: true,
         },
         {
-          key: 'status',
-          label: 'Application Status',
-          sortable: false,
-        },
-        {
-          key: 'selected',
+          key: 'approval_status',
+          label: 'Status',
           sortable: false,
         },
       ],
-      items: [
-        {
-          name: 'Ify Chinke',
-          email: 'ify@enyata.com',
-          dob: '12/09/19 - 22',
-          address: '3, Sabo Ave, Yaba Lagos',
-          university: 'University of Nigeria',
-          cgpa: 5.0,
-          status: 'pending',
-        },
-        // {
-        //   name: {{ getUserDeets.fullName }},
-        //   email: '{{ getUserDeets.email }},
-        //   dob: {{ getUserDeets.dob }},
-        //   address: {{ getUserDeets.address }},
-        //   university: {{ getUserDeets.university }},
-        //   cgpa: {{ getUserDeets.cgpa }},
-        //   status: 'pending',
-        // },
-      ],
+      data: [],
       modes: ['single'],
       selectMode: 'single',
       modalShow: false,
       approveApplication: false,
       declineApplication: false,
+      dontShowModal: true,
     };
   },
   computed: {
-    ...mapGetters(['getUserDeets']),
+    ...mapGetters(['getAllUsers']),
   },
   methods: {
-    onRowSelected() {
-      // this.selected = items;
-      // this.modalShow = !this.modalShow;
-      this.$modal.show('EntriesModal');
+    ...mapActions(['populateAllUsers']),
+    onRowSelected(item) {
+      this.dontShowModal = false;
+      this.data = item;
+      console.log(item);
     },
-    clearSelected() {
-      this.$refs.selectableTable.clearSelected();
+    closeModal() {
+      this.dontShowModal = true;
     },
+  },
+  mounted() {
+    this.populateAllUsers();
   },
 };
 </script>
@@ -144,6 +126,9 @@ export default {
 }
 .entries-table {
   height: 100%;
+}
+.entries-table tbody {
+  font-size: 5px;
 }
 .entries-container table {
   margin-top: 100px;

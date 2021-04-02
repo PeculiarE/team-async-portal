@@ -1,6 +1,6 @@
 <template>
 <div>
-    <button @click.prevent="show" >Decline</button>
+    <!-- <button @click.prevent="show" >Decline</button>
     <modal name='modal-decline'>
         <p>Are you sure you want to decline
         <br/><span>this application?</span></p>
@@ -9,18 +9,44 @@
             <button>No</button>
         </div>
 
-    </modal>
+    </modal> -->
+    <b-button id="show-btn" @click="showModal">Decline</b-button>
+      <div>
+        <b-modal id="modal-sm" ref='modal-decline'
+        size="sm">
+          <p>Are you sure you want to decline this application?</p>
+          <template #modal-footer>
+            <!-- Emulate built in modal footer ok and cancel button actions -->
+            <b-button size="sm" variant="success" @click="declineApplication">
+              Yes
+            </b-button>
+            <b-button size="sm" variant="danger" @click="hideModal">
+              No
+            </b-button>
+            <!-- Button with custom close trigger value -->
+            <!-- <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
+              Forget it
+            </b-button> -->
+          </template>
+        </b-modal>
+      </div>
 </div>
 </template>
 
 <script>
 export default {
   methods: {
-    show() {
-      this.$modal.show('modal-decline');
+    showModal() {
+      // this.$modal.show('modal-approve');
+      this.$refs['modal-decline'].show();
     },
-    hide() {
-      this.$modal.hide('modal-decline');
+    hideModal() {
+      this.$refs['modal-decline'].hide();
+      this.$emit('close');
+    },
+    declineApplication() {
+      this.$emit('decline');
+      this.hideModal();
     },
   },
 };

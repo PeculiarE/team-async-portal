@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column justify-content-center align-items-center">
+  <div class="d-flex flex-column justify-content-center align-items-center contains">
     <div class="enyata-logo">
       <img src="../../assets/enyata-logo.svg" alt="Enyata Logo" />
     </div>
@@ -189,7 +189,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['loggedInStatus', 'getLoginToken', 'getUserDeets']),
+    ...mapGetters(['loggedInStatus', 'getLoginToken', 'getUserDeets', 'getUserDeetsApplicationStatus']),
   },
   mounted() {
     this.populateUserDeets();
@@ -200,6 +200,14 @@ export default {
         this.loginStatus = true;
       }
       this.loginStatus = false;
+    },
+    getUserDeetsApplicationStatus(val) {
+      console.log(val);
+      if (val === 'Yes') {
+        setTimeout(() => {
+          this.$router.push({ name: 'Dashboard' });
+        }, 500);
+      }
     },
   },
   methods: {
@@ -330,7 +338,8 @@ export default {
       console.log(this.valid);
       return this.valid;
     },
-    ...mapActions(['populateUserDeets']),
+    ...mapActions(['mountApplyPage', 'populateUserDeets']),
+
     async apply() {
       if (this.validateFields() === false) {
         this.errors.fields = 'Refresh the page and fill all fields correctly';
@@ -360,7 +369,7 @@ export default {
         })
           .then((response) => {
             console.log(response);
-            this.success = 'You have successfully applied for Enyata Academy 5.0';
+            this.success = 'You have successfully applied!';
             this.$router.push({ name: 'Dashboard' });
             this.reset();
           })
@@ -371,13 +380,16 @@ export default {
       }
     },
   },
+  mounted() {
+    this.populateUserDeets();
+  },
 };
 </script>
 
 <style scoped>
 .form-container {
   width: 965px;
-  height: 100vh;
+  height: 700px;
   background-color: #ffffff;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
@@ -389,7 +401,7 @@ export default {
   width: 110.1px;
   height: 20.84px;
   margin: auto;
-  margin-top: 80px;
+  margin-top: 20px;
   margin-bottom: 24px;
 }
 .enyata-logo img {

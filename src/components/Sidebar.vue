@@ -3,12 +3,13 @@
     <b-sidebar id="sidebar-no-header" v-model='visible' aria-labelledby="sidebar-no-header-title"
     bg-variant='white' width='20%' no-header shadow class="border border-dark">
         <div id="sidebar-top-section">
-            <b-img v-bind="mainProps" rounded="circle" alt="Circle image"
+            <b-img v-bind="mainProps" rounded="circle" alt="User image"
+            :src="getUserDeets.photo_url"
             class="mb-2"></b-img>
             <div class="text-white">
                 <p>
-                   <span class="font-weight-bold">Jane Doe</span><br>
-                <i>doe@enyata.com</i>
+                   <span class="font-weight-bold">{{ getUserDeets.full_name }}</span><br>
+                <i>{{ getUserDeets.email }}</i>
                 </p>
             </div>
         </div>
@@ -22,8 +23,8 @@
               <b-nav-item to="assessment" class="sidebar-menu"
               :class="assessmentMenuSelected ? 'selected_menu' : ''">
                   <img src="../assets/assessment-icon.svg"
-                    class="d-inline-block mr-3">Assesment</b-nav-item>
-              <b-nav-item to="" class="sidebar-menu mt-5">
+                    class="d-inline-block mr-3">Assessment</b-nav-item>
+              <b-nav-item to="" class="sidebar-menu mt-5" @click="logoutNow">
                   <img src="../assets/logout-icon.svg"
                     class="d-inline-block mr-3">Log Out</b-nav-item>
             </b-nav>
@@ -34,6 +35,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'Sidebar',
   props: {
@@ -48,11 +51,23 @@ export default {
     return {
       visible: true,
       mainProps: {
-        blank: true, blankColor: '#777', width: 100, height: 100, class: 'mt-4',
+        width: 100, height: 100, class: 'mt-4',
       },
     };
   },
-  methods: {},
+  computed: {
+    ...mapGetters(['getUserDeets']),
+  },
+  methods: {
+    ...mapActions(['userLogout', 'populateUserDeets']),
+    logoutNow() {
+      this.userLogout();
+      this.$router.push({ name: 'UserLogin' });
+    },
+  },
+  mounted() {
+    this.populateUserDeets();
+  },
 };
 </script>
 

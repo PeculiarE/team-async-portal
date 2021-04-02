@@ -33,7 +33,8 @@ export default new Vuex.Store({
     loginAdminToken: localStorage.getItem('loginAdminToken') || null,
     questionsDetailsToSend: [],
     ongoingApplication: localStorage.getItem('ongoingApplication') || null,
-    hasBatchEnded: 0,
+    applicationStartDate: localStorage.getItem('applicationStartDate') || null,
+    hasBatchEnded: localStorage.getItem('hasBatchEnded') || null,
     responseAdminAd: {
       status: '',
       message: '',
@@ -42,6 +43,12 @@ export default new Vuex.Store({
       status: '',
       message: '',
     },
+    summary: {},
+    presentBatch: 0,
+    currentApplications: 0,
+    totalApplications: 0,
+    summaryTable: [],
+    latestApplication: localStorage.getItem('latestApplication') || null,
     singleQuestion: {
       question: '',
       optionA: '',
@@ -69,6 +76,21 @@ export default new Vuex.Store({
     },
     getUserDeets(state) {
       return state.userDeets;
+    },
+    getUserDeetsTime(state) {
+      const a = state.userDeets.updated_at;
+      const date = new Date(a);
+      const b = date.getDate();
+      const c = date.getMonth() + 1;
+      const d = date.getFullYear();
+      const e = `${b}.${c}.${d}`;
+      return e;
+    },
+    getUserDeetsStatus(state) {
+      return state.userDeets.approval_status;
+    },
+    getUserDeetsApplicationStatus(state) {
+      return state.userDeets.application_status;
     },
     getAllUsers(state) {
       return state.allUsers;
@@ -104,13 +126,28 @@ export default new Vuex.Store({
       return state.ongoingApplication !== null;
     },
     batchEnded(state) {
-      return state.hasBatchEnded !== 0;
+      return state.hasBatchEnded !== null;
     },
     getResponseAdminAd(state) {
       return state.responseAdminAd;
     },
     getResponseAdminUpdate(state) {
       return state.responseAdminUpdate;
+    },
+    getUpdatedCurrentBatch(state) {
+      return state.presentBatch;
+    },
+    getCurrentApplications(state) {
+      return state.currentApplications;
+    },
+    getTotalApplications(state) {
+      return state.totalApplications;
+    },
+    getSummaryTable(state) {
+      return state.summaryTable;
+    },
+    getLatestApplication(state) {
+      return state.latestApplication;
     },
   },
 
@@ -138,6 +175,22 @@ export default new Vuex.Store({
       console.log(payload);
       state.userDeets = { ...payload };
       console.log(state.userDeets);
+    },
+
+    updateAllUsersDeets(state, payload) {
+      console.log(payload);
+      payload.forEach((el) => {
+        const date = new Date(el.dob);
+        const b = date.getDate();
+        const c = date.getMonth() + 1;
+        const d = date.getFullYear();
+        const e = `${b}/${c}/${d}`;
+        el.dob = `${e} - ${el.age}`;
+      });
+      state.allUsers = payload;
+    },
+    updateQuestionsDetails(state, payload) {
+      state.questionsDetailsToSend.push(payload);
     },
     updateResponseRegister(state, payload) {
       state.responseRegister = {
@@ -186,6 +239,9 @@ export default new Vuex.Store({
     destroyLoginAdminToken(state) {
       state.loginAdminToken = null;
     },
+    destroyLoginToken(state) {
+      state.loginToken = null;
+    },
     updateResponseAdminAd(state, payload) {
       state.responseAdminAd = {
         status: payload.status,
@@ -200,6 +256,24 @@ export default new Vuex.Store({
     },
     updateApplicationStatus(state, payload) {
       state.ongoingApplication = payload;
+    },
+    updateApplicationStartDate(state, payload) {
+      state.applicationStartDate = payload;
+    },
+    updateBatchStatus(state, payload) {
+      state.hasBatchEnded = payload;
+    },
+    updatePresentBatch(state, payload) {
+      state.presentBatch = payload;
+    },
+    updateCurrentApplications(state, payload) {
+      state.currentApplications = payload;
+    },
+    updateTotalApplications(state, payload) {
+      state.totalApplications = payload;
+    },
+    showSummaryTable(state, payload) {
+      state.summaryTable = payload;
     },
   },
 
@@ -307,7 +381,11 @@ export default new Vuex.Store({
       localStorage.removeItem('adminInfo');
       commit('destroyLoginAdminToken');
     },
-
+    userLogout({ commit }) {
+      localStorage.removeItem('loginToken');
+      localStorage.removeItem('userId');
+      commit('destroyLoginToken');
+    },
     async userApplyPage(context) {
       backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginToken}`;
       await backend
@@ -315,10 +393,15 @@ export default new Vuex.Store({
         .finally(() => {});
     },
 
-    async bringUserDeetstoState({ commit }, payload) {
+    async bringUserDeetstoState({ commit, state }, payload) {
       const newpayload = payload.data.data;
+      const date = new Date(newpayload.updated_at).toLocaleString();
+      localStorage.setItem('latestApplication', date);
+      console.log(newpayload.updated_at);
       commit('updateUserDeets', newpayload);
-      console.log(newpayload);
+      commit('updateAllUsersDeets', newpayload);
+      console.log(newpayload.updated_at);
+      console.log(state.allUsers);
     },
 
     async populateUserDeets({ dispatch }) {
@@ -326,21 +409,22 @@ export default new Vuex.Store({
         const id = localStorage.getItem('userId');
         await axios.get(`https://async-backend.herokuapp.com/user/dashboard/${id}`)
           .then((response) => {
-            console.log(response);
             dispatch('bringUserDeetstoState', response);
           })
           .catch((error) => console.log(error))
           .finally(() => console.log('finally loading'));
       }
     },
-
+    
     async bringAllQuestionsToState({ commit }, payload) {
       const newpayload = payload.data;
       commit('renderAllBatchQuestionsInDb', newpayload);
       console.log(newpayload);
     },
-    async populateAllUsers({ dispatch }) {
+                              
+    async populateAllUsers({ dispatch, state }) {
       if (localStorage.getItem('loginAdminToken')) {
+        axios.defaults.headers.common.Authorization = `Bearer ${state.loginAdminToken}`;
         await axios.get('https://async-backend.herokuapp.com/admin/allusers')
           .then((response) => {
             console.log(response);
@@ -350,6 +434,7 @@ export default new Vuex.Store({
           .finally(() => console.log('finally loading'));
       }
     },
+    
     async adminCreateAd(context, userData) {
       console.log(userData);
       const formData = new FormData();
@@ -383,9 +468,16 @@ export default new Vuex.Store({
         })
         .finally(() => {});
     },
-    openApplication(context, batchId) {
-      localStorage.setItem('ongoingApplication', batchId);
-      context.commit('updateApplicationStatus', batchId);
+    openApplication(context, payload) {
+      localStorage.setItem('ongoingApplication', payload.batchId);
+      context.commit('updateApplicationStatus', payload.batchId);
+      localStorage.setItem('applicationStartDate', payload.openDate);
+      context.commit('updateApplicationStartDate', payload.openDate);
+    },
+    openBatch(context, batchOn) {
+      console.log(batchOn);
+      localStorage.setItem('hasBatchEnded', batchOn);
+      context.commit('updateBatchStatus', batchOn);
     },
     async adminUpdate(context, userData) {
       console.log(userData);
@@ -461,10 +553,43 @@ export default new Vuex.Store({
         });
       }
     },
-
-    adminFinishSettingQuestions() {
-      console.log('I was clicked');
+   
+    async changeStatus({ dispatch, state }, userData) {
+      axios.defaults.headers.common.Authorization = `Bearer ${state.loginAdminToken}`;
+      await axios.post('https://async-backend.herokuapp.com/update', userData)
+        .then((response) => {
+          console.log(response);
+          dispatch('populateAllUsers', response);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => console.log('finally loading'));
     },
-
+    async getSummary({ commit, state }) {
+      axios.defaults.headers.common.Authorization = `Bearer ${state.loginAdminToken}`;
+      await axios.get('https://async-backend.herokuapp.com/summary')
+        .then((response) => {
+          const arr = response.data.data;
+          arr.sort((a, b) => ((a.batch_id > b.batch_id) ? -1 : 1));
+          state.summary = { ...arr };
+          const { batch_id, count } = state.summary['0'];
+          let totalApp = 0;
+          const entireTableSummary = [];
+          Object.entries(state.summary).forEach(([key, value]) => {
+            totalApp += Number(value.count);
+            const tableSummary = {
+              batch: `Academy Batch ${value.batch_id}`,
+              applicants: `${value.count} applicants`,
+              date: `Started ${state.applicationStartDate}`,
+            };
+            entireTableSummary.push(tableSummary);
+          });
+          commit('updatePresentBatch', batch_id);
+          commit('updateCurrentApplications', count);
+          commit('updateTotalApplications', totalApp);
+          commit('showSummaryTable', entireTableSummary);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => console.log('finally loading'));
+    },
   },
 });
