@@ -17,7 +17,6 @@
                     <img src="../../assets/mark.svg" alt="check-icon">
                 </div>
             </div>
-            <div class="box-2" @click="noSMS">
             <div class="box-2"  @click.prevent="noSMS">
                 <div class="sms-icon">
                     <img src="../../assets/calling-icon.svg" alt="calling-icon">
@@ -51,6 +50,7 @@ export default {
   },
   methods: {
     noSMS() {
+      // eslint-disable-next-line no-alert
       alert('This option is not available at the moment');
     },
   },
@@ -113,7 +113,6 @@ p {
     align-items: center;
     margin: auto;
 }
-<<<<<<< HEAD
 .box-1:hover, .box-2:hover {
     border: 1px solid var(--enyata-purple);
 }
@@ -155,14 +154,14 @@ h4 {
     line-height: 22px;
     color: #211F26;
 }
-button {
+/* button {
     width: 379px;
     height: 50px;
     color: #ffffff;
     background: var(--enyata-purple);
     margin-bottom: 28px;
     border: none;
-}
+} */
 .resend {
     margin-bottom: 50px;
 }

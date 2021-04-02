@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
@@ -31,6 +32,8 @@ export default new Vuex.Store({
     adminInfo: JSON.parse(localStorage.getItem('adminInfo')),
     loginAdminToken: localStorage.getItem('loginAdminToken') || null,
     questionsDetailsToSend: [],
+    adminDetails: [],
+    applicants: [],
   },
   getters: {
     getUserDeets(state) {
@@ -63,9 +66,15 @@ export default new Vuex.Store({
     loggedInStatusAdmin(state) {
       return state.loginAdminToken !== null;
     },
+    getCurrentAdminDetails(state) {
+      return state.adminDetails;
+    },
   },
 
   mutations: {
+    adminDetails(state, payload) {
+      state.adminDetails = payload;
+    },
     updateUserDeets(state, payload) {
       console.log(payload);
       state.userDeets = { ...payload };
@@ -95,6 +104,8 @@ export default new Vuex.Store({
     },
     setNewPassword(state, payload) {
       state.userPassword = payload;
+    },
+
     updateResponseAdminLogin(state, payload) {
       state.responseAdminLogin = {
         status: payload.status,
@@ -112,11 +123,14 @@ export default new Vuex.Store({
     destroyLoginAdminToken(state) {
       state.loginAdminToken = null;
     },
+    allApplicants(state, payload) {
+      state.applicants = payload;
+    },
   },
   actions: {
     async register({ commit }, userData) {
       await axios
-        .post('https://success-portal.herokuapp.com/register', userData)
+        .post('https://team-async.herokuapp.com/register', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -136,7 +150,7 @@ export default new Vuex.Store({
 
     async login({ commit }, userData) {
       await axios
-        .post('https://success-portal.herokuapp.com/login', userData)
+        .post('https://team-async.herokuapp.com/login', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -159,10 +173,11 @@ export default new Vuex.Store({
     },
 
     async resetPassword({ commit }, payload) {
-      const formdata = new FormData();
-      await axios.post('https://localhost:8080/user/reset', payload, formdata)
+      // const formdata = new FormData();
+      await axios.post('https://team-async.herokuapp.com/user/reset', payload)
         .then((response) => {
           commit('reset', response.data);
+          console.log(response);
         }).catch((error) => {
           console.log(error);
           console.log(payload);
@@ -170,7 +185,7 @@ export default new Vuex.Store({
     },
 
     async newPassword({ commit }, { password, token }) {
-      await axios.put(`https://localhost:8080/resetPassword/${token}`, { password })
+      await axios.post(`https://team-async.herokuapp.com/resetpassword/${token}`, { password })
         .then((response) => {
           console.log(response);
           commit('setNewPassword', response.data);
@@ -179,9 +194,6 @@ export default new Vuex.Store({
           console.log(password);
         });
     },
-
-  },
-  modules: {
     async adminLogin({ commit }, userData) {
       await axios
         .post('https://team-async.herokuapp.com/adminlogin', userData)
@@ -224,7 +236,6 @@ export default new Vuex.Store({
         .get('')
         .finally(() => {});
     },
-
     bringUserDeetstoState({ commit }, payload) {
       const newpayload = payload.data.data;
       commit('updateUserDeets', newpayload);
