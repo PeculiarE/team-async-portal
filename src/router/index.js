@@ -26,6 +26,16 @@ const routes = [
     component: () => import('../views/user/ForgotPassword.vue'),
   },
   {
+    path: '/resetpassword/:token',
+    name: 'PasswordReset',
+    component: () => import('../components/PasswordReset.vue'),
+  },
+  {
+    path: '/changesuccess',
+    name: 'PasswordChangeSuccess',
+    component: () => import('../components/PasswordChangeSuccess.vue'),
+  },
+  {
     path: '/application',
     name: 'ApplicationForm',
     component: () => import('../views/user/ApplicationForm.vue'),
@@ -71,12 +81,6 @@ const routes = [
     path: '/admin/create-application',
     name: 'CreateApplication',
     component: () => import('../views/admin/CreateApplication.vue'),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/admin/entries',
-    name: 'ApplicationEntries',
-    component: () => import('../views/admin/ApplicationEntries.vue'),
     meta: { requiresAuth: true },
   },
   {

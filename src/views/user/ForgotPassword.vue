@@ -50,6 +50,7 @@ export default {
   },
   methods: {
     noSMS() {
+      // eslint-disable-next-line no-alert
       alert('This option is not available at the moment');
     },
   },
@@ -153,14 +154,14 @@ h4 {
     line-height: 22px;
     color: #211F26;
 }
-button {
+/* button {
     width: 379px;
     height: 50px;
     color: #ffffff;
     background: var(--enyata-purple);
     margin-bottom: 28px;
     border: none;
-}
+} */
 .resend {
     margin-bottom: 50px;
 }

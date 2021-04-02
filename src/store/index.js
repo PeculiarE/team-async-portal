@@ -1,8 +1,8 @@
+/* eslint-disable no-alert */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import backend from '../../backend';
-// import userAuth from '../../requireAuth';
 
 Vue.use(Vuex);
 
@@ -32,6 +32,8 @@ export default new Vuex.Store({
     adminInfo: JSON.parse(localStorage.getItem('adminInfo')),
     loginAdminToken: localStorage.getItem('loginAdminToken') || null,
     questionsDetailsToSend: [],
+    adminDetails: [],
+    applicants: [],
     ongoingApplication: localStorage.getItem('ongoingApplication') || null,
     applicationStartDate: localStorage.getItem('applicationStartDate') || null,
     hasBatchEnded: localStorage.getItem('hasBatchEnded') || null,
@@ -122,6 +124,9 @@ export default new Vuex.Store({
     loggedInStatusAdmin(state) {
       return state.loginAdminToken !== null;
     },
+    getCurrentAdminDetails(state) {
+      return state.adminDetails;
+  },
     openApplicationStatus(state) {
       return state.ongoingApplication !== null;
     },
@@ -152,6 +157,9 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    adminDetails(state, payload) {
+      state.adminDetails = payload;
+  },
     renderAllBatchQuestionsInDb(state, payload) {
       state.allQuestionsInDb = [...payload];
       console.log(state.allQuestionsInDb);
@@ -239,6 +247,9 @@ export default new Vuex.Store({
     destroyLoginAdminToken(state) {
       state.loginAdminToken = null;
     },
+    allApplicants(state, payload) {
+      state.applicants = payload;
+  },
     destroyLoginToken(state) {
       state.loginToken = null;
     },
@@ -323,7 +334,7 @@ export default new Vuex.Store({
     },
 
     async resetPassword({ commit }, payload) {
-      await axios.post('https://team-async.herokuapp.com/user/reset', payload)
+      await axios.post('https://async-backend.herokuapp.com/user/reset', payload)
         .then((response) => {
           commit('reset', response.data);
           console.log(response);
@@ -334,7 +345,7 @@ export default new Vuex.Store({
     },
 
     async newPassword({ commit }, { password, token }) {
-      await axios.post(`https://team-async.herokuapp.com/resetpassword/${token}`, { password })
+      await axios.post(`https://async-backend.herokuapp.com/resetpassword/${token}`, { password })
         .then((response) => {
           console.log(response);
           commit('setNewPassword', response.data);
@@ -343,6 +354,7 @@ export default new Vuex.Store({
           console.log(password);
         });
     },
+
     async adminLogin(context, userData) {
       console.log(userData);
       await axios
