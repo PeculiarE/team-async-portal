@@ -3,11 +3,11 @@
     <div class="user-login-icon">
       <img alt="Enyata logo" src="../../assets/enyata-logo.svg">
     </div>
-    <div v-if="batchEnded">
+    <div>
       <p>Applicant Log In</p>
       <LoginFormUser />
     </div>
-    <p id="batch-ended" v-else>This batch has ended.</p>
+    <!-- <p id="batch-ended">This batch has ended.</p> -->
   </div>
 </template>
 

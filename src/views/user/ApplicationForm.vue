@@ -41,6 +41,7 @@
             v-model="user.photo"
           ></VueFileAgent>
         </div>
+        <small>{{ errors.file }}</small>
         <div>
           <div class="form-row justify-content-between mb-4">
             <div class="col-12 col-md-6">
@@ -188,9 +189,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['loggedInStatus', 'getLoginToken']),
+    ...mapGetters(['loggedInStatus', 'getLoginToken', 'getUserDeets']),
   },
-
+  mounted() {
+    this.populateUserDeets();
+  },
   watch: {
     loggedInStatus(res) {
       if (res) {
@@ -327,7 +330,7 @@ export default {
       console.log(this.valid);
       return this.valid;
     },
-    ...mapActions(['mountApplyPage']),
+    ...mapActions(['populateUserDeets']),
     async apply() {
       if (this.validateFields() === false) {
         this.errors.fields = 'Refresh the page and fill all fields correctly';
@@ -348,7 +351,7 @@ export default {
         console.log({ formData });
         const res = await axios({
           method: 'post',
-          url: 'https://async-peks.herokuapp.com/application',
+          url: 'https://async-backend.herokuapp.com/application',
           data: formData,
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -372,11 +375,6 @@ export default {
 </script>
 
 <style scoped>
-/* .container {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-} */
 .form-container {
   width: 965px;
   height: 100vh;
@@ -446,7 +444,7 @@ input {
 
 small {
   margin: 25px;
-  color: #7557d3;
+  color: red;
 }
 
 button {

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import backend from '../../backend';
-import userAuth from '../../requireAuth';
+// import userAuth from '../../requireAuth';
 
 Vue.use(Vuex);
 
@@ -52,8 +52,12 @@ export default new Vuex.Store({
     },
     questionCount: 0,
     setTime: 0,
+    allQuestionsInDb: [],
   },
   getters: {
+    getAllQuestions(state) {
+      return state.allQuestionsInDb;
+    },
     getSetTime(state) {
       return state.setTime;
     },
@@ -111,6 +115,10 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    renderAllBatchQuestionsInDb(state, payload) {
+      state.allQuestionsInDb = [...payload];
+      console.log(state.allQuestionsInDb);
+    },
     updateQuestionCount(state, payload) {
       console.log(state.questionCount);
       state.questionCount += payload;
@@ -130,9 +138,6 @@ export default new Vuex.Store({
       console.log(payload);
       state.userDeets = { ...payload };
       console.log(state.userDeets);
-    },
-    updateQuestionsDetails(state, payload) {
-      state.questionsDetailsToSend.push(payload);
     },
     updateResponseRegister(state, payload) {
       state.responseRegister = {
@@ -197,6 +202,7 @@ export default new Vuex.Store({
       state.ongoingApplication = payload;
     },
   },
+
   actions: {
     async register({ commit }, userData) {
       await axios
@@ -304,8 +310,8 @@ export default new Vuex.Store({
     },
 
     async userApplyPage(context) {
-      userAuth.defaults.headers.common.Authorization = `Bearer ${context.state.loginToken}`;
-      await userAuth
+      backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginToken}`;
+      await backend
         .get('')
         .finally(() => {});
     },
@@ -329,6 +335,30 @@ export default new Vuex.Store({
       }
     },
 
+    async bringAllQuestionsToState({ commit }, payload) {
+      const newpayload = payload.data;
+      commit('renderAllBatchQuestionsInDb', newpayload);
+      console.log(newpayload);
+    },
+    // async getAllQuestionsByBatchInDB(context) {
+    //   if (localStorage.getItem('loginToken')) {
+    //     console.log(localStorage.getItem('loginToken'));
+    //     await axios({
+    //       method: 'get',
+    //       url: 'http://localhost:3000/user/assessment_questions',
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //         Authorization: `Bearer ${context.state.loginToken}`,
+    //       },
+    //     })
+    //       .then((response) => {
+    //         console.log(response);
+    //         context.dispatch('bringAllQuestionsToState', response);
+    //       })
+    //       .catch((error) => console.log(error))
+    //       .finally(() => console.log('finally loading'));
+    //   }
+    // },
     async populateAllUsers({ dispatch }) {
       if (localStorage.getItem('loginAdminToken')) {
         await axios.get('https://async-backend.herokuapp.com/admin/allusers')
@@ -416,6 +446,13 @@ export default new Vuex.Store({
     // validateQuestionFields()
     // dispatch('validateQuestionFields');
 
+    getQuestionsByBatchInDb() {
+      console.log('here!');
+      if (localStorage.getItem('loginToken')) {
+        console.log(localStorage.getItem('loginToken'));
+      }
+    },
+
     resetSingleQuestionState({ commit }) {
       commit('resetSingleQuestion');
     },
@@ -425,9 +462,10 @@ export default new Vuex.Store({
     },
     async adminNextQuestionButton(context) {
       if (localStorage.getItem('loginAdminToken')) {
+        console.log(context.state.loginAdminToken);
         await axios({
           method: 'POST',
-          url: 'https://async-backend.herokuapp.com/question',
+          url: 'http://localhost:3000/question',
           data: context.state.singleQuestion,
           headers: {
             Authorization: `Bearer ${context.state.loginAdminToken}`,
@@ -440,9 +478,12 @@ export default new Vuex.Store({
         }).catch((error) => console.log('error', error)).finally(() => {
           console.log('done');
         });
-        
+      }
+    },
+
     adminFinishSettingQuestions() {
       console.log('I was clicked');
     },
+
   },
 });
