@@ -249,10 +249,10 @@ export default new Vuex.Store({
     },
 
     async resetPassword({ commit }, payload) {
-      const formdata = new FormData();
-      await axios.post('http://localhost:8080/user/reset', payload, formdata)
+      await axios.post('https://team-async.herokuapp.com/user/reset', payload)
         .then((response) => {
           commit('reset', response.data);
+          console.log(response);
         }).catch((error) => {
           console.log(error);
           console.log(payload);
@@ -260,7 +260,7 @@ export default new Vuex.Store({
     },
 
     async newPassword({ commit }, { password, token }) {
-      await axios.put(`http://localhost:8080/resetPassword/${token}`, { password })
+      await axios.post(`https://team-async.herokuapp.com/resetpassword/${token}`, { password })
         .then((response) => {
           console.log(response);
           commit('setNewPassword', response.data);
@@ -269,7 +269,6 @@ export default new Vuex.Store({
           console.log(password);
         });
     },
-
     async adminLogin(context, userData) {
       console.log(userData);
       await axios
@@ -340,25 +339,6 @@ export default new Vuex.Store({
       commit('renderAllBatchQuestionsInDb', newpayload);
       console.log(newpayload);
     },
-    // async getAllQuestionsByBatchInDB(context) {
-    //   if (localStorage.getItem('loginToken')) {
-    //     console.log(localStorage.getItem('loginToken'));
-    //     await axios({
-    //       method: 'get',
-    //       url: 'http://localhost:3000/user/assessment_questions',
-    //       headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //         Authorization: `Bearer ${context.state.loginToken}`,
-    //       },
-    //     })
-    //       .then((response) => {
-    //         console.log(response);
-    //         context.dispatch('bringAllQuestionsToState', response);
-    //       })
-    //       .catch((error) => console.log(error))
-    //       .finally(() => console.log('finally loading'));
-    //   }
-    // },
     async populateAllUsers({ dispatch }) {
       if (localStorage.getItem('loginAdminToken')) {
         await axios.get('https://async-backend.herokuapp.com/admin/allusers')
@@ -443,6 +423,7 @@ export default new Vuex.Store({
         })
         .finally(() => {});
     },
+
     // validateQuestionFields()
     // dispatch('validateQuestionFields');
 

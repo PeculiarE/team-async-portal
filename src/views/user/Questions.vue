@@ -137,6 +137,7 @@ export default {
   created() {
     this.getAllQuestionsByBatchInDB();
   },
+  
 };
 </script>
 
