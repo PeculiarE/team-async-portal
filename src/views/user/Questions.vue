@@ -85,7 +85,7 @@ export default {
       if (localStorage.getItem('loginToken')) {
         await axios({
           method: 'get',
-          url: 'http://localhost:3000/user/assessment_questions',
+          url: 'https://async-backend.herokuapp.com/user/assessment_questions',
           headers: {
             // 'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${this.getLoginToken}`,
