@@ -550,7 +550,7 @@ export default new Vuex.Store({
         console.log(context.state.loginAdminToken);
         await axios({
           method: 'POST',
-          url: 'http://localhost:3000/question',
+          url: 'https://async-backend.herokuapp.com/question',
           data: context.state.singleQuestion,
           headers: {
             Authorization: `Bearer ${context.state.loginAdminToken}`,
