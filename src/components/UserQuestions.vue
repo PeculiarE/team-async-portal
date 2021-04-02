@@ -1,16 +1,16 @@
 <template>
   <div class="question-container">
     <div>
-      <p class="text-center italic mb-3">Question 1</p>
-      <h5 class="text-center italic mb-5">What is the purpose of HDR technology?</h5>
+      <p class="text-center italic mb-3">Question {{ question_number }}</p>
+      <h5 class="text-center italic mb-5">{{ question }}</h5>
     </div>
 
     <div>
         <b-form-group v-slot="{ ariaDescribedby }">
-          <li class="mb-3 italic" v-for="(option, index) in options" :key="index">
+          <li class="mb-3 italic" v-for="(item, index) in options" :key="index">
             <b-form-radio v-model="selected"
             :aria-describedby="ariaDescribedby" value="index">
-              {{ option }}
+              {{ item }}
             </b-form-radio>
           </li>
         </b-form-group>
@@ -19,18 +19,21 @@
 </template>
 
 <script>
+// import { mapActions } from 'vuex';
+
 export default {
+  props: ['question_number', 'question', 'options'],
   data() {
     return {
       selected: '',
-      options: [
-        'A. To reduce the file size of images and videos.',
-        'B. To speed up 3D rendering performance.',
-        'C. To support higher video resolutions.',
-        'D. To display more colors in images and videos.',
-      ],
     };
   },
+  // methods: {
+  //   ...mapActions(['getAllQuestionsByBatchInDB']),
+  // },
+  // mounted() {
+  //   this.getAllQuestionsByBatchInDB();
+  // },
 };
 </script>
 
