@@ -26,15 +26,13 @@
           <div
             class='d-flex justify-content-center'
           >
-          <!-- v-for='(question, index) in allQuestions'
-            :key='allQuestions[index].question_id' -->
             <UserQuestions
               :question_number='currentQuestion + 1'
               :question='allQuestions[currentQuestion].question'
               :options='options[currentQuestion]'
             />
           </div>
-          <div class='d-flex justify-content-between'>
+         <div class='d-flex justify-content-between'>
             <b-button type='submit' class='text-white button'
             :disabled="!hidePrevious" @click.prevent="prev">
               Previous
@@ -136,7 +134,7 @@ export default {
       }
     },
   },
-  beforeMount() {
+  created() {
     this.getAllQuestionsByBatchInDB();
   },
 };
