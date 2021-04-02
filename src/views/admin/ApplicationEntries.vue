@@ -1,9 +1,9 @@
 <template>
-  <div class='wrapper'>
-    <div>
+  <div class='admin-entries'>
+    <div class="admin-entries-sidebar">
       <AdminSidebar :toggleEntriesBorder="toggleEntriesBorder" />
     </div>
-    <div>
+    <div class="admin-entries-content">
       <EntriesTable />
     </div>
   </div>
@@ -31,15 +31,17 @@ export default {
 </script>
 
 <style scoped>
-.wrapper {
-  width: 100%;
-  height: 100vh;
+.admin-entries {
   display: flex;
-  justify-content: space-around;
-  /* box-sizing: border-box; */
-  /* align-items: ; */
+  width: 100%;
+  /* align-items: stretch; */
 }
-.aside {
-  width: 25%;
+.admin-entries-sidebar {
+  width: 30%;
+}
+.admin-entries-content {
+  height: 750px;
+  padding-right: 30px;
+  box-sizing: border-box;
 }
 </style>

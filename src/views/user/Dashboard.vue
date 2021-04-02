@@ -9,7 +9,7 @@
           <p class="p1">Dashboard</p>
           <p class="p2">
             <i
-              >Your Application is currently being review, you wil be notified if successful</i
+              >Your Application is currently being reviewed. You wil be notified if successful</i
             >
           </p>
         </div>
@@ -17,13 +17,13 @@
       <div class="row mb-5">
         <div class="col-3 d-flex flex-column">
             <p class="p5">Date of application</p>
-            <p class="p4">{{ getUserDeets.updated_at</p>
+            <p class="p4">{{ getUserDeetsTime }}</p>
             <hr class="hr1 m-0 mb-1">
-            <p class="p6">4 days since applied</p>
+            <p class="p6">0 days since you applied</p>
         </div>
         <div class="col-3 d-flex flex-column">
             <p class="p5">Application Status</p>
-            <p class="p4">Pending</p>
+            <p class="p4">{{ getUserDeetsStatus }}</p>
             <hr class="hr2 m-0 mb-1">
             <p class="p6">We wil get back to you</p>
         </div>
@@ -64,10 +64,10 @@
 
 <script>
 import Sidebar from '@/components/Sidebar.vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: 'TakeAssessment',
+  name: 'Dashboard',
   components: {
     Sidebar,
   },
@@ -76,7 +76,9 @@ export default {
       dashboardMenuSelected: false,
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['getUserDeetsTime', 'getUserDeetsStatus']),
+  },
   methods: {
     ...mapActions(['populateUserDeets']),
     beforeAssessment() {
@@ -86,6 +88,8 @@ export default {
   mounted() {
     this.dashboardMenuSelected = true;
     this.populateUserDeets();
+    const ts = new Date();
+    console.log(ts.toLocaleDateString());
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column justify-content-center align-items-center">
+  <div class="d-flex flex-column justify-content-center align-items-center contains">
     <div class="enyata-logo">
       <img src="../../assets/enyata-logo.svg" alt="Enyata Logo" />
     </div>
@@ -41,6 +41,7 @@
             v-model="user.photo"
           ></VueFileAgent>
         </div>
+        <small>{{ errors.file }}</small>
         <div>
           <div class="form-row justify-content-between mb-4">
             <div class="col-12 col-md-6">
@@ -188,7 +189,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['loggedInStatus', 'getLoginToken']),
+    ...mapGetters(['loggedInStatus', 'getLoginToken', 'getUserDeetsApplicationStatus']),
   },
 
   watch: {
@@ -197,6 +198,14 @@ export default {
         this.loginStatus = true;
       }
       this.loginStatus = false;
+    },
+    getUserDeetsApplicationStatus(val) {
+      console.log(val);
+      if (val === 'Yes') {
+        setTimeout(() => {
+          this.$router.push({ name: 'Dashboard' });
+        }, 500);
+      }
     },
   },
   methods: {
@@ -327,7 +336,7 @@ export default {
       console.log(this.valid);
       return this.valid;
     },
-    ...mapActions(['mountApplyPage']),
+    ...mapActions(['mountApplyPage', 'populateUserDeets']),
     async apply() {
       if (this.validateFields() === false) {
         this.errors.fields = 'Refresh the page and fill all fields correctly';
@@ -348,7 +357,7 @@ export default {
         console.log({ formData });
         const res = await axios({
           method: 'post',
-          url: 'https://async-peks.herokuapp.com/application',
+          url: 'https://async-backend.herokuapp.com/application',
           data: formData,
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -357,7 +366,7 @@ export default {
         })
           .then((response) => {
             console.log(response);
-            this.success = 'You have successfully applied for Enyata Academy 5.0';
+            this.success = 'You have successfully applied!';
             this.$router.push({ name: 'Dashboard' });
             this.reset();
           })
@@ -368,6 +377,9 @@ export default {
       }
     },
   },
+  mounted() {
+    this.populateUserDeets();
+  },
 };
 </script>
 
@@ -377,9 +389,10 @@ export default {
   width: 100%;
   height: 100%;
 } */
+.contains {}
 .form-container {
   width: 965px;
-  height: 100vh;
+  height: 700px;
   background-color: #ffffff;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
@@ -391,7 +404,7 @@ export default {
   width: 110.1px;
   height: 20.84px;
   margin: auto;
-  margin-top: 80px;
+  margin-top: 20px;
   margin-bottom: 24px;
 }
 .enyata-logo img {
@@ -446,7 +459,7 @@ input {
 
 small {
   margin: 25px;
-  color: #7557d3;
+  color: red;
 }
 
 button {

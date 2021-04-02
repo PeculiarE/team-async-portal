@@ -8,8 +8,8 @@
         </b-navbar-brand>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
-            <b-nav-item href="#">Home</b-nav-item>
-            <b-nav-item v-if="batchEnded" href="/user/login">Sign In</b-nav-item>
+            <b-nav-item href="/user/login">Sign In</b-nav-item>
+            <!-- <b-nav-item v-if="batchEnded" href="/user/login">Sign In</b-nav-item> -->
             <b-nav-item v-if="openApplicationStatus" href="/signup">Register</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
@@ -21,7 +21,7 @@
             Becoming a Software<br /><span class="engr-text">Engineer</span>
           </h1>
           <p class="text-muted minor-text">
-            Join Enyata Academy today and bring your long<br />awaiting dream to reality.
+            Join Enyata Academy today and bring your long<br />awaited dream to reality.
           </p>
           <b-button v-if="openApplicationStatus"
           block type="submit" class="button"><a href="/signup">Register Now</a></b-button>

@@ -1,51 +1,59 @@
 <template>
-         <div class="modal-container">
-        <form>
-          <div class="profile-picture"></div>
-          <div class="title">Personal Details</div>
-          <hr>
-          <div class="details">
-            <div class="row1">
-              <div class="name">
-                <label for="name">Name</label><br>
-                <input type="text" id="name" value="Ify Chinke">
-              </div>
-              <div class="email">
-                <label for="email">Email</label><br>
-                <input type="text" id="email" value="ify@enyata.com">
-              </div>
-            </div>
-            <div class="row2">
-              <div class="address">
-                <label for="address">Address</label><br>
-                <input type="text" id="address" value="3, Sabo Ave, Yaba, Lagos">
-              </div>
-              <div class="university">
-                <label for="university">University</label><br>
-                <input type="text" id="university" value="University of Nigeria, Nsukka">
-              </div>
-            </div>
-            <div class="row3">
-              <div class="course">
-                <label for="course">Course of study</label><br>
-                <input type="text" id="course" value="Computer Science">
-              </div>
-              <div class="dob">
-                <label for="dob">Date of Birth</label><br>
-                <input type="text" id="dob" value="12/09/19 - 22">
-              </div>
-            </div>
-            <div class="row4">
-              <div class="cgpa">
-                <label for="cgpa">CGPA</label><br>
-                <input type="text" id="cgpa" value="5.0">
-              </div>
-              <div class="cv">
-                <p>CV</p><br>
-                <span></span>
-              </div>
-            </div>
-            <!-- <div class="buttons-div">
+  <div class="modal-container">
+    <form>
+      <div class="d-flex justify-content-between">
+        <div class="profile-picture">
+          <img :src="data.photo_url" alt="image">
+        </div>
+        <p @click="$emit('closeModal')">X</p>
+      </div>
+      <br>
+      <div class="title">Personal Details</div>
+      <hr />
+      <div class="details">
+        <div class="row1">
+          <div class="name">
+            <label>Name</label><br />
+            <p class="data">{{data.full_name}}</p>
+          </div>
+          <div class="email">
+            <label>Email</label><br />
+            <p class="data">{{data.email}}</p>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="address">
+            <label>Address</label><br />
+            <p class="data">{{data.address}}</p>
+          </div>
+          <div class="university">
+            <label>University</label><br />
+            <p class="data">{{data.university}}</p>
+          </div>
+        </div>
+        <div class="row3">
+          <div class="course">
+            <label>Course of study</label><br />
+            <p class="data">{{data.course}}</p>
+          </div>
+          <div class="dob">
+            <label>Date of Birth</label><br />
+            <p class="data">{{data.dob}}</p>
+          </div>
+        </div>
+        <div class="row4">
+          <div class="cgpa">
+            <label>CGPA</label><br />
+            <p class="data">{{data.cgpa}}</p>
+          </div>
+          <div class="cv">
+            <label>CV</label><br />
+            <p class="data-cv">
+              <a :href="data.cv_url"
+              target="_blank">{{data.full_name}}'s CV.pdf</a></p>
+          </div>
+        </div>
+        <!-- <div class="buttons-div">
               <div class="approve">
                 <b-button
                 @click.capture="showModal" id="approve-btn" v-b-modal="'my-modal'">
@@ -61,35 +69,60 @@
                 Are you sure you want to decline this application?</b-modal>
               </div>
             </div> -->
-            <div class="btn-wrapper">
-                <div>
-                    <ApproveModal/>
-                </div>
-                <div>
-                    <DeclineModal/>
-                </div>
-            </div>
+        <div class="btn-wrapper">
+          <div>
+            <ApproveModal @approve="updateApprovalStatusNow"
+            @close="$emit('closeModal')" />
           </div>
-        </form>
+          <div>
+            <DeclineModal @decline="updateApprovalStatusDecline"
+            @close="$emit('closeModal')" />
+          </div>
+        </div>
       </div>
+    </form>
+  </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import ApproveModal from '@/components/ApproveModal.vue';
 import DeclineModal from '@/components/DeclineModal.vue';
 
 export default {
   name: 'EntriesModal',
+  props: {
+    data: {
+      type: Object,
+    },
+  },
   components: {
     ApproveModal,
     DeclineModal,
   },
   methods: {
+    ...mapActions(['changeStatus']),
     show() {
       this.$modal.show('modal-entries');
     },
     hide() {
       this.$modal.hide('modal-entries');
+    },
+    updateApprovalStatusNow() {
+      this.data.approval_status = 'Approved';
+      const userData = {
+        userId: this.data.user_id,
+        newStatus: 'Approved',
+      };
+      this.changeStatus(userData);
+    },
+    updateApprovalStatusDecline() {
+      this.data.approval_status = 'Declined';
+      const userData = {
+        userId: this.data.user_id,
+        newStatus: 'Declined',
+      };
+      this.changeStatus(userData);
     },
   },
 };
@@ -97,69 +130,96 @@ export default {
 
 <style scoped>
 .modal-container {
-    width: 600px;
-    height: 100%;
-    margin: 95px 58px 145px 48px;
-    font-family: Lato;
-    font-style: normal;
-    padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-    transition: all .3s ease;
+  width: 450px;
+  height: 700px;
+  margin: 30px 0px 30px 0px;
+  font-family: Lato;
+  font-style: normal;
+  padding: 15px 20px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
 }
 .profile-picture {
-    width: 179px;
-    height: 179px;
-    background: brown;
+  width: 130px;
+  height: 130px;
+}
+.profile-picture img {
+  width: 100%;
+  height: 100%;
 }
 .title {
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 19px;
-    text-align: left;
-    color: #7D7D7D;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: left;
+  color: #7d7d7d;
 }
-.row1, .row2, .row3, .row4 {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+.row1,
+.row2,
+.row3,
+.row4 {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
-input {
-    width: 231px;
-    height: 48px;
-    border: 1px solid #CDCFD6;
-    box-sizing: border-box;
-    border-radius: 4px;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 19px;
-    color: #4F4F4F;
+.btn-wrapper{
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.data {
+  width: 200px;
+  height: 50px;
+  padding: 10px;
+  border: 1px solid #cdcfd6;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+  color: #000000;
+}
+.data-cv {
+  width: 200px;
+  height: 50px;
+  padding: 10px 0px;
+  border: 1px #cdcfd6;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+  color: #000000;
+}
+a {
+  color: #000000;
 }
 .buttons-div {
-    display: flex;
-    margin: auto ;
+  display: flex;
+  margin: auto;
 }
 button {
-    width: 125px;
-    height: 48px;
-    border: 1px solid #CECECE;
-    box-sizing: border-box;
-    border-radius: 4px;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 19px;
-    color: #4F4F4F;
+  width: 125px;
+  height: 48px;
+  border: 1px solid #cecece;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: black;
 }
 button:hover {
-    background-color: var(--enyatapurple);
-    /* color: #ffffff; */
+  background-color: var(--enyatapurple);
+  /* color: #ffffff; */
 }
 label {
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    text-align: center;
-    /* color: #B1B1B1; */
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #B1B1B1;
 }
 </style>

@@ -37,7 +37,7 @@
           </div>
           <div class="input-2">
             <label for="name">Email</label>
-            <input type="text" v-model="update.email" disabled>
+            <input type="text" v-model="update.email">
           </div>
           <div class="input-3">
             <label for="name">Phone number</label>
