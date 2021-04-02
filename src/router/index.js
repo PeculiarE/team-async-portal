@@ -51,16 +51,19 @@ const routes = [
     path: '/user/assessment',
     name: 'TakeAssessment',
     component: () => import('../views/user/TakeAssessment.vue'),
+    meta: { requiresApplyAuth: true },
   },
   {
     path: '/user/questions',
     name: 'Questions',
     component: () => import('../views/user/Questions.vue'),
+    meta: { requiresApplyAuth: true },
   },
   {
     path: '/user/success',
     name: 'SuccessPage',
     component: () => import('../views/user/SuccessPage.vue'),
+    meta: { requiresApplyAuth: true },
   },
   {
     path: '/admin/login',

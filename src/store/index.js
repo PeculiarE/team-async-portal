@@ -9,6 +9,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     userDeets: {},
+    allUsers: [],
     responseRegister: {
       status: '',
       message: '',
@@ -18,7 +19,6 @@ export default new Vuex.Store({
       message: '',
     },
     loginToken: localStorage.getItem('loginToken') || null,
-    users: [],
     userPassword: [],
     responseAdminLogin: {
       status: '',
@@ -34,10 +34,68 @@ export default new Vuex.Store({
     questionsDetailsToSend: [],
     adminDetails: [],
     applicants: [],
+    ongoingApplication: localStorage.getItem('ongoingApplication') || null,
+    applicationStartDate: localStorage.getItem('applicationStartDate') || null,
+    hasBatchEnded: localStorage.getItem('hasBatchEnded') || null,
+    responseAdminAd: {
+      status: '',
+      message: '',
+    },
+    responseAdminUpdate: {
+      status: '',
+      message: '',
+    },
+    summary: {},
+    presentBatch: 0,
+    currentApplications: 0,
+    totalApplications: 0,
+    summaryTable: [],
+    latestApplication: localStorage.getItem('latestApplication') || null,
+    singleQuestion: {
+      question: '',
+      optionA: '',
+      optionB: '',
+      optionC: '',
+      optionD: '',
+      correctOption: '',
+    },
+    questionCount: 0,
+    setTime: 0,
+    allQuestionsInDb: [],
   },
   getters: {
+    getAllQuestions(state) {
+      return state.allQuestionsInDb;
+    },
+    getSetTime(state) {
+      return state.setTime;
+    },
+    getQuestionCount(state) {
+      return state.questionCount;
+    },
+    getSingleQuestion(state) {
+      return state.singleQuestion;
+    },
     getUserDeets(state) {
       return state.userDeets;
+    },
+    getUserDeetsTime(state) {
+      const a = state.userDeets.updated_at;
+      const date = new Date(a);
+      const b = date.getDate();
+      const c = date.getMonth() + 1;
+      const d = date.getFullYear();
+      const e = `${b}.${c}.${d}`;
+      return e;
+    },
+    getUserDeetsStatus(state) {
+      return state.userDeets.approval_status;
+    },
+    getUserDeetsApplicationStatus(state) {
+      return state.userDeets.application_status;
+    },
+    getAllUsers(state) {
+      return state.allUsers;
     },
     getQuestionsDetailsToSend(state) {
       return state.questionsDetailsToSend;
@@ -68,17 +126,76 @@ export default new Vuex.Store({
     },
     getCurrentAdminDetails(state) {
       return state.adminDetails;
+  },
+    openApplicationStatus(state) {
+      return state.ongoingApplication !== null;
+    },
+    batchEnded(state) {
+      return state.hasBatchEnded !== null;
+    },
+    getResponseAdminAd(state) {
+      return state.responseAdminAd;
+    },
+    getResponseAdminUpdate(state) {
+      return state.responseAdminUpdate;
+    },
+    getUpdatedCurrentBatch(state) {
+      return state.presentBatch;
+    },
+    getCurrentApplications(state) {
+      return state.currentApplications;
+    },
+    getTotalApplications(state) {
+      return state.totalApplications;
+    },
+    getSummaryTable(state) {
+      return state.summaryTable;
+    },
+    getLatestApplication(state) {
+      return state.latestApplication;
     },
   },
 
   mutations: {
     adminDetails(state, payload) {
       state.adminDetails = payload;
+  },
+    renderAllBatchQuestionsInDb(state, payload) {
+      state.allQuestionsInDb = [...payload];
+      console.log(state.allQuestionsInDb);
+    },
+    updateQuestionCount(state, payload) {
+      console.log(state.questionCount);
+      state.questionCount += payload;
+      console.log(state.questionCount);
+    },
+    resetSingleQuestion(state) {
+      state.singleQuestion = {
+        question: '',
+        optionA: '',
+        optionB: '',
+        optionC: '',
+        optionD: '',
+        correctOption: '',
+      };
     },
     updateUserDeets(state, payload) {
       console.log(payload);
       state.userDeets = { ...payload };
       console.log(state.userDeets);
+    },
+
+    updateAllUsersDeets(state, payload) {
+      console.log(payload);
+      payload.forEach((el) => {
+        const date = new Date(el.dob);
+        const b = date.getDate();
+        const c = date.getMonth() + 1;
+        const d = date.getFullYear();
+        const e = `${b}/${c}/${d}`;
+        el.dob = `${e} - ${el.age}`;
+      });
+      state.allUsers = payload;
     },
     updateQuestionsDetails(state, payload) {
       state.questionsDetailsToSend.push(payload);
@@ -105,7 +222,6 @@ export default new Vuex.Store({
     setNewPassword(state, payload) {
       state.userPassword = payload;
     },
-
     updateResponseAdminLogin(state, payload) {
       state.responseAdminLogin = {
         status: payload.status,
@@ -113,9 +229,17 @@ export default new Vuex.Store({
       };
     },
     updateAdminInfo(state, payload) {
-      state.initialResponseAdminLogin.image = payload.image;
-      state.initialResponseAdminLogin.adminName = payload.adminName;
-      state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+      console.log(payload.image);
+      if (payload.image === null) {
+        /* eslint-disable global-require */
+        state.initialResponseAdminLogin.image = require('@/assets/account.svg');
+        state.initialResponseAdminLogin.adminName = payload.adminName;
+        state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+      } else {
+        state.initialResponseAdminLogin.image = payload.image;
+        state.initialResponseAdminLogin.adminName = payload.adminName;
+        state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+      }
     },
     retrieveLoginAdminToken(state, payload) {
       state.loginAdminToken = payload;
@@ -125,12 +249,49 @@ export default new Vuex.Store({
     },
     allApplicants(state, payload) {
       state.applicants = payload;
+  },
+    destroyLoginToken(state) {
+      state.loginToken = null;
+    },
+    updateResponseAdminAd(state, payload) {
+      state.responseAdminAd = {
+        status: payload.status,
+        message: payload.message,
+      };
+    },
+    updateResponseAdminUpdate(state, payload) {
+      state.responseAdminUpdate = {
+        status: payload.status,
+        message: payload.message,
+      };
+    },
+    updateApplicationStatus(state, payload) {
+      state.ongoingApplication = payload;
+    },
+    updateApplicationStartDate(state, payload) {
+      state.applicationStartDate = payload;
+    },
+    updateBatchStatus(state, payload) {
+      state.hasBatchEnded = payload;
+    },
+    updatePresentBatch(state, payload) {
+      state.presentBatch = payload;
+    },
+    updateCurrentApplications(state, payload) {
+      state.currentApplications = payload;
+    },
+    updateTotalApplications(state, payload) {
+      state.totalApplications = payload;
+    },
+    showSummaryTable(state, payload) {
+      state.summaryTable = payload;
     },
   },
+
   actions: {
     async register({ commit }, userData) {
       await axios
-        .post('https://team-async.herokuapp.com/register', userData)
+        .post('https://async-backend.herokuapp.com/register', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -150,7 +311,7 @@ export default new Vuex.Store({
 
     async login({ commit }, userData) {
       await axios
-        .post('https://team-async.herokuapp.com/login', userData)
+        .post('https://async-backend.herokuapp.com/login', userData)
         .then((response) => {
           const successObject = {
             status: response.data.status,
@@ -173,8 +334,7 @@ export default new Vuex.Store({
     },
 
     async resetPassword({ commit }, payload) {
-      // const formdata = new FormData();
-      await axios.post('https://team-async.herokuapp.com/user/reset', payload)
+      await axios.post('https://async-backend.herokuapp.com/user/reset', payload)
         .then((response) => {
           commit('reset', response.data);
           console.log(response);
@@ -185,7 +345,7 @@ export default new Vuex.Store({
     },
 
     async newPassword({ commit }, { password, token }) {
-      await axios.post(`https://team-async.herokuapp.com/resetpassword/${token}`, { password })
+      await axios.post(`https://async-backend.herokuapp.com/resetpassword/${token}`, { password })
         .then((response) => {
           console.log(response);
           commit('setNewPassword', response.data);
@@ -194,31 +354,34 @@ export default new Vuex.Store({
           console.log(password);
         });
     },
-    async adminLogin({ commit }, userData) {
+
+    async adminLogin(context, userData) {
+      console.log(userData);
       await axios
-        .post('https://team-async.herokuapp.com/adminlogin', userData)
+        .post('https://async-backend.herokuapp.com/adminlogin', userData)
         .then((response) => {
+          console.log(response);
           const successObject = {
             status: response.data.status,
             message: response.data.message,
           };
           const { token, deets } = response.data;
           localStorage.setItem('loginAdminToken', token);
-          commit('retrieveLoginAdminToken', token);
-          commit('updateResponseAdminLogin', successObject);
-          commit('updateAdminInfo', deets);
-          localStorage.setItem('adminInfo', JSON.stringify(deets));
+          context.commit('retrieveLoginAdminToken', token);
+          context.commit('updateResponseAdminLogin', successObject);
+          context.commit('updateAdminInfo', deets);
+          localStorage.setItem('adminInfo', JSON.stringify(context.state.initialResponseAdminLogin));
         })
         .catch((error) => {
-          console.log(error);
           const failObject = {
             status: error.response.data.status,
             message: error.response.data.message,
           };
-          commit('updateResponseAdminLogin', failObject);
+          context.commit('updateResponseAdminLogin', failObject);
         })
         .finally(() => {});
     },
+
     async adminFetchPage(context) {
       backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginAdminToken}`;
       await backend
@@ -230,21 +393,51 @@ export default new Vuex.Store({
       localStorage.removeItem('adminInfo');
       commit('destroyLoginAdminToken');
     },
+    userLogout({ commit }) {
+      localStorage.removeItem('loginToken');
+      localStorage.removeItem('userId');
+      commit('destroyLoginToken');
+    },
     async userApplyPage(context) {
       backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginToken}`;
       await backend
         .get('')
         .finally(() => {});
     },
-    bringUserDeetstoState({ commit }, payload) {
+
+    async bringUserDeetstoState({ commit, state }, payload) {
       const newpayload = payload.data.data;
+      const date = new Date(newpayload.updated_at).toLocaleString();
+      localStorage.setItem('latestApplication', date);
+      console.log(newpayload.updated_at);
       commit('updateUserDeets', newpayload);
-      console.log(newpayload);
+      commit('updateAllUsersDeets', newpayload);
+      console.log(newpayload.updated_at);
+      console.log(state.allUsers);
     },
+
     async populateUserDeets({ dispatch }) {
       if (localStorage.getItem('loginToken')) {
         const id = localStorage.getItem('userId');
-        await axios.get(`https://team-async.herokuapp.com/user/dashboard/${id}`)
+        await axios.get(`https://async-backend.herokuapp.com/user/dashboard/${id}`)
+          .then((response) => {
+            dispatch('bringUserDeetstoState', response);
+          })
+          .catch((error) => console.log(error))
+          .finally(() => console.log('finally loading'));
+      }
+    },
+    
+    async bringAllQuestionsToState({ commit }, payload) {
+      const newpayload = payload.data;
+      commit('renderAllBatchQuestionsInDb', newpayload);
+      console.log(newpayload);
+    },
+                              
+    async populateAllUsers({ dispatch, state }) {
+      if (localStorage.getItem('loginAdminToken')) {
+        axios.defaults.headers.common.Authorization = `Bearer ${state.loginAdminToken}`;
+        await axios.get('https://async-backend.herokuapp.com/admin/allusers')
           .then((response) => {
             console.log(response);
             dispatch('bringUserDeetstoState', response);
@@ -252,6 +445,163 @@ export default new Vuex.Store({
           .catch((error) => console.log(error))
           .finally(() => console.log('finally loading'));
       }
+    },
+    
+    async adminCreateAd(context, userData) {
+      console.log(userData);
+      const formData = new FormData();
+      Object.entries(userData).forEach(([key, value]) => {
+        formData.append(key, value);
+        console.log(formData.getAll);
+      });
+      console.log({ formData });
+      await axios({
+        method: 'post',
+        url: 'https://async-backend.herokuapp.com/adminapplication',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${context.state.loginAdminToken}`,
+        },
+      })
+        .then((response) => {
+          const successObject = {
+            status: response.data.status,
+            message: response.data.message,
+          };
+          context.commit('updateResponseAdminAd', successObject);
+        })
+        .catch((error) => {
+          const failObject = {
+            status: error.response.data.status,
+            message: error.response.data.message,
+          };
+          context.commit('updateResponseAdminAd', failObject);
+        })
+        .finally(() => {});
+    },
+    openApplication(context, payload) {
+      localStorage.setItem('ongoingApplication', payload.batchId);
+      context.commit('updateApplicationStatus', payload.batchId);
+      localStorage.setItem('applicationStartDate', payload.openDate);
+      context.commit('updateApplicationStartDate', payload.openDate);
+    },
+    openBatch(context, batchOn) {
+      console.log(batchOn);
+      localStorage.setItem('hasBatchEnded', batchOn);
+      context.commit('updateBatchStatus', batchOn);
+    },
+    async adminUpdate(context, userData) {
+      console.log(userData);
+      const formData = new FormData();
+      Object.entries(userData).forEach(([key, value]) => {
+        formData.append(key, value);
+        console.log(formData.getAll);
+      });
+      console.log({ formData });
+      await axios({
+        method: 'post',
+        url: 'https://async-backend.herokuapp.com/adminupdate',
+        data: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${context.state.loginAdminToken}`,
+        },
+      })
+        .then((response) => {
+          const successObject = {
+            status: response.data.status,
+            message: response.data.message,
+          };
+          const { deets } = response.data;
+          context.commit('updateAdminInfo', deets);
+          localStorage.setItem('adminInfo', JSON.stringify(deets));
+          context.commit('updateResponseAdminUpdate', successObject);
+        })
+        .catch((error) => {
+          const failObject = {
+            status: error.response.data.status,
+            message: error.response.data.message,
+          };
+          context.commit('updateResponseAdminUpdate', failObject);
+        })
+        .finally(() => {});
+    },
+
+    // validateQuestionFields()
+    // dispatch('validateQuestionFields');
+
+    getQuestionsByBatchInDb() {
+      console.log('here!');
+      if (localStorage.getItem('loginToken')) {
+        console.log(localStorage.getItem('loginToken'));
+      }
+    },
+
+    resetSingleQuestionState({ commit }) {
+      commit('resetSingleQuestion');
+    },
+
+    incrementQuestionCount({ commit }) {
+      commit('updateQuestionCount', 1);
+    },
+    async adminNextQuestionButton(context) {
+      if (localStorage.getItem('loginAdminToken')) {
+        console.log(context.state.loginAdminToken);
+        await axios({
+          method: 'POST',
+          url: 'http://localhost:3000/question',
+          data: context.state.singleQuestion,
+          headers: {
+            Authorization: `Bearer ${context.state.loginAdminToken}`,
+          },
+        }).then(() => {
+          context.dispatch('incrementQuestionCount');
+          context.dispatch('resetSingleQuestionState');
+          console.log(context.state.singleQuestion);
+          console.log(context.state.questionCount);
+        }).catch((error) => console.log('error', error)).finally(() => {
+          console.log('done');
+        });
+      }
+    },
+   
+    async changeStatus({ dispatch, state }, userData) {
+      axios.defaults.headers.common.Authorization = `Bearer ${state.loginAdminToken}`;
+      await axios.post('https://async-backend.herokuapp.com/update', userData)
+        .then((response) => {
+          console.log(response);
+          dispatch('populateAllUsers', response);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => console.log('finally loading'));
+    },
+    async getSummary({ commit, state }) {
+      axios.defaults.headers.common.Authorization = `Bearer ${state.loginAdminToken}`;
+      await axios.get('https://async-backend.herokuapp.com/summary')
+        .then((response) => {
+          const arr = response.data.data;
+          arr.sort((a, b) => ((a.batch_id > b.batch_id) ? -1 : 1));
+          state.summary = { ...arr };
+          const { batch_id, count } = state.summary['0'];
+          let totalApp = 0;
+          const entireTableSummary = [];
+          Object.entries(state.summary).forEach(([key, value]) => {
+            totalApp += Number(value.count);
+            const tableSummary = {
+              batch: `Academy Batch ${value.batch_id}`,
+              applicants: `${value.count} applicants`,
+              date: `Started ${state.applicationStartDate}`,
+            };
+            entireTableSummary.push(tableSummary);
+          });
+          commit('updatePresentBatch', batch_id);
+          commit('updateCurrentApplications', count);
+          commit('updateTotalApplications', totalApp);
+          commit('showSummaryTable', entireTableSummary);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => console.log('finally loading'));
     },
   },
 });

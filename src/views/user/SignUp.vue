@@ -3,18 +3,25 @@
     <div class="enyata-logo">
       <img src="../../assets/enyata-logo.svg" alt="Enyata Logo">
     </div>
-    <div class="title">Applicant Sign Up</div>
-    <SignUpForm />
+    <div v-if="openApplicationStatus">
+      <div class="title">Applicant Sign Up</div>
+      <SignUpForm />
+    </div>
+     <p id="closed-applications" v-else>Applications are currently closed!</p>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import SignUpForm from '@/components/SignUpForm.vue';
 
 export default {
   name: 'SignUp',
   components: {
     SignUpForm,
+  },
+  computed: {
+    ...mapGetters(['openApplicationStatus']),
   },
 };
 </script>
@@ -45,5 +52,10 @@ export default {
     color: #2B3C4E;
     margin: auto;
     margin-bottom: 68px;
+  }
+  #closed-applications {
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
   }
 </style>

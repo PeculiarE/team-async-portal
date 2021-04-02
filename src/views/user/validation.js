@@ -37,10 +37,24 @@ const validateCgpa = (num) => {
   }
   return { valid: true, error: null };
 };
+const validateTextFieldApplication = (text) => {
+  if (text.length < 15) {
+    return { valid: false, error: 'This field requires a minimum of 15 characters' };
+  }
+  return { valid: true, error: null };
+};
+const validateBatchIdApplication = (number) => {
+  if (number < 1) {
+    return { valid: false, error: 'Batch ID is required and cannot be less than 1' };
+  }
+  return { valid: true, error: null };
+};
 
 export {
   validateTextField,
   validateEmail,
   validateDob,
   validateCgpa,
+  validateTextFieldApplication,
+  validateBatchIdApplication,
 };
