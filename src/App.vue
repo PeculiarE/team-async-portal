@@ -27,7 +27,9 @@ export default {
   background-color: #FDFDFF;
   max-height: 900px;
 }
-
+input {
+  outline: none;
+}
 #admin-sidebar-top-section {
   height: 33%;
   width: 100%;

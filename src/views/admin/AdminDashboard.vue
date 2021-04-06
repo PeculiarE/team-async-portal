@@ -52,7 +52,6 @@
               <b-button
               type="submit"
               class="text-white button"
-              :disabled="applicationEnded"
               >
                 Create Assessment
               </b-button>

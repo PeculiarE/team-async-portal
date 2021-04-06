@@ -39,18 +39,18 @@ export default {
         },
       ],
       items: [
-        {
-          batch: 'Batch 1',
-          date: '12/07/94',
-          questions: 30,
-          time: '30 mins',
-          status: 'Taken',
-        },
+        // {
+        //   batch: 'Batch 1',
+        //   date: '12/07/94',
+        //   questions: 30,
+        //   time: '30 mins',
+        //   status: 'Taken',
+        // },
         {
           batch: 'Batch 2',
-          date: '12/07/95',
-          questions: 30,
-          time: '30 mins',
+          date: '12/07/21',
+          questions: 10,
+          time: '10 mins',
           status: 'Taken',
         },
       ],

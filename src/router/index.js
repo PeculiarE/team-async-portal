@@ -96,6 +96,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/admin/entries',
+    name: 'ApplicationEntries',
+    component: () => import('../views/admin/ApplicationEntries.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/admin/results/:batchId',
     name: 'AssessmentResults',
     component: () => import('../views/admin/AssessmentResults.vue'),

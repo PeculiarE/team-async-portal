@@ -202,6 +202,7 @@ input {
   font-size: 15px;
   line-height: 23px;
   letter-spacing: -0.117188px;
+  padding: 10px;
   /* color: #333758; */
 }
 .address {

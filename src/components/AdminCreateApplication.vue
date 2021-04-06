@@ -95,7 +95,7 @@ export default {
         const dateAndBatch = {
           openDate: applicationStartDate,
           batchId: this.application.batchId,
-        }
+        };
         this.openApplication(dateAndBatch);
         this.openBatch(1);
         // disable form or hide it till the test expiration date reaches

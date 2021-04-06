@@ -380,9 +380,6 @@ export default {
       }
     },
   },
-  mounted() {
-    this.populateUserDeets();
-  },
 };
 </script>
 

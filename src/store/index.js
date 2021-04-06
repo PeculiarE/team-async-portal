@@ -126,7 +126,7 @@ export default new Vuex.Store({
     },
     getCurrentAdminDetails(state) {
       return state.adminDetails;
-  },
+    },
     openApplicationStatus(state) {
       return state.ongoingApplication !== null;
     },
@@ -159,7 +159,7 @@ export default new Vuex.Store({
   mutations: {
     adminDetails(state, payload) {
       state.adminDetails = payload;
-  },
+    },
     renderAllBatchQuestionsInDb(state, payload) {
       state.allQuestionsInDb = [...payload];
       console.log(state.allQuestionsInDb);
@@ -193,6 +193,7 @@ export default new Vuex.Store({
         const c = date.getMonth() + 1;
         const d = date.getFullYear();
         const e = `${b}/${c}/${d}`;
+        // eslint-disable-next-line no-param-reassign
         el.dob = `${e} - ${el.age}`;
       });
       state.allUsers = payload;
@@ -249,7 +250,7 @@ export default new Vuex.Store({
     },
     allApplicants(state, payload) {
       state.applicants = payload;
-  },
+    },
     destroyLoginToken(state) {
       state.loginToken = null;
     },
@@ -427,13 +428,13 @@ export default new Vuex.Store({
           .finally(() => console.log('finally loading'));
       }
     },
-    
+
     async bringAllQuestionsToState({ commit }, payload) {
       const newpayload = payload.data;
       commit('renderAllBatchQuestionsInDb', newpayload);
       console.log(newpayload);
     },
-                              
+
     async populateAllUsers({ dispatch, state }) {
       if (localStorage.getItem('loginAdminToken')) {
         axios.defaults.headers.common.Authorization = `Bearer ${state.loginAdminToken}`;
@@ -446,7 +447,7 @@ export default new Vuex.Store({
           .finally(() => console.log('finally loading'));
       }
     },
-    
+
     async adminCreateAd(context, userData) {
       console.log(userData);
       const formData = new FormData();
@@ -565,7 +566,7 @@ export default new Vuex.Store({
         });
       }
     },
-   
+
     async changeStatus({ dispatch, state }, userData) {
       axios.defaults.headers.common.Authorization = `Bearer ${state.loginAdminToken}`;
       await axios.post('https://async-backend.herokuapp.com/update', userData)

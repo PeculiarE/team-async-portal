@@ -8,7 +8,7 @@
     <div>
         <b-form-group v-slot="{ ariaDescribedby }">
           <li class="mb-3 italic" v-for="(item, index) in options" :key="index">
-            <b-form-radio v-model="selected"
+            <b-form-radio v-model="selected" name="options"
             :aria-describedby="ariaDescribedby" value="index">
               {{ item }}
             </b-form-radio>

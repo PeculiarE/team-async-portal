@@ -345,6 +345,7 @@ export default {
     width: 379px;
     height: 41px;
     border: 1.5px solid #BDBDBD;
+    outline: none;
     border-radius: 4px;
     margin-bottom: 19px;
     width: 379px;
