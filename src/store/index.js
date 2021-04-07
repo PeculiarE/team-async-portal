@@ -346,7 +346,7 @@ export default new Vuex.Store({
     },
 
     async newPassword({ commit }, { password, token }) {
-      await axios.post(`https://async-backend.herokuapp.com/resetpassword/${token}`, { password })
+      await axios.put(`https://async-backend.herokuapp.com/resetpassword/${token}`, { password })
         .then((response) => {
           console.log(response);
           commit('setNewPassword', response.data);
@@ -584,10 +584,11 @@ export default new Vuex.Store({
           const arr = response.data.data;
           arr.sort((a, b) => ((a.batch_id > b.batch_id) ? -1 : 1));
           state.summary = { ...arr };
+          // eslint-disable-next-line camelcase
           const { batch_id, count } = state.summary['0'];
           let totalApp = 0;
           const entireTableSummary = [];
-          Object.entries(state.summary).forEach(([key, value]) => {
+          Object.entries(state.summary).forEach(([value]) => {
             totalApp += Number(value.count);
             const tableSummary = {
               batch: `Academy Batch ${value.batch_id}`,
