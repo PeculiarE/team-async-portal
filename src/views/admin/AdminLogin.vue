@@ -26,22 +26,22 @@ export default {
 
 <style scoped>
   .admin-login-background {
-    max-width: 1440px;
+    max-width: 100vw;
     min-height: 100vh;
     background: #7557D3;
-    padding-top: 60px;
+    padding-top: 120px;
     box-sizing: border-box;
-    overflow: visible;
-    padding-bottom: 10px;
+    overflow: hidden;
+    /* padding-bottom: 10px; */
   }
   .admin-login-background-image {
-    background-image: url("../../assets/laptop.svg");
+    background-image: url("../../assets/laptop-big.svg");
     background-repeat: no-repeat;
     background-size: auto;
     /* width: 1086px; */
     /* height: 724px; */
     background-position: 920px 0;
-    margin-bottom: 31px;
+    /* margin-bottom: 31px; */
   }
   .admin-login-background-image img {
     height: 100%;

@@ -37,7 +37,7 @@ export default {
   /* align-items: stretch; */
 }
 .admin-application-sidebar {
-  width: 30%;
+  width: 27%;
 }
 .admin-application-content {
   height: 750px;

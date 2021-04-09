@@ -1,11 +1,11 @@
 <template>
-  <div class="modal-container">
+  <div>
     <form>
       <div class="d-flex justify-content-between">
         <div class="profile-picture">
           <img :src="data.photo_url" alt="image">
         </div>
-        <p @click="$emit('closeModal')">X</p>
+        <!-- <p @click="$emit('closeModal')">X</p> -->
       </div>
       <br>
       <div class="title">Personal Details</div>

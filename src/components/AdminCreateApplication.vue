@@ -32,7 +32,7 @@
                 label="Application closure date"
                 label-for="input-2">
                 <b-form-input v-model="application.closureDate"
-                id="input-2" type="text" required></b-form-input>
+                id="input-2" type="date" required></b-form-input>
                 </b-form-group>
                 <b-form-group id="input-group-3" label="Batch ID" label-for="input-3">
                 <b-form-input v-model="application.batchId" type="number" id="input-3" required
@@ -44,9 +44,11 @@
             id="input-group-4"
             label="Instructions"
             label-for="input-4">
-            <b-form-input v-model="application.instructions"
-            id="input-4" required>
-            </b-form-input>
+            <b-form-textarea
+            v-model="application.instructions" id="input-4" required
+            placeholder="Type in here..."
+            rows="8"
+            ></b-form-textarea>
             </b-form-group>
 
             <b-form-invalid-feedback style="font-size: 15px" :state="applicationStatus">
@@ -101,8 +103,12 @@ export default {
         // disable form or hide it till the test expiration date reaches
       } else {
         this.applicationStatus = false;
-        // eslint-disable-next-line no-restricted-globals
-        location.reload();
+        setTimeout(() => {
+          // eslint-disable-next-line no-restricted-globals
+          location.reload();
+        }, 5000);
+        // // eslint-disable-next-line no-restricted-globals
+        // location.reload();
       }
     },
   },
@@ -228,12 +234,18 @@ export default {
   border: 1.5px solid var(--text-primary);
   box-sizing: border-box;
   border-radius: 4px;
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 #input-4 {
     width: 976px;
     height: 144px;
     border: 1.5px solid var(--text-primary);
     box-sizing: border-box;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 #submit-btn {
     width: 379px;
