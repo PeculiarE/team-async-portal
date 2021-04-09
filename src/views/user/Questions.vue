@@ -115,7 +115,7 @@ export default {
         chosenAnswers: this.answersObj,
       };
       console.log(data);
-      axios.post('http://localhost:3000/user/quiz_answers', data)
+      axios.post('https://async-backend.herokuapp.com/user/quiz_answers', data)
         .then((response) => {
           console.log(response);
           this.getTestScore = response;

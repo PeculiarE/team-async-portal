@@ -424,7 +424,7 @@ export default new Vuex.Store({
       localStorage.setItem('latestApplication', date);
       // console.log(newpayload.updated_at);
       commit('updateUserDeets', newpayload);
-      // commit('updateAllUsersDeets', newpayload);
+      commit('updateAllUsersDeets', newpayload);
       console.log(newpayload.updated_at);
       // console.log(state.allUsers);
     },
@@ -623,7 +623,7 @@ export default new Vuex.Store({
       console.log(token);
       axios({
         method: 'GET',
-        url: 'http://localhost:3000/allUsers',
+        url: 'https://async-backend.herokuapp.com/allUsers',
         headers: {
           Authorization: `Bearer ${token}`,
         },
