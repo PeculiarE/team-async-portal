@@ -26,7 +26,7 @@
                     <p>Password reset link will be sent to your registered phone number</p>
                 </div>
             </div>
-            <!-- <button type="submit">Send Link</button> -->
+            <button type="submit" @click.capture="show">Send Link</button>
             <PasswordModal />
             <div class="resend">
                 <p>Didn't receive link? <a href="#" class="purple-text">Resend</a></p>
@@ -49,6 +49,11 @@ export default {
     };
   },
   methods: {
+    show() {
+      this.$modal.show('forgot-password-modal');
+
+      this.$modal.hide('forgot-password-modal');
+    },
     noSMS() {
       // eslint-disable-next-line no-alert
       alert('This option is not available at the moment');
@@ -61,17 +66,16 @@ export default {
 .forgot-password {
     position: relative;
     width: 100%;
-    height: 900px;
-    margin: 0 auto;
+    height: 100vh;
 }
 .form {
-    position: fixed;
+    position: absolute;
     width: 614px;
-    height: 500px;
+    height: 623px;
+    margin: auto;
     background: #FFFFFF;
     box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
     border-radius: 8px;
-    margin: auto;
     top: 0; left: 0; bottom: 0; right: 0;
     text-align: center;
     font-family: Lato;
@@ -154,14 +158,14 @@ h4 {
     line-height: 22px;
     color: #211F26;
 }
-/* button {
+button {
     width: 379px;
     height: 50px;
     color: #ffffff;
     background: var(--enyata-purple);
     margin-bottom: 28px;
     border: none;
-} */
+}
 .resend {
     margin-bottom: 50px;
 }
