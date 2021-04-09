@@ -30,6 +30,12 @@ export default {
 input {
   outline: none;
 }
+textarea:focus, input:focus{
+  outline: none;
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 #admin-sidebar-top-section {
   height: 33%;
   width: 100%;

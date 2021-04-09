@@ -420,7 +420,7 @@ export default new Vuex.Store({
     async bringUserDeetstoState({ commit }, payload) {
       // add state beside the commit in above later.
       const newpayload = payload.data.data;
-      const date = new Date(newpayload.updated_at).toLocaleString();
+      const date = new Date(newpayload.updated_at).toLocaleString() || null;
       localStorage.setItem('latestApplication', date);
       // console.log(newpayload.updated_at);
       commit('updateUserDeets', newpayload);
@@ -596,20 +596,20 @@ export default new Vuex.Store({
           const arr = response.data.data;
           arr.sort((a, b) => ((a.batch_id > b.batch_id) ? -1 : 1));
           state.summary = { ...arr };
-          // eslint-disable-next-line camelcase
-          const { batch_id, count } = state.summary['0'];
+          const { count } = state.summary['0'];
+          const batchId = state.summary['0'].batch_id;
           let totalApp = 0;
           const entireTableSummary = [];
-          Object.entries(state.summary).forEach(([value]) => {
-            totalApp += Number(value.count);
+          Object.entries(state.summary).forEach((value) => {
+            totalApp += Number(value[1].count);
             const tableSummary = {
-              batch: `Academy Batch ${value.batch_id}`,
-              applicants: `${value.count} applicants`,
+              batch: `Academy Batch ${value[1].batch_id}`,
+              applicants: `${value[1].count} applicants`,
               date: `Started ${state.applicationStartDate}`,
             };
             entireTableSummary.push(tableSummary);
           });
-          commit('updatePresentBatch', batch_id);
+          commit('updatePresentBatch', batchId);
           commit('updateCurrentApplications', count);
           commit('updateTotalApplications', totalApp);
           commit('showSummaryTable', entireTableSummary);

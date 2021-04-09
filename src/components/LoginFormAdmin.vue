@@ -125,6 +125,9 @@ export default {
     margin-bottom: 19px;
     background-color: #7557D3;
     color: #FFFFFF;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
   }
   .login-form-password{
     display: flex;

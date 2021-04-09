@@ -37,11 +37,11 @@ export default {
   /* align-items: stretch; */
 }
 .admin-entries-sidebar {
-  width: 30%;
+  width: 27%;
 }
 .admin-entries-content {
   height: 750px;
-  padding-right: 30px;
+  padding-right: 25px;
   box-sizing: border-box;
 }
 </style>

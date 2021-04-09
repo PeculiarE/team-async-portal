@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="row d-flex justify-content-between">
-          <div class="col-5 px-0 dashb-info history">
+          <div class="col-5 px-0 dashb-info history ml-2">
             <p sub-head pl-5><b>History</b><br><small class="p6">
             Last Update {{getLatestApplication}}</small></p>
             <div class="d-flex justify-content">
@@ -44,14 +44,14 @@
             </div>
           </div>
           <div class="col-5 px-0 pr-3 dashb-info assessment">
-            <p sub-head class="pl-4 text-left mt-3 mb-5">Create Assessment</p>
+            <p sub-head class="pl-4 text-left mt-3 mb-5"><b>Create Assessment</b></p>
             <p class="text-center mb-3">
               Create test questions for incoming academy<br>students
             </p>
             <div class="button mt-3 mb-5">
               <b-button
-              type="submit"
-              class="text-white button"
+              class="text-white"
+              to="/admin/assessment"
               >
                 Create Assessment
               </b-button>
@@ -173,10 +173,21 @@ hr {
     margin: auto;
     margin-top: 20px;
     text-align: center;
+    color: #7557D3;
+}
+.button :hover {
+  background-color: #7557D3;
 }
 button {
     font-weight: bold;
     font-size: 16px;
-    line-height: 19px
+    line-height: 19px;
+    background-color: #7557D3 !important;
+}
+.btn-secondary {
+  background-color: #7557D3 !important;
+}
+button :hover {
+  background-color: #7557D3;
 }
 </style>
