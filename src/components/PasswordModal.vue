@@ -1,9 +1,6 @@
 <template>
-    <div>
-        <div class=" d-flex btn" @click.capture="show">
-        <button>Get Link</button>
-            </div>
-                <modal name="forgot-password-modal">
+    <div class="password-modal">
+            <modal name="forgot-password-modal">
                     <b-form class="form-body"
                     method="post"
                     @submit.prevent="getLink">
@@ -23,7 +20,7 @@
                         </div>
                     </b-form>
                 </modal>
-            </div>
+    </div>
 </template>
 
 <script>
@@ -44,6 +41,7 @@ export default {
         email: '',
       };
       this.$modal.hide('forgot-password-modal');
+      setTimeout(() => { alert('Password reset link sent. Check your mailbox'); }, 1000);
     },
     show() {
       this.$modal.show('forgot-password-modal');
@@ -53,3 +51,32 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.forgot-password_modal {
+  height: 80px;
+  width: 40%;
+  margin: auto;
+  text-align: left;
+}
+p {
+  margin-top: 20px;
+}
+input {
+  width: 70%;
+  margin: auto;
+}
+button{
+width: 320px;
+height: 40px;
+background-color: #7557d3;
+color: #fff;
+font-size: 14px;
+outline: none;
+border: 1px solid #7557d3;
+border-radius: 4px;
+}
+.btn-body{
+justify-content: center;
+}
+</style>

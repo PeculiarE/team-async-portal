@@ -41,7 +41,7 @@ export default {
 }
 .admin-application-content {
   height: 750px;
-  padding-right: 30px;
+  /* padding-right: 30px; */
   box-sizing: border-box;
 }
 </style>

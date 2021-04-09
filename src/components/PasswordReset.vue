@@ -1,14 +1,11 @@
 <template>
 <div>
-    <div class="wrapper">
-        <h1>Reset Password</h1>
-    </div>
-      <div >
+  <div class="wrapper">
+    <h2>Reset Password</h2>
+    <div >
       <b-form @submit.prevent = "resetPassword" method= 'put'>
         <b-form-group
         id="input-group-2"
-        label="Password"
-        label-for="input-2"
         class="text-left label"
         >
           <b-form-input
@@ -25,8 +22,9 @@
         <b-button type="submit" class="button" block variant="dark" >Change Password</b-button>
         </div>
       </b-form>
-      </div>
+    </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -54,3 +52,36 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.wrapper {
+  height: 70%;
+  width: 60%;
+  margin: auto;
+  text-align: center;
+  margin: auto;
+  margin-top: 100px;
+}
+form {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: auto;
+  align-items: center;
+  margin-top: 50px;
+}
+input {
+  width: 400px;
+  /* margin-top: 10px; */
+  height: 50px;
+}
+button {
+  width: 200px;
+  height: 35px;
+  background-color: #7557d3;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  border: 1px solid #7557d3;
+  border-radius: 4px;
+}
+</style>
