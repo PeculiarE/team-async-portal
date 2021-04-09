@@ -26,11 +26,17 @@
           <div
             class='d-flex justify-content-center'
           >
+          <template v-for="(item, index) in allQuestions">
             <UserQuestions
-              :question_number='currentQuestion + 1'
-              :question='allQuestions[currentQuestion].question'
-              :options='options[currentQuestion]'
+            v-show="index === currentQuestion"
+            :key="index"
+            :id="item.question_id"
+            :question="item.question"
+            :question_number="index + 1"
+            :options="options[index]"
+            @recordAnswers="storeAnswers"
             />
+          </template>
           </div>
          <div class='d-flex justify-content-between'>
             <b-button type='submit' class='text-white button'
@@ -52,7 +58,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import Sidebar from '@/components/Sidebar.vue';
 import UserQuestions from '@/components/UserQuestions.vue';
 import axios from 'axios';
@@ -70,15 +76,54 @@ export default {
       options: [],
       hidePrevious: false,
       hideNext: true,
+      correctAnswers: [],
+      answersObj: [],
     };
   },
   computed: {
     ...mapGetters(['getAllQuestions', 'getLoginToken']),
   },
   methods: {
+    ...mapMutations(['getTestScore']),
     ...mapActions(['getAllQuestionsByBatchInDB']),
+    storeAnswers(answer) {
+      console.log(answer);
+      const isAnswered = this.answersObj.findIndex((item) => item.id === answer.id);
+      console.log(isAnswered);
+      if (isAnswered < 0) {
+        this.answersObj.push(answer);
+        console.log(answer);
+        console.log(this.answersObj);
+      } else {
+        const itemObj = this.answersObj[isAnswered];
+        console.log(itemObj);
+        itemObj.value = answer.value;
+        console.log(this.answersObj);
+      }
+    },
     submitQuiz() {
-      this.$router.push({ name: 'SuccessPage' });
+      [...this.allQuestions].forEach((item) => {
+        const correctAnswersObj = {};
+        correctAnswersObj.question_id = item.question_id;
+        correctAnswersObj.correct_option = item.correct_option;
+        this.correctAnswers.push(correctAnswersObj);
+      });
+      console.log(this.correctAnswers);
+      console.log(this.answersObj);
+      const data = {
+        correctAnswers: this.correctAnswers,
+        chosenAnswers: this.answersObj,
+      };
+      console.log(data);
+      axios.post('http://localhost:3000/user/quiz_answers', data)
+        .then((response) => {
+          console.log(response);
+          this.getTestScore = response;
+        })
+        .catch((error) => { console.log(error); })
+        .finally(() => {
+          this.$router.push({ name: 'SuccessPage' });
+        });
     },
 
     async getAllQuestionsByBatchInDB() {
@@ -92,7 +137,6 @@ export default {
           },
         })
           .then((response) => {
-            console.log(response.data.data);
             this.allQuestions = response.data.data;
             this.options = [...this.allQuestions].map((item) => {
               const answers = [];

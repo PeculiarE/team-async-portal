@@ -8,7 +8,7 @@
     <b-table
       id="assessment-results-table"
       :borderless="true"
-      :items="items"
+      :items="getUsersInBatch"
       :fields="fields"
       head-variant="dark"
     ></b-table>
@@ -16,13 +16,15 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'ResultsTable',
   data() {
     return {
       fields: [
         {
-          key: 'name',
+          key: 'full_name',
           label: 'Name',
           sortable: false,
         },
@@ -33,7 +35,12 @@ export default {
         },
         {
           key: 'dob',
-          label: 'DOB - Age',
+          label: 'DOB',
+          sortable: true,
+        },
+        {
+          key: 'age',
+          label: 'Age',
           sortable: true,
         },
         {
@@ -50,7 +57,7 @@ export default {
           sortable: true,
         },
         {
-          key: 'scores',
+          key: 'test_score',
           label: 'Test Scores',
           sortable: true,
         },
@@ -65,17 +72,19 @@ export default {
           cgpa: 4.99,
           scores: 19,
         },
-        // {
-        //   name: 'Mercy Chinwo',
-        //   email: 'mchinwo@yahoo.com',
-        //   dob: '25/11/18 - 23',
-        //   address: '17, Kushimo Street, Oshodi, Lagos',
-        //   university: 'University of Lagos',
-        //   cgpa: 4.2,
-        //   scores: 25,
-        // },
       ],
+
+      // items: this.getUsersInBatch,
     };
+  },
+  computed: {
+    ...mapGetters(['getUsersInBatch']),
+  },
+  methods: {
+    ...mapActions(['getUserTestResultDetails']),
+  },
+  mounted() {
+    this.getUserTestResultDetails();
   },
 };
 </script>

@@ -102,7 +102,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/admin/results/:batchId',
+    path: '/admin/results',
     name: 'AssessmentResults',
     component: () => import('../views/admin/AssessmentResults.vue'),
     meta: { requiresAuth: true },

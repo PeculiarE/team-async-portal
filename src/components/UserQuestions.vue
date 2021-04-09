@@ -9,7 +9,7 @@
         <b-form-group v-slot="{ ariaDescribedby }">
           <li class="mb-3 italic" v-for="(item, index) in options" :key="index">
             <b-form-radio v-model="selected" name="options"
-            :aria-describedby="ariaDescribedby" value="index">
+            :aria-describedby="ariaDescribedby" :value="item">
               {{ item }}
             </b-form-radio>
           </li>
@@ -22,18 +22,21 @@
 // import { mapActions } from 'vuex';
 
 export default {
-  props: ['question_number', 'question', 'options'],
+  props: ['question_number', 'question', 'options', 'chosenAnswers', 'id'],
   data() {
     return {
       selected: '',
     };
   },
-  // methods: {
-  //   ...mapActions(['getAllQuestionsByBatchInDB']),
-  // },
-  // mounted() {
-  //   this.getAllQuestionsByBatchInDB();
-  // },
+  methods: {
+  },
+  watch: {
+    selected: {
+      handler(value) {
+        this.$emit('recordAnswers', { value, id: this.id });
+      },
+    },
+  },
 };
 </script>
 

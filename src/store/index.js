@@ -62,8 +62,16 @@ export default new Vuex.Store({
     questionCount: 0,
     setTime: 0,
     allQuestionsInDb: [],
+    testScore: 0,
+    usersInBatch: [],
   },
   getters: {
+    getUsersInBatch(state) {
+      return state.usersInBatch;
+    },
+    getTestScore(state) {
+      return state.testScore;
+    },
     getAllQuestions(state) {
       return state.allQuestionsInDb;
     },
@@ -157,6 +165,9 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    updateTestscore(state, payload) {
+      state.testScore = payload;
+    },
     adminDetails(state, payload) {
       state.adminDetails = payload;
     },
@@ -180,13 +191,13 @@ export default new Vuex.Store({
       };
     },
     updateUserDeets(state, payload) {
-      console.log(payload);
+      // console.log(payload);
       state.userDeets = { ...payload };
-      console.log(state.userDeets);
+      // console.log(state.userDeets);
     },
 
     updateAllUsersDeets(state, payload) {
-      console.log(payload);
+      // console.log(payload);
       payload.forEach((el) => {
         const date = new Date(el.dob);
         const b = date.getDate();
@@ -406,15 +417,16 @@ export default new Vuex.Store({
         .finally(() => {});
     },
 
-    async bringUserDeetstoState({ commit, state }, payload) {
+    async bringUserDeetstoState({ commit }, payload) {
+      // add state beside the commit in above later.
       const newpayload = payload.data.data;
       const date = new Date(newpayload.updated_at).toLocaleString();
       localStorage.setItem('latestApplication', date);
-      console.log(newpayload.updated_at);
+      // console.log(newpayload.updated_at);
       commit('updateUserDeets', newpayload);
-      commit('updateAllUsersDeets', newpayload);
+      // commit('updateAllUsersDeets', newpayload);
       console.log(newpayload.updated_at);
-      console.log(state.allUsers);
+      // console.log(state.allUsers);
     },
 
     async populateUserDeets({ dispatch }) {
@@ -424,8 +436,8 @@ export default new Vuex.Store({
           .then((response) => {
             dispatch('bringUserDeetstoState', response);
           })
-          .catch((error) => console.log(error))
-          .finally(() => console.log('finally loading'));
+          .catch((error) => console.log(error));
+        // .finally(() => console.log('finally loading'));
       }
     },
 
@@ -488,7 +500,7 @@ export default new Vuex.Store({
       context.commit('updateApplicationStartDate', payload.openDate);
     },
     openBatch(context, batchOn) {
-      console.log(batchOn);
+      // console.log(batchOn);
       localStorage.setItem('hasBatchEnded', batchOn);
       context.commit('updateBatchStatus', batchOn);
     },
@@ -603,6 +615,25 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error))
         .finally(() => console.log('finally loading'));
+    },
+
+    async getUserTestResultDetails() {
+      const token = localStorage.getItem('loginAdminToken');
+      console.log(token);
+      axios({
+        method: 'GET',
+        url: 'http://localhost:3000/allUsers',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          this.state.usersInBatch = response.data.data;
+          console.log(this.state.usersInBatch);
+          console.log(this.getters.getUsersInBatch);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => {});
     },
   },
 });

@@ -88,8 +88,8 @@ export default {
   mounted() {
     this.dashboardMenuSelected = true;
     this.populateUserDeets();
-    const ts = new Date();
-    console.log(ts.toLocaleDateString());
+    // const ts = new Date();
+    // console.log(ts.toLocaleDateString());
   },
 };
 </script>
