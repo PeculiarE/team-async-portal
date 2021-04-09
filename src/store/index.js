@@ -335,7 +335,7 @@ export default new Vuex.Store({
     },
 
     async resetPassword({ commit }, payload) {
-      await axios.post('https://async-backend.herokuapp.com/user/reset', payload)
+      await axios.post('http://localhost:3000/user/reset', payload)
         .then((response) => {
           commit('reset', response.data);
           console.log(response);
@@ -346,7 +346,7 @@ export default new Vuex.Store({
     },
 
     async newPassword({ commit }, { password, token }) {
-      await axios.put(`https://async-backend.herokuapp.com/resetpassword/${token}`, { password })
+      await axios.put(`http://localhost:3000/resetpassword/${token}`, { password })
         .then((response) => {
           console.log(response);
           commit('setNewPassword', response.data);

@@ -1,8 +1,8 @@
 <template>
 <div class="admin-application">
-    <!-- <div class="admin-application-sidebar">
+    <div class="admin-application-sidebar">
       <AdminSidebar :toggleApplicationBorder="toggleApplicationBorder" />
-    </div> -->
+    </div>
     <div class="admin-application-content">
       <AdminCreateApplication />
     </div>
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-// import AdminSidebar from '@/components/AdminSidebar.vue';
+import AdminSidebar from '@/components/AdminSidebar.vue';
 import AdminCreateApplication from '@/components/AdminCreateApplication.vue';
 
 export default {
@@ -21,7 +21,7 @@ export default {
     };
   },
   components: {
-    // AdminSidebar,
+    AdminSidebar,
     AdminCreateApplication,
   },
   mounted() {
@@ -41,7 +41,7 @@ export default {
 }
 .admin-application-content {
   height: 750px;
-  padding-right: 30px;
+  /* padding-right: 30px; */
   box-sizing: border-box;
 }
 </style>
