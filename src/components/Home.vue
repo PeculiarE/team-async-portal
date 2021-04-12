@@ -155,6 +155,9 @@ button {
 button a {
   color: #ffffff;
 }
+button:hover {
+  background-color: var(--enyata-purple);
+}
 .why {
   width: 156px;
   display: flex;

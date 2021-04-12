@@ -210,9 +210,11 @@ input {
   line-height: 23px;
   letter-spacing: -0.117188px;
   padding: 10px;
+  background-color: #f8f6fd;
   -webkit-box-shadow: none;
   box-shadow: none;
   outline: none;
+  border: none;
 }
 input:focus {
   border-color: inherit;
