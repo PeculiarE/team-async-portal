@@ -152,6 +152,9 @@ button {
   background-color: var(--enyata-purple);
   border: none;
 }
+button:hover {
+  background-color: var(--enyata-purple);
+}
 button a {
   color: #ffffff;
 }
