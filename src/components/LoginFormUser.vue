@@ -117,9 +117,6 @@ export default {
       this.login(this.userDetails);
     },
   },
-  mounted() {
-    alert('something');
-  },
 };
 </script>
 
@@ -142,6 +139,9 @@ export default {
     box-sizing: border-box;
     border-radius: 4px;
     margin-bottom: 19px;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
   }
   .login-form-password {
     display: flex;

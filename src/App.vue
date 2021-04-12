@@ -44,7 +44,7 @@ textarea:focus, input:focus{
   text-align: center;
 }
 #sidebar-top-section {
-  height: 33%;
+  height: 28%;
   width: 100%;
   background: #2B3C4E;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);

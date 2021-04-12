@@ -9,7 +9,7 @@
                 <div class="email-icon">
                     <img src="../../assets/email-icon.svg" alt="email-icon">
                 </div>
-                <div class="email-texts">
+                <div class="email-texts" @click.capture="show">
                     <h4 class="purple-text">Reset via Email</h4>
                     <p>Password reset link will be sent to your<br>registered email address</p>
                 </div>
@@ -29,7 +29,7 @@
             <button type="submit" @click.capture="show">Send Link</button>
             <PasswordModal />
             <div class="resend">
-                <p>Didn't receive link? <a href="#" class="purple-text">Resend</a></p>
+                <p>Didn't receive link? <a @click.capture="show" class="purple-text">Resend</a></p>
             </div>
         </div>
     </div>
