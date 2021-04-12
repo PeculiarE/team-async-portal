@@ -52,6 +52,7 @@
               <b-button
               class="text-white"
               to="/admin/assessment"
+              :disabled="!openApplicationStatus"
               >
                 Create Assessment
               </b-button>
@@ -75,12 +76,11 @@ export default {
     return {
       fields: ['batch', 'applicants', 'date'],
       toggleDashboardBorder: false,
-      applicationEnded: true,
     };
   },
   computed: {
     ...mapGetters(['getUpdatedCurrentBatch', 'getCurrentApplications',
-      'getTotalApplications', 'getLatestApplication', 'getSummaryTable']),
+      'getTotalApplications', 'getLatestApplication', 'getSummaryTable', 'openApplicationStatus']),
   },
   methods: {
     ...mapActions(['getSummary']),
@@ -173,16 +173,15 @@ hr {
     margin: auto;
     margin-top: 20px;
     text-align: center;
-    color: #7557D3;
 }
-.button :hover {
+/* .button :hover {
   background-color: #7557D3;
-}
+} */
 button {
     font-weight: bold;
     font-size: 16px;
     line-height: 19px;
-    background-color: #7557D3 !important;
+    /* background-color: #7557D3 !important; */
 }
 .btn-secondary {
   background-color: #7557D3 !important;

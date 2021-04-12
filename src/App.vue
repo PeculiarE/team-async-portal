@@ -37,7 +37,7 @@ textarea:focus, input:focus{
   box-shadow: none;
 }
 #admin-sidebar-top-section {
-  height: 33%;
+  height: 28%;
   width: 100%;
   padding-top: 15%;
   background: #5ABEFD;
