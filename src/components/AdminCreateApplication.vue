@@ -1,7 +1,8 @@
 <template>
     <div create-application mt-5>
         <div class="title">Create Application</div>
-        <b-form class="form" enctype="multipart/form-data" @submit.prevent="sendAd()">
+        <b-form class="form" v-if="!status" enctype="multipart/form-data"
+        @submit.prevent="sendAd()">
             <div class="d-flex justify-content-between align-items-center">
                 <VueFileAgent
                     ref="vueFileAgent"
@@ -62,6 +63,7 @@
                 <b-button id="submit-btn" type="submit">Submit</b-button>
             </div>
         </b-form>
+        <h2 v-else class="mt-5">A new batch can't be created until the current batch ends.</h2>
     </div>
 </template>
 
@@ -84,6 +86,7 @@ export default {
       applicationStatus: null,
       valid: true,
       errors: {},
+      status: null,
     };
   },
   computed: {
@@ -190,6 +193,10 @@ export default {
       console.log(this.application);
     //   this.reset();
     },
+  },
+  mounted() {
+    console.log(this.$store.getters.openApplicationStatus);
+    this.status = this.$store.getters.openApplicationStatus;
   },
 };
 </script>

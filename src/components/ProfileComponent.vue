@@ -2,7 +2,7 @@
     <div class="container">
       <div class="title">
         <h4>Profile Settings</h4>
-        <button>Edit</button>
+        <button @click="editNow=false">Edit</button>
       </div>
       <hr>
       <div class="options">
@@ -11,12 +11,12 @@
           :theme="'list'"
           :multiple="false"
           :meta="true"
-          :accept="'.jpg'"
+          :accept="'.jpeg'"
           :maxSize="'2MB'"
           :maxFiles="1"
           :helpText="'Upload a new image'"
           :errorText="{
-          type: 'Invalid file type. Only files with png extension are allowed',
+          type: 'Invalid file type. Only files with jpeg extension are allowed',
           size: 'Files should not exceed 2MB in size',
           }"
           @select="filesSelectedPhoto($event)"
@@ -27,31 +27,31 @@
           <img src="../assets/account.svg" alt="profile-picture">
         </div> -->
         <!-- <a href="">Upload a new image</a> -->
-        <p class="red-text">X  Remove</p>
+        <p @click="filesSelectedPhoto($event)" class="red-text">X  Remove</p>
       </div>
       <div class="form">
         <div class="row1">
           <div class="input-1">
             <label for="name">Name</label>
-            <input type="text" v-model="update.fullName">
+            <input :disabled="editNow" type="text" v-model="update.fullName">
           </div>
           <div class="input-2">
             <label for="name">Email</label>
-            <input type="text" v-model="update.email">
+            <input disabled type="text" v-model="update.email">
           </div>
           <div class="input-3">
             <label for="name">Phone number</label>
-            <input type="text" v-model="update.phone">
+            <input :disabled="editNow" type="text" v-model="update.phone">
           </div>
         </div>
         <div class="row2">
           <div class="input-4">
             <label for="name">Country</label>
-            <input type="text" v-model="update.country">
+            <input :disabled="editNow" type="text" v-model="update.country">
           </div>
           <div class="input-5">
             <label for="name">Address</label>
-            <input class="address"
+            <input :disabled="editNow" class="address"
             type="text" v-model="update.address">
           </div>
         </div>
@@ -86,10 +86,11 @@ export default {
       updateStatus: null,
       valid: true,
       errors: {},
+      editNow: true,
     };
   },
   computed: {
-    ...mapGetters(['getResponseAdminUpdate']),
+    ...mapGetters(['getResponseAdminUpdate', 'getAdminInfo']),
   },
   watch: {
     getResponseAdminUpdate(val) {
@@ -123,6 +124,13 @@ export default {
     //   this.reset();
     },
   },
+  mounted() {
+    this.update.fullName = this.getAdminInfo.adminName;
+    this.update.email = this.getAdminInfo.adminEmail;
+    this.update.phone = this.getAdminInfo.adminPhone;
+    this.update.address = this.getAdminInfo.adminAddress;
+    this.update.country = this.getAdminInfo.adminCountry;
+  },
 };
 </script>
 
@@ -130,6 +138,7 @@ export default {
 .container {
   font-family: Lato;
   font-style: normal;
+  height: 500px;
 }
 .title {
   width: 100%;
@@ -156,7 +165,7 @@ export default {
   border: 1px solid var(--enyata-purple);
 }
 .options {
-  margin-top: 56px;
+  margin-top: 40px;
   width: 350px;
   height: 54px;
   display: grid;
@@ -185,25 +194,31 @@ a {
 .row1 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  margin-top: 44px;
+  margin-top: 34px;
 }
 .row2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 40px 0;
+  margin: 30px 0;
 }
 input {
   width: 215px;
   height: 54px;
-  /* background: var(--enyata-purple); */
-  /* opacity: 0.04; */
   font-weight: normal;
   font-size: 15px;
   line-height: 23px;
   letter-spacing: -0.117188px;
   padding: 10px;
-  /* color: #333758; */
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none;
+}
+input:focus {
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none;
 }
 .address {
   width: 469px;

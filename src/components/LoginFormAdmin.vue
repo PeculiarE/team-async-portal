@@ -9,6 +9,7 @@
         <b-form-input
           id="input-1"
           type="email"
+          @keyup="loginStatus = null"
           v-model="adminDetails.email"
           required
         ></b-form-input>
@@ -37,6 +38,10 @@
         </b-form-valid-feedback>
       </b-form-group>
 
+      <b-form-valid-feedback class="no-error" style="font-size: 15px" :state="loadingStatus">
+       <b>Checking...please wait</b>
+      </b-form-valid-feedback>
+
        <b-form-invalid-feedback class="error" style="font-size: 15px" :state="loginStatus">
        <b>{{ getResponseAdminLogin.message }}</b>
       </b-form-invalid-feedback>
@@ -62,6 +67,7 @@ export default {
       },
       showPassword: false,
       feedbackPassword: null,
+      loadingStatus: null,
       loginStatus: null,
       valid: true,
     };
@@ -72,11 +78,13 @@ export default {
   watch: {
     getResponseAdminLogin(val) {
       if (val.status === 'Success') {
+        this.loadingStatus = null;
         this.loginStatus = true;
         setTimeout(() => {
           this.$router.push({ name: 'AdminDashboard' });
         }, 2000);
       } else {
+        this.loadingStatus = null;
         this.loginStatus = false;
       }
     },
@@ -84,6 +92,7 @@ export default {
   methods: {
     ...mapActions(['adminLogin']),
     validatePassword() {
+      this.loginStatus = null;
       if (this.adminDetails.password.length >= 8) {
         this.feedbackPassword = true;
         this.valid = false;
@@ -97,6 +106,7 @@ export default {
       this.showPassword = !this.showPassword;
     },
     loginNow() {
+      this.loadingStatus = true;
       this.adminLogin(this.adminDetails);
     },
   },

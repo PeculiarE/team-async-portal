@@ -10,7 +10,7 @@
         </div>
 
     </modal> -->
-    <b-button id="show-btn" @click="showModal">Decline</b-button>
+    <b-button id="show-d-btn" @click="showModal">Decline</b-button>
       <div>
         <b-modal id="modal-sm" ref='modal-decline'
         size="sm">
@@ -53,6 +53,19 @@ export default {
 </script>
 
 <style scoped>
+#show-d-btn {
+    /* width: 379px;
+    height: 50px; */
+    background-color: #FFFFFF;
+    color: #4F4F4F;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    font-family: Lato;
+    border: 1px solid #CECECE;
+    /* margin-top: 60px; */
+}
 /* button{
 width: 125px;
 height: 48px;

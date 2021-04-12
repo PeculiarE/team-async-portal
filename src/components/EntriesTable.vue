@@ -1,6 +1,6 @@
 <template>
   <div class="entries-container">
-    <div class="title d-flex">
+    <div class="title-entries d-flex">
       <span pt-5 pl-5>Entries - Batch 1</span>
       <div class="image"><img src="../assets/arrow-down-icon.svg" alt="arrow"></div>
     </div>
@@ -22,9 +22,9 @@
       @row-clicked="(item, index, event) => onRowSelected(item, index, event)"
     >
     </b-table>
-    <div>
-      <b-modal id="modal-1">
-        <form>
+    <div class="test">
+      <b-modal hide-header hide-footer id="modal-1" :modal-class="modalfull" no-stacking>
+        <form class="form-modal">
         <div class="d-flex justify-content-between">
           <div class="profile-picture">
             <img :src="data.photo_url" alt="image">
@@ -72,6 +72,8 @@
             <div class="cv">
               <label>CV</label><br />
               <p class="data-cv">
+                <img id="pdf-icon" class="mr-2"
+                src="../assets/pdf.svg" alt="pdf-icon">
                 <a :href="data.cv_url"
                 target="_blank">{{data.full_name}}'s CV.pdf</a></p>
             </div>
@@ -94,36 +96,62 @@
               </div> -->
           </div>
       </form>
-      <template #modal-footer>
         <div class="btn-wrapper">
             <div>
-              <ApproveModal @approve="updateApprovalStatusNow"
-              @close="$emit('closeModal')" />
+              <b-button type="button" id="show-a-btn" v-b-modal.modal-2>Approve</b-button>
             </div>
             <div>
-              <DeclineModal @decline="updateApprovalStatusDecline"
-              @close="$emit('closeModal')" />
+              <b-button type="button" id="show-d-btn" v-b-modal.modal-3>Decline</b-button>
             </div>
         </div>
-      </template>
     </b-modal>
+    <div>
+        <b-modal hide-header hide-footer centered id="modal-2"
+        :modal-class="modalsmall">
+          <p class="mb-3">Are you sure you want to approve this application?</p>
+          <div class="mod-foot">
+            <b-button class="yes-btn" size="sm" @click="updateApprovalStatusNow">
+              Yes
+            </b-button>
+            <b-button class="no-btn" size="sm" @click="hideModal">
+              No
+            </b-button>
+          </div>
+        </b-modal>
     </div>
+    <div>
+        <b-modal hide-header hide-footer centered id="modal-3"
+        :modal-class="modalsmall">
+          <p class="mb-3">Are you sure you want to decline this application?</p>
+          <div class="mod-foot">
+            <b-button class="yes-btn" size="sm" @click="updateApprovalStatusDecline">
+              Yes
+            </b-button>
+            <b-button class="no-btn" size="sm" @click="hideModalDecline">
+              No
+            </b-button>
+          </div>
+        </b-modal>
+    </div>
+  </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import ApproveModal from '@/components/ApproveModal.vue';
-import DeclineModal from '@/components/DeclineModal.vue';
+// import ApproveModal from '@/components/ApproveModal.vue';
+// import DeclineModal from '@/components/DeclineModal.vue';
 
 export default {
   name: 'EntriesTable',
   components: {
-    ApproveModal,
-    DeclineModal,
+    // ApproveModal,
+    // DeclineModal,
   },
   data() {
     return {
+      modalfull: ['modalfull'],
+      modalsmall: ['modalsmall'],
       fields: [
         {
           key: 'full_name',
@@ -177,14 +205,11 @@ export default {
       this.data = item;
       console.log(item);
     },
-    closeModal() {
-      this.dontShowModal = true;
+    hideModal() {
+      this.$bvModal.hide('modal-2');
     },
-    show() {
-      this.$modal.show('modal-entries');
-    },
-    hide() {
-      this.$modal.hide('modal-entries');
+    hideModalDecline() {
+      this.$bvModal.hide('modal-3');
     },
     updateApprovalStatusNow() {
       this.data.approval_status = 'Approved';
@@ -193,6 +218,7 @@ export default {
         newStatus: 'Approved',
       };
       this.changeStatus(userData);
+      this.$bvModal.hide('modal-2');
     },
     updateApprovalStatusDecline() {
       this.data.approval_status = 'Declined';
@@ -201,6 +227,7 @@ export default {
         newStatus: 'Declined',
       };
       this.changeStatus(userData);
+      this.$bvModal.hide('modal-3');
     },
   },
   mounted() {
@@ -209,11 +236,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 /* .container {
     margin-right: 42px;
 } */
-.title {
+.title-entries {
   width: 350px;
   height: 53px;
   justify-content: space-between;
@@ -241,10 +268,10 @@ export default {
 .entries-table tbody {
   font-size: 5px;
 }
-.entries-container table {
+/* .entries-container table {
   margin-top: 100px;
   text-align: center;
-}
+} */
 /* .entry-details {
   width: 600px;
   height: 100vh;
@@ -253,6 +280,17 @@ export default {
 :focus {outline:0 !important;}
 *:focus {
     outline: none !important;
+}
+.modalfull .modal-dialog {
+    margin: 0;
+    top: 0;
+    bottom: 0;
+    left: 65.3%;
+    right: 0;
+    height: 100vh;
+    display: flex;
+    position: fixed;
+    /* z-index: 100000; */
 }
 .profile-picture {
   width: 130px;
@@ -279,13 +317,19 @@ export default {
 }
 .btn-wrapper{
   margin: auto;
-  width: 200px;
+  width: 270px;
+  display: flex;
+  justify-content: space-between;
+}
+.mod-foot {
+  margin: auto;
+  width: 250px;
   display: flex;
   justify-content: space-between;
 }
 .data {
-  width: 200px;
-  height: 50px;
+  width: 210px;
+  height: 40px;
   padding: 10px;
   border: 1px solid #cdcfd6;
   box-sizing: border-box;
@@ -296,8 +340,8 @@ export default {
   color: #000000;
 }
 .data-cv {
-  width: 200px;
-  height: 50px;
+  width: 210px;
+  height: 40px;
   padding: 10px 0px;
   border: 1px #cdcfd6;
   box-sizing: border-box;
@@ -306,6 +350,10 @@ export default {
   font-size: 14px;
   line-height: 19px;
   color: #000000;
+}
+#pdf-icon {
+  height: 23px;
+  width: 23px;
 }
 a {
   color: #000000;
@@ -333,7 +381,59 @@ label {
   font-weight: normal;
   font-size: 14px;
   line-height: 17px;
-  text-align: center;
+  /* text-align: center; */
   color: #B1B1B1;
+}
+.form-modal {
+  padding: 30px 15px;
+  box-sizing: border-box;
+}
+/* #show-a-btn {
+    /* width: 379px;
+    height: 50px; */
+    /* font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    font-family: Lato; */
+    /* margin-top: 60px; */
+/* } */
+ .yes-btn, .no-btn, #show-d-btn, #show-a-btn {
+  background-color: #FFFFFF;
+  color: #4F4F4F;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+  font-family: Lato;
+  border: none;
+  outline: none;
+}
+#show-d-btn, #show-a-btn {
+  border: 1px solid #CECECE;
+}
+.yes-btn, .no-btn {
+  width: 100px;
+}
+.yes-btn:hover, .no-btn:hover, #show-a-btn:hover, #show-d-btn:hover{
+  background-color: var(--enyata-purple);
+  color: white;
+}
+/* .btn-secondary {
+  background-color: #7557D3 !important;
+} */
+.modalsmall .modal-content {
+    /* margin: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; */
+    height: 250px;
+    width: 400px;
+    padding: 50px;
+    box-sizing: border-box;
+    text-align: center;
+    /* margin-left: 50px; */
+    /* z-index: 100000; */
 }
 </style>
