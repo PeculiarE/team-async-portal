@@ -25,7 +25,9 @@ export default {
   font-family: 'Poppins', sans-serif;
   color: #2b3c4e;
   background-color: #FDFDFF;
-  max-height: 900px;
+  /* max-height: 900px; */
+  /* max-width: 1024px;
+  margin: 0 auto; */
 }
 input {
   outline: none;

@@ -37,6 +37,7 @@ export default new Vuex.Store({
     ongoingApplication: localStorage.getItem('ongoingApplication') || null,
     applicationStartDate: localStorage.getItem('applicationStartDate') || null,
     hasBatchEnded: localStorage.getItem('hasBatchEnded') || null,
+    assessmentComposed: localStorage.getItem('assessmentComposed') || null,
     responseAdminAd: {
       status: '',
       message: '',
@@ -140,6 +141,9 @@ export default new Vuex.Store({
     },
     batchEnded(state) {
       return state.hasBatchEnded !== null;
+    },
+    getAssessmentComposed(state) {
+      return state.assessmentComposed !== null;
     },
     getResponseAdminAd(state) {
       return state.responseAdminAd;
@@ -291,6 +295,9 @@ export default new Vuex.Store({
     },
     updateBatchStatus(state, payload) {
       state.hasBatchEnded = payload;
+    },
+    updateAssessmentComposed(state, payload) {
+      state.assessmentComposed = payload;
     },
     updatePresentBatch(state, payload) {
       state.presentBatch = payload;
