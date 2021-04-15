@@ -90,7 +90,6 @@ export default {
       } else {
         this.loadingStatus = null;
         this.loginStatus = false;
-        alert('check');
       }
     },
   },
@@ -108,7 +107,6 @@ export default {
     },
     togglePassword() {
       this.showPassword = !this.showPassword;
-      console.log('something');
     },
     loginNow() {
       console.log(this.loginStatus);

@@ -268,6 +268,11 @@ export default {
 .entries-table tbody {
   font-size: 5px;
 }
+table tbody tr:hover {
+   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05) !important;
+   border-radius: 8px;
+   margin-top: 5px;
+}
 /* .entries-container table {
   margin-top: 100px;
   text-align: center;
