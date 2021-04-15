@@ -234,21 +234,23 @@ export default new Vuex.Store({
     },
     updateAdminInfo(state, payload) {
       console.log(payload.image);
-      if (payload.image === null) {
+      if (payload.image === null || payload.image === 'null') {
         /* eslint-disable global-require */
         state.initialResponseAdminLogin.image = require('@/assets/account.svg');
         state.initialResponseAdminLogin.adminName = payload.adminName;
         state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
-        state.initialResponseAdminLogin.adminPhone = `0${payload.adminPhone}`;
+        state.initialResponseAdminLogin.adminPhone = payload.adminPhone === null ? payload.adminPhone : `${payload.adminPhone}`;
         state.initialResponseAdminLogin.adminAddress = payload.adminAddress;
         state.initialResponseAdminLogin.adminCountry = payload.adminCountry;
+        console.log(state.initialResponseAdminLogin);
       } else {
         state.initialResponseAdminLogin.image = payload.image;
         state.initialResponseAdminLogin.adminName = payload.adminName;
         state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
-        state.initialResponseAdminLogin.adminPhone = `0${payload.adminPhone}`;
+        state.initialResponseAdminLogin.adminPhone = payload.adminPhone === null ? payload.adminPhone : `${payload.adminPhone}`;
         state.initialResponseAdminLogin.adminAddress = payload.adminAddress;
         state.initialResponseAdminLogin.adminCountry = payload.adminCountry;
+        console.log(state.initialResponseAdminLogin);
       }
     },
     retrieveLoginAdminToken(state, payload) {
@@ -531,10 +533,11 @@ export default new Vuex.Store({
           };
           const { deets } = response.data;
           context.commit('updateAdminInfo', deets);
-          localStorage.setItem('adminInfo', JSON.stringify(deets));
+          localStorage.setItem('adminInfo', JSON.stringify(context.state.initialResponseAdminLogin));
           context.commit('updateResponseAdminUpdate', successObject);
         })
         .catch((error) => {
+          console.log(error);
           const failObject = {
             status: error.response.data.status,
             message: error.response.data.message,
