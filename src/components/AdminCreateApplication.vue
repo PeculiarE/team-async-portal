@@ -162,10 +162,10 @@ export default {
         };
         this.openApplication(dateAndBatch);
         this.openBatch(1);
-        setTimeout(() => {
-          // eslint-disable-next-line no-restricted-globals
-          location.reload();
-        }, 5000);
+        // setTimeout(() => {
+        //   // eslint-disable-next-line no-restricted-globals
+        //   location.reload();
+        // }, 5000);
       } else {
         this.loadingStatus = false;
         this.feedbackBatch = false;
@@ -187,7 +187,7 @@ export default {
     },
     validateInstructions() {
       this.feedbackImage = this.application.design !== null;
-      if (/^(?!.*?\s{2})[A-Za-z0-9.?/@!#$%^&*()_+=_><,:;"'{[}| ]{15,}$/.test(this.application.instructions)) {
+      if (/^(?!.*?\s{2})[A-Za-z0-9.?/@!#$%^&*()_+=-><,:;"'{[}| ]{15,}$/.test(this.application.instructions)) {
         this.feedbackInstructions = true;
         return;
       }
