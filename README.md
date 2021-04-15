@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # team-async-portal
 
 ## Project setup
@@ -25,4 +24,3 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 =======
 # team-async-portal
->>>>>>> 6e3b1ba0511d60fa8e13930306f1608ad345f658
