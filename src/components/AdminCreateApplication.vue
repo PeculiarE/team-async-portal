@@ -4,8 +4,8 @@
         <b-form class="form" v-if="!status"
         v-show="!applicationStatus" enctype="multipart/form-data"
         @submit.prevent="sendAd()">
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
+            <div class="d-flex justify-content-between">
+              <div class="height--">
                 <VueFileAgent
                     ref="vueFileAgent"
                     :theme="'list'"
@@ -27,18 +27,21 @@
                   Please upload a flyer
                 </b-form-invalid-feedback>
               </div>
-              <b-form-group id="input-group-1" label="Link" label-for="input-1">
-              <b-form-input
+              <!-- <div class="small-inputs"> -->
+                <b-form-group id="input-group-1" label="Link" label-for="input-1">
+              <b-form-inputss
               id="input-1"
               v-model="application.applicationLink" type="text"
-              required @keyup="validateLink()"></b-form-input>
+              required @keyup="validateLink()"></b-form-inputss>
               <b-form-invalid-feedback :state="feedbackLink">
                 This field requires a minimum of 9 characters
               </b-form-invalid-feedback>
               </b-form-group>
+              <!-- </div> -->
             </div>
             <div class="d-flex justify-content-between">
-                <b-form-group
+                <div class="small-inputs">
+                  <b-form-group
                 id="input-group-2"
                 label="Application closure date"
                 label-for="input-2">
@@ -50,7 +53,9 @@
                   Closure date must be at least 1 week from today
                 </b-form-invalid-feedback>
                 </b-form-group>
-                <b-form-group id="input-group-3" label="Batch ID" label-for="input-3">
+                </div>
+                <div class="small-inputs">
+                  <b-form-group id="input-group-3" label="Batch ID" label-for="input-3">
                 <b-form-input v-model="application.batchId" type="number" id="input-3"
                 required @keyup="validateBatch()"
                 ></b-form-input>
@@ -60,8 +65,10 @@
                 <b-form-valid-feedback style="font-size: 15px" :state="feedbackBatch">
                 </b-form-valid-feedback>
                 </b-form-group>
+                </div>
             </div>
-            <b-form-group
+            <div class="instructions">
+              <b-form-group
             id="input-group-4"
             label="Instructions"
             label-for="input-4">
@@ -71,7 +78,6 @@
             rows="8"
             @keyup="validateInstructions()"
             ></b-form-textarea>
-            </b-form-group>
             <b-form-invalid-feedback :state="feedbackInstructions">
               This field requires a minimum of 15 characters and only one space between words
             </b-form-invalid-feedback>
@@ -80,6 +86,8 @@
             :state="loadingStatus" class="text-center">
             <b>Checking...please wait</b>
             </b-form-valid-feedback>
+            </b-form-group>
+            </div>
 
             <div class="text-center">
                 <b-button id="submit-btn" type="submit" :disabled="validApp">Submit</b-button>
@@ -291,6 +299,9 @@ export default {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+#input-group-1 {
+  height: 41px;
+}
 #input-4 {
     width: 976px;
     height: 144px;
@@ -299,6 +310,15 @@ export default {
     border-color: inherit;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+.height-- {
+  height: 108px;
+}
+/* .small-inputs {
+  height: 41px;
+} */
+.instructions {
+  height: 144px;
 }
 #submit-btn {
     width: 379px;
