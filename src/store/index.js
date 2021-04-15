@@ -52,14 +52,7 @@ export default new Vuex.Store({
     totalApplications: 0,
     summaryTable: [],
     latestApplication: localStorage.getItem('latestApplication') || null,
-    singleQuestion: {
-      question: '',
-      optionA: '',
-      optionB: '',
-      optionC: '',
-      optionD: '',
-      correctOption: '',
-    },
+    adminQuestions: [],
     questionCount: 0,
     setTime: 0,
     allQuestionsInDb: [],
@@ -82,8 +75,8 @@ export default new Vuex.Store({
     getQuestionCount(state) {
       return state.questionCount;
     },
-    getSingleQuestion(state) {
-      return state.singleQuestion;
+    getAdminQuestions(state) {
+      return state.adminQuestions;
     },
     getUserDeets(state) {
       return state.userDeets;
@@ -169,6 +162,10 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    updateQuizSetTime(state, payload) {
+      state.setTime = payload;
+      console.log(state.setTime);
+    },
     updateTestscore(state, payload) {
       state.testScore = payload;
     },
@@ -180,28 +177,19 @@ export default new Vuex.Store({
       console.log(state.allQuestionsInDb);
     },
     updateQuestionCount(state, payload) {
-      console.log(state.questionCount);
       state.questionCount += payload;
-      console.log(state.questionCount);
     },
-    resetSingleQuestion(state) {
-      state.singleQuestion = {
-        question: '',
-        optionA: '',
-        optionB: '',
-        optionC: '',
-        optionD: '',
-        correctOption: '',
-      };
+    reduceQuestionCount(state, payload) {
+      state.questionCount -= payload;
+    },
+    updateAdminQuestions(state, payload) {
+      state.adminQuestions.push(payload);
     },
     updateUserDeets(state, payload) {
-      // console.log(payload);
       state.userDeets = { ...payload };
-      // console.log(state.userDeets);
     },
 
     updateAllUsersDeets(state, payload) {
-      // console.log(payload);
       payload.forEach((el) => {
         const date = new Date(el.dob);
         const b = date.getDate();
@@ -381,7 +369,6 @@ export default new Vuex.Store({
     },
 
     async adminLogin(context, userData) {
-      console.log(userData);
       await axios
         .post('https://async-backend.herokuapp.com/adminlogin', userData)
         .then((response) => {
@@ -437,6 +424,8 @@ export default new Vuex.Store({
       localStorage.setItem('latestApplication', date);
       // console.log(newpayload.updated_at);
       commit('updateUserDeets', newpayload);
+      // commit('updateAllUsersDeets', newpayload);
+      // console.log(newpayload.updated_at);
       commit('updateAllUsersDeets', newpayload);
       console.log(newpayload.updated_at);
       // console.log(state.allUsers);
@@ -555,9 +544,6 @@ export default new Vuex.Store({
         .finally(() => {});
     },
 
-    // validateQuestionFields()
-    // dispatch('validateQuestionFields');
-
     getQuestionsByBatchInDb() {
       console.log('here!');
       if (localStorage.getItem('loginToken')) {
@@ -565,32 +551,19 @@ export default new Vuex.Store({
       }
     },
 
-    resetSingleQuestionState({ commit }) {
-      commit('resetSingleQuestion');
-    },
-
-    incrementQuestionCount({ commit }) {
-      commit('updateQuestionCount', 1);
-    },
-    async adminNextQuestionButton(context) {
-      if (localStorage.getItem('loginAdminToken')) {
-        console.log(context.state.loginAdminToken);
-        await axios({
-          method: 'POST',
-          url: 'https://async-backend.herokuapp.com/question',
-          data: context.state.singleQuestion,
-          headers: {
-            Authorization: `Bearer ${context.state.loginAdminToken}`,
-          },
-        }).then(() => {
-          context.dispatch('incrementQuestionCount');
-          context.dispatch('resetSingleQuestionState');
-          console.log(context.state.singleQuestion);
-          console.log(context.state.questionCount);
-        }).catch((error) => console.log('error', error)).finally(() => {
-          console.log('done');
-        });
+    adminNextQuestionButton({ commit, state }, newSingleQuestion) {
+      let newSingleQuestionObject = state.adminQuestions.find((el) => el.questionNumber
+      === newSingleQuestion.questionNumber);
+      console.log(newSingleQuestionObject);
+      if (newSingleQuestionObject) {
+        newSingleQuestionObject = { ...newSingleQuestion };
+        commit('updateAdminQuestions', newSingleQuestionObject);
       }
+      commit('updateQuestionCount', 1);
+      const addIDtoQuestion = { ...newSingleQuestion, questionNumber: state.questionCount };
+      commit('updateAdminQuestions', addIDtoQuestion);
+      console.log(addIDtoQuestion);
+      console.log(state.adminQuestions);
     },
 
     async changeStatus({ dispatch, state }, userData) {

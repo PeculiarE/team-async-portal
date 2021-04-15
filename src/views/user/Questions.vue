@@ -17,7 +17,7 @@
         <div class='col-4 d-flex flex-column align-items-center'>
           <div class='col-9 offset-1 px-0'>
             <span class='text-start'>Timer</span>
-            <p class='p3'>00<span>min</span> 010<span>sec</span></p>
+            <h3>{{ this.quizTime }} seconds left</h3>
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import Sidebar from '@/components/Sidebar.vue';
 import UserQuestions from '@/components/UserQuestions.vue';
 import axios from 'axios';
@@ -78,14 +78,16 @@ export default {
       hideNext: true,
       correctAnswers: [],
       answersObj: [],
+      quizTime: null,
     };
   },
+
   computed: {
-    ...mapGetters(['getAllQuestions', 'getLoginToken']),
+    ...mapGetters(['getAllQuestions', 'getLoginToken', 'getSetTime']),
   },
   methods: {
     ...mapMutations(['getTestScore']),
-    ...mapActions(['getAllQuestionsByBatchInDB']),
+    // ...mapActions(['getAllQuestionsByBatchInDB']),
     storeAnswers(answer) {
       console.log(answer);
       const isAnswered = this.answersObj.findIndex((item) => item.id === answer.id);
@@ -101,29 +103,37 @@ export default {
         console.log(this.answersObj);
       }
     },
-    submitQuiz() {
+    async submitQuiz() {
       [...this.allQuestions].forEach((item) => {
         const correctAnswersObj = {};
-        correctAnswersObj.question_id = item.question_id;
         correctAnswersObj.correct_option = item.correct_option;
+        correctAnswersObj.question_id = item.question_id;
         this.correctAnswers.push(correctAnswersObj);
       });
       console.log(this.correctAnswers);
       console.log(this.answersObj);
-      const data = {
-        correctAnswers: this.correctAnswers,
+      const payload = {
         chosenAnswers: this.answersObj,
+        correctAnswers: this.correctAnswers,
       };
-      console.log(data);
-      axios.post('https://async-backend.herokuapp.com/user/quiz_answers', data)
-        .then((response) => {
-          console.log(response);
-          this.getTestScore = response;
+      console.log(payload);
+      if (localStorage.getItem('loginToken')) {
+        const token = localStorage.getItem('loginToken');
+        console.log(token);
+        await axios({
+          method: 'post',
+          url: 'https://async-backend.herokuapp.com/user/quiz_results',
+          data: payload,
+          headers: {
+            // 'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
         })
-        .catch((error) => { console.log(error); })
-        .finally(() => {
-          this.$router.push({ name: 'SuccessPage' });
-        });
+          .catch((error) => { console.log(error); })
+          .finally(() => {
+            this.$router.push({ name: 'SuccessPage' });
+          });
+      }
     },
 
     async getAllQuestionsByBatchInDB() {
@@ -137,6 +147,7 @@ export default {
           },
         })
           .then((response) => {
+            console.log(response.data.data);
             this.allQuestions = response.data.data;
             this.options = [...this.allQuestions].map((item) => {
               const answers = [];
@@ -152,7 +163,7 @@ export default {
             console.log(this.allQuestions);
           })
           .catch((error) => console.log(error))
-          .finally(() => console.log('finally loading'));
+          .finally(() => {});
       }
     },
 
@@ -167,6 +178,7 @@ export default {
         alert('End of Test');
       }
     },
+
     prev() {
       if (this.currentQuestion !== 0) {
         this.currentQuestion -= 1;
@@ -177,10 +189,41 @@ export default {
         this.hideNext = true;
       }
     },
+
+    async getQuizTime() {
+      if (localStorage.getItem('loginToken')) {
+        await axios({
+          method: 'get',
+          url: 'https://async-backend.herokuapp.com/user/quiz_time',
+          headers: {
+            // 'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${this.getLoginToken}`,
+          },
+        })
+          .then((response) => {
+            this.quizTime = response.data.data.total_time;
+            console.log(this.quizTime);
+            const timer = setInterval(() => {
+              this.quizTime -= 1;
+            }, 1000);
+            return timer;
+          }).catch((error) => console.log(error))
+          .finally(() => {});
+      }
+    },
   },
+
   created() {
     this.getAllQuestionsByBatchInDB();
+    this.getQuizTime();
   },
+  // mounted() {
+  //   if (this.getQuizTime() === timer) {
+  //     if (this.quizTime === 0) {
+  //       clearInterval(timer);
+  //     }
+  //   }
+  // },
 };
 </script>
 

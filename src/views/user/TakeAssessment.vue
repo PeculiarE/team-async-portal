@@ -14,12 +14,12 @@
             >
           </p>
         </div>
-        <div class="col-4 d-flex flex-column align-items-center">
+        <!-- <div class="col-4 d-flex flex-column align-items-center">
                 <div class="col-9 offset-1 px-0">
                     <span class="text-start">Timer</span>
                     <p class="p3">00<span>min</span> 000<span>sec</span></p>
                 </div>
-        </div>
+        </div> -->
       </div>
       <div class="row">
         <div class="col-9 offset-1 d-flex justify-content-center mt-5">
