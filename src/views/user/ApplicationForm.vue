@@ -5,7 +5,7 @@
     </div>
     <div class="title">Application Form</div>
     <div class="form-container p-5">
-      <form enctype="multipart/form-data" @submit.prevent="apply()">
+      <form class="formm" enctype="multipart/form-data" @submit.prevent="apply()">
         <div class="form-row justify-content-around d-flex mb-4">
           <VueFileAgent
             ref="vueFileAgent"
@@ -41,12 +41,13 @@
             v-model="user.photo"
           ></VueFileAgent>
         </div>
-        <small>{{ errors.file }}</small>
+        <small id="image-error">{{ errors.file }}</small>
         <div>
-          <div class="form-row justify-content-between mb-4">
+          <div class="form-row justify-content-between mb-4 mt-2">
             <div class="col-12 col-md-6">
               <label for="firstName">First Name</label>
               <input
+                id="input-1"
                 v-model="user.firstName"
                 type="text"
                 name="firstName"
@@ -57,6 +58,7 @@
             <div class="col-12 col-md-6">
               <label for="lastName">Last Name</label>
               <input
+                id="input-2"
                 v-model="user.lastName"
                 type="text"
                 name="lastName"
@@ -69,6 +71,7 @@
             <div class="col-12 col-md-6">
               <label for="email">Email</label>
               <input
+                id="input-3"
                 v-model="user.email"
                 type="text"
                 name="email"
@@ -79,8 +82,9 @@
             <div class="col-12 col-md-6">
               <label for="dob">Date of Birth</label>
               <input
+                id="input-4"
                 v-model="user.dob"
-                type="text"
+                type="date"
                 name="dob"
                 class="form-control"
                 placeholder="yyyy-mm-dd"
@@ -92,6 +96,7 @@
             <div class="col-12 col-md-6">
               <label for="address">Address</label>
               <input
+                id="input-5"
                 v-model="user.address"
                 type="text"
                 name="address"
@@ -102,6 +107,7 @@
             <div class="col-12 col-md-6">
               <label for="university">University</label>
               <input
+                id="input-6"
                 v-model="user.university"
                 type="text"
                 name="university"
@@ -114,6 +120,7 @@
             <div class="col-12 col-md-6">
               <label for="course">Course of Study</label>
               <input
+                id="input-7"
                 v-model="user.course"
                 type="text"
                 name="course"
@@ -124,6 +131,7 @@
             <div class="col-12 col-md-6">
               <label for="cgpa">CGPA</label>
               <input
+                id="input-8"
                 v-model="user.cgpa"
                 type="text"
                 name="cgpa"
@@ -134,6 +142,10 @@
             </div>
           </div>
         </div>
+        <b-form-valid-feedback class="mt-3" style="font-size: 15px" :state="loadingStatus">
+       <b>Checking...please wait</b>
+      </b-form-valid-feedback>
+
         <div class="form-row justify-content-center">
           <button
             type="submit"
@@ -143,6 +155,10 @@
           </button>
         </div>
       </form>
+    </div>
+    <div v-show="successPage">
+      <h1>Congratulations! {{ success }}</h1>
+      <h3>Kindly proceed to your dashboard</h3>
     </div>
   </div>
 </template>
@@ -184,6 +200,8 @@ export default {
       valid: true,
       errors: {},
       loginStatus: null,
+      loadingStatus: null,
+      successPage: false,
     };
   },
 
@@ -203,9 +221,10 @@ export default {
     getUserDeetsApplicationStatus(val) {
       console.log(val);
       if (val === 'Yes') {
-        setTimeout(() => {
-          this.$router.push({ name: 'Dashboard' });
-        }, 500);
+        this.loadingStatus = false;
+        // setTimeout(() => {
+        //   this.$router.push({ name: 'Dashboard' });
+        // }, 500);
       }
     },
   },
@@ -343,6 +362,7 @@ export default {
       if (this.validateFields() === false) {
         this.errors.fields = 'Refresh the page and fill all fields correctly';
       } else {
+        this.loadingStatus = true;
         const newUserObj = {
           ...this.user,
           fullName: `${this.user.firstName} ${this.user.lastName}`,
@@ -369,8 +389,12 @@ export default {
           .then((response) => {
             console.log(response);
             this.success = 'You have successfully applied!';
-            this.$router.push({ name: 'Dashboard' });
-            this.reset();
+            this.loadingStatus = false;
+            this.successPage = true;
+            console.log(this.loadingStatus, this.successPage, this.success);
+            setTimeout(() => {
+              this.$router.push({ name: 'Dashboard' });
+            }, 5000);
           })
           .catch((error) => {
             console.log(error);
@@ -392,6 +416,14 @@ export default {
   color: #2b3c4e;
   box-sizing: border-box;
   overflow: hidden;
+  margin-top: -20px;
+}
+.formm {
+  height: 650px;
+}
+#image-error {
+  margin-left: 350px;
+  margin-top: -10px;
 }
 .enyata-logo {
   width: 110.1px;
@@ -449,7 +481,12 @@ input {
   width: 379px;
   height: 41px;
 }
-
+#input-1, #input-2, #input-3, #input-4,
+#input-5, #input-6 , #input-7 , #input-8 {
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 small {
   margin: 25px;
   color: red;

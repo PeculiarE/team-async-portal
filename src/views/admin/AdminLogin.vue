@@ -40,7 +40,7 @@ export default {
     background-size: auto;
     /* width: 1086px; */
     /* height: 724px; */
-    background-position: 920px 0;
+    background-position: right 0;
     /* margin-bottom: 31px; */
   }
   .admin-login-background-image img {

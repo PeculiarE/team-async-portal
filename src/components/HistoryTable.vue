@@ -46,13 +46,6 @@ export default {
         //   time: '30 mins',
         //   status: 'Taken',
         // },
-        {
-          batch: 'Batch 2',
-          date: '12/07/21',
-          questions: 10,
-          time: '10 mins',
-          status: 'Taken',
-        },
       ],
     };
   },

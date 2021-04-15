@@ -74,7 +74,7 @@
             required
           ></b-form-input>
           <b-form-invalid-feedback :state="feedbackPhoneNumber">
-            Your phone number must contain 7 - 15 digits
+            Your phone number must contain 11 digits
           </b-form-invalid-feedback>
           <b-form-valid-feedback :state="feedbackPhoneNumber">
             Looks Good.
@@ -140,7 +140,7 @@
         </b-form-group>
       </div>
       <div class="extras">
-        <b-button block type="submit" variant="primary" class="button" :disabled="valid">
+        <b-button block type="submit" variant="primary" class="button mb-4" :disabled="valid">
           Sign Up
         </b-button>
         <div class="already">
@@ -158,8 +158,13 @@
           <b-list-group-item>Password: <b>{{ userDetails.password }}</b></b-list-group-item>
         </b-list-group>
       </b-card>
+
+      <b-form-valid-feedback class="mt-3" style="font-size: 15px" :state="loadingStatus">
+       <b>Checking...please wait</b>
+      </b-form-valid-feedback>
+
       <div class="extras-two">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mb-4">
           <b-button variant="primary" class="button" @click="confirmDetails = true">
             Go Back to Form
           </b-button>
@@ -205,6 +210,7 @@ export default {
       valid: true,
       confirmDetails: true,
       successPage: null,
+      loadingStatus: null,
     };
   },
   computed: {
@@ -243,11 +249,13 @@ export default {
     },
     getResponseRegister(val) {
       if (val.status === 'Success') {
+        this.loadingStatus = null;
         this.successPage = true;
         setTimeout(() => {
           this.$router.push({ name: 'UserLogin' });
         }, 2000);
       } else {
+        this.loadingStatus = null;
         this.confirmDetails = true;
         this.feedbackEmail = false;
       }
@@ -276,7 +284,7 @@ export default {
       return this.feedbackLastName;
     },
     validatePhoneNumber() {
-      const phoneDigits = /^[0-9]{7,15}$/;
+      const phoneDigits = /^[0-9]{11}$/;
       if (this.userDetails.phone.match(phoneDigits)) {
         this.feedbackPhoneNumber = true;
         return this.feedbackPhoneNumber;
@@ -314,6 +322,7 @@ export default {
       this.successPage = false;
     },
     signUp() {
+      this.loadingStatus = true;
       const user = {
         fullName: `${this.userDetails.firstName} ${this.userDetails.lastName}`,
         email: this.userDetails.email,
@@ -349,6 +358,9 @@ export default {
     border-radius: 4px;
     margin-bottom: 19px;
     width: 379px;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
   }
   .signup-password{
     display: flex;

@@ -25,7 +25,9 @@ export default {
   font-family: 'Poppins', sans-serif;
   color: #2b3c4e;
   background-color: #FDFDFF;
-  max-height: 900px;
+  /* max-height: 900px; */
+  /* max-width: 1024px;
+  margin: 0 auto; */
 }
 input {
   outline: none;
@@ -37,14 +39,14 @@ textarea:focus, input:focus{
   box-shadow: none;
 }
 #admin-sidebar-top-section {
-  height: 33%;
+  height: 28%;
   width: 100%;
   padding-top: 15%;
   background: #5ABEFD;
   text-align: center;
 }
 #sidebar-top-section {
-  height: 33%;
+  height: 28%;
   width: 100%;
   background: #2B3C4E;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.25);

@@ -122,7 +122,7 @@ export default {
         console.log(token);
         await axios({
           method: 'post',
-          url: 'http://localhost:3000/user/quiz_results',
+          url: 'https://async-backend.herokuapp.com/user/quiz_results',
           data: payload,
           headers: {
             // 'Content-Type': 'multipart/form-data',
@@ -140,7 +140,7 @@ export default {
       if (localStorage.getItem('loginToken')) {
         await axios({
           method: 'get',
-          url: 'http://localhost:3000/user/assessment_questions',
+          url: 'https://async-backend.herokuapp.com/user/assessment_questions',
           headers: {
             // 'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${this.getLoginToken}`,
@@ -194,7 +194,7 @@ export default {
       if (localStorage.getItem('loginToken')) {
         await axios({
           method: 'get',
-          url: 'http://localhost:3000/user/quiz_time',
+          url: 'https://async-backend.herokuapp.com/user/quiz_time',
           headers: {
             // 'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${this.getLoginToken}`,

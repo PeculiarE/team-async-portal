@@ -8,7 +8,7 @@
     <b-table
       id="assessment-results-table"
       :borderless="true"
-      :items="getUsersInBatch"
+      :items="formattedGetUsersInBatch"
       :fields="fields"
       head-variant="dark"
     ></b-table>
@@ -34,7 +34,7 @@ export default {
           sortable: false,
         },
         {
-          key: 'dob',
+          key: 'date',
           label: 'DOB',
           sortable: true,
         },
@@ -79,6 +79,11 @@ export default {
   },
   computed: {
     ...mapGetters(['getUsersInBatch']),
+    formattedGetUsersInBatch() {
+      return this.getUsersInBatch.map(
+        (batch) => ({ ...batch, date: new Date(batch.date).toLocaleDateString() }),
+      );
+    },
   },
   methods: {
     ...mapActions(['getUserTestResultDetails']),

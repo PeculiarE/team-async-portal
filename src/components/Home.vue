@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="contents">
-      <img class="img-fluid layer" src="../assets/home-layer.svg" alt="Layer" />
+      <!-- <img class="img-fluid layer" src="../assets/home-layer.svg" alt="Layer" /> -->
       <b-navbar toggleable="lg" type="light" variant="faded">
         <b-navbar-brand class="logo-img" href="#">
           <img src="../assets/enyata-logo.svg" alt="enyata logo" />
@@ -91,15 +91,20 @@ export default {
 .home {
   position: relative;
   width: 100%;
+  /* width: 1440px;
+  margin: 0 auto; */
   font-family: 'Poppins', sans-serif;
   font-style: normal;
+  background-image: url('../assets/home-layer.svg');
+  background-position: top right;
+  background-repeat: no-repeat;
 }
-.layer {
+/* .layer {
   position: absolute;
   right: 0;
   max-width: 570px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-}
+} */
 .navbar {
   padding: 20px 0;
 }
@@ -118,6 +123,8 @@ export default {
 }
 .contents {
   padding: 0 130px;
+  width: 1440px;
+  margin: 0 auto;
 }
 .row1 {
   box-sizing: border-box;
@@ -152,8 +159,14 @@ button {
   background-color: var(--enyata-purple);
   border: none;
 }
+button:hover {
+  background-color: var(--enyata-purple);
+}
 button a {
   color: #ffffff;
+}
+button:hover {
+  background-color: var(--enyata-purple);
 }
 .why {
   width: 156px;

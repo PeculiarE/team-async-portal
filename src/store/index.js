@@ -37,6 +37,7 @@ export default new Vuex.Store({
     ongoingApplication: localStorage.getItem('ongoingApplication') || null,
     applicationStartDate: localStorage.getItem('applicationStartDate') || null,
     hasBatchEnded: localStorage.getItem('hasBatchEnded') || null,
+    assessmentComposed: localStorage.getItem('assessmentComposed') || null,
     responseAdminAd: {
       status: '',
       message: '',
@@ -133,6 +134,9 @@ export default new Vuex.Store({
     },
     batchEnded(state) {
       return state.hasBatchEnded !== null;
+    },
+    getAssessmentComposed(state) {
+      return state.assessmentComposed !== null;
     },
     getResponseAdminAd(state) {
       return state.responseAdminAd;
@@ -235,10 +239,16 @@ export default new Vuex.Store({
         state.initialResponseAdminLogin.image = require('@/assets/account.svg');
         state.initialResponseAdminLogin.adminName = payload.adminName;
         state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+        state.initialResponseAdminLogin.adminPhone = `0${payload.adminPhone}`;
+        state.initialResponseAdminLogin.adminAddress = payload.adminAddress;
+        state.initialResponseAdminLogin.adminCountry = payload.adminCountry;
       } else {
         state.initialResponseAdminLogin.image = payload.image;
         state.initialResponseAdminLogin.adminName = payload.adminName;
         state.initialResponseAdminLogin.adminEmail = payload.adminEmail;
+        state.initialResponseAdminLogin.adminPhone = `0${payload.adminPhone}`;
+        state.initialResponseAdminLogin.adminAddress = payload.adminAddress;
+        state.initialResponseAdminLogin.adminCountry = payload.adminCountry;
       }
     },
     retrieveLoginAdminToken(state, payload) {
@@ -273,6 +283,9 @@ export default new Vuex.Store({
     },
     updateBatchStatus(state, payload) {
       state.hasBatchEnded = payload;
+    },
+    updateAssessmentComposed(state, payload) {
+      state.assessmentComposed = payload;
     },
     updatePresentBatch(state, payload) {
       state.presentBatch = payload;
@@ -413,6 +426,8 @@ export default new Vuex.Store({
       commit('updateUserDeets', newpayload);
       // commit('updateAllUsersDeets', newpayload);
       // console.log(newpayload.updated_at);
+      commit('updateAllUsersDeets', newpayload);
+      console.log(newpayload.updated_at);
       // console.log(state.allUsers);
     },
 
@@ -509,6 +524,7 @@ export default new Vuex.Store({
         },
       })
         .then((response) => {
+          console.log(response);
           const successObject = {
             status: response.data.status,
             message: response.data.message,
@@ -565,6 +581,7 @@ export default new Vuex.Store({
       await axios.get('https://async-backend.herokuapp.com/summary')
         .then((response) => {
           const arr = response.data.data;
+          console.log(arr);
           arr.sort((a, b) => ((a.batch_id > b.batch_id) ? -1 : 1));
           state.summary = { ...arr };
           const { count } = state.summary['0'];
@@ -594,7 +611,7 @@ export default new Vuex.Store({
       console.log(token);
       axios({
         method: 'GET',
-        url: 'http://localhost:3000/allUsers',
+        url: 'https://async-backend.herokuapp.com/allUsers',
         headers: {
           Authorization: `Bearer ${token}`,
         },

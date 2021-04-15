@@ -31,9 +31,20 @@
               Watch this space
             </p>
             <b-button
+              id="enabled-btn"
               type="submit"
               class="text-white button"
               @click="quizPage"
+              v-if="openApplicationStatus"
+            >
+              Take Assessment
+            </b-button>
+            <b-button
+              type="submit"
+              class="text-white button"
+              @click="quizPage"
+              disabled
+              v-else
             >
               Take Assessment
             </b-button>
@@ -47,6 +58,8 @@
 <script>
 import Sidebar from '@/components/Sidebar.vue';
 
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'TakeAssessment',
   components: {
@@ -56,6 +69,9 @@ export default {
     return {
       assessmentMenuSelected: false,
     };
+  },
+  computed: {
+    ...mapGetters(['openApplicationStatus']),
   },
   mounted() {
     this.assessmentMenuSelected = true;
@@ -93,5 +109,8 @@ span {
 .button {
     width: 205px;
     height: 41px;
+}
+#enabled-btn {
+  background-color: var(--enyata-purple);
 }
 </style>

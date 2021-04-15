@@ -21,24 +21,32 @@
         </div>
       </div> -->
       <!-- <button  @click.prevent="show">Approve</button> -->
-      <b-button id="show-btn" @click="showModal">Approve</b-button>
+      <b-button type="button" id="show-a-btn" v-b-modal.modal-2>Approve</b-button>
       <div>
-        <b-modal id="modal-sm" ref='modal-approve'
-        size="sm">
+        <b-modal hide-header hide-footer centered id="modal-2"
+        :modal-class="modalsmall">
           <p>Are you sure you want to approve this application?</p>
-          <template #modal-footer>
-            <!-- Emulate built in modal footer ok and cancel button actions -->
+          <div class="mod-foot">
             <b-button size="sm" variant="success" @click="approveApplication">
               Yes
             </b-button>
             <b-button size="sm" variant="danger" @click="hideModal">
               No
             </b-button>
+          </div>
+          <!-- <template #modal-footer> -->
+            <!-- Emulate built in modal footer ok and cancel button actions -->
+            <!-- <b-button size="sm" variant="success" @click="approveApplication">
+              Yes
+            </b-button>
+            <b-button size="sm" variant="danger" @click="hideModal">
+              No
+            </b-button> -->
             <!-- Button with custom close trigger value -->
             <!-- <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
               Forget it
             </b-button> -->
-          </template>
+          <!-- </template> -->
         </b-modal>
       </div>
     </div>
@@ -46,6 +54,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      modalsmall: ['modalsmall'],
+    };
+  },
   methods: {
     showModal() {
       // this.$modal.show('modal-approve');
@@ -63,7 +76,28 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+#show-a-btn {
+    /* width: 379px;
+    height: 50px; */
+    background-color: var(--enyata-purple);
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    font-family: Lato;
+    /* margin-top: 60px; */
+}
+.modalsmall .modal-content {
+    /* margin: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; */
+    height: 250px;
+    width: 400px;
+    /* z-index: 100000; */
+}
 /* .mod-one {
   width: 200px;
 } */

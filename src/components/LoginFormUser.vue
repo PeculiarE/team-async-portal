@@ -37,6 +37,10 @@
         </b-form-valid-feedback>
       </b-form-group>
 
+      <b-form-valid-feedback style="font-size: 15px" :state="loadingStatus">
+       <b>Checking...please wait</b>
+      </b-form-valid-feedback>
+
       <b-form-invalid-feedback style="font-size: 15px" :state="loginStatus">
        <b>{{ getResponseLogin.message }}</b>
       </b-form-invalid-feedback>
@@ -68,6 +72,7 @@ export default {
       showPassword: false,
       feedbackPassword: null,
       loginStatus: null,
+      loadingStatus: null,
       valid: true,
     };
   },
@@ -77,12 +82,15 @@ export default {
   watch: {
     getResponseLogin(val) {
       if (val.status === 'Success') {
+        this.loadingStatus = null;
         this.loginStatus = true;
         setTimeout(() => {
           this.$router.push({ name: 'ApplicationForm' });
         }, 2000);
       } else {
+        this.loadingStatus = null;
         this.loginStatus = false;
+        alert('check');
       }
     },
   },
@@ -100,8 +108,12 @@ export default {
     },
     togglePassword() {
       this.showPassword = !this.showPassword;
+      console.log('something');
     },
     loginNow() {
+      console.log(this.loginStatus);
+      this.loadingStatus = true;
+      console.log(this.loadingStatus);
       this.login(this.userDetails);
     },
   },
@@ -127,6 +139,9 @@ export default {
     box-sizing: border-box;
     border-radius: 4px;
     margin-bottom: 19px;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
   }
   .login-form-password {
     display: flex;
