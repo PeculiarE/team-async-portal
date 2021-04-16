@@ -44,7 +44,7 @@ const routes = [
     path: '/application',
     name: 'ApplicationForm',
     component: () => import('../views/user/ApplicationForm.vue'),
-    meta: { requiresApplyAuth: true },
+    meta: { requiresApplyAuthTest: true },
   },
   {
     path: '/user/dashboard',
@@ -146,6 +146,25 @@ router.beforeEach(async (to, from, next) => {
 });
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresApplyAuth)) {
+    // await store.dispatch('userApplyPage');
+    if (store.getters.loggedInStatus) {
+      await store.dispatch('populateUserDeets');
+      if (store.getters.getUserDeetsApplicationStatus === 'Yes') {
+        console.log('Yeah!!');
+        next();
+        return;
+      }
+      console.log('Oh No!');
+      next('/application');
+    } else {
+      next('/user/login');
+    }
+  } else {
+    next();
+  }
+});
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresApplyAuthTest)) {
     // await store.dispatch('userApplyPage');
     if (store.getters.loggedInStatus) {
       next();
