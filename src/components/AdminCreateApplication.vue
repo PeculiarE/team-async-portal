@@ -27,17 +27,17 @@
                   Please upload a flyer
                 </b-form-invalid-feedback>
               </div>
-              <!-- <div class="small-inputs"> -->
+              <div class="small-inputs">
                 <b-form-group id="input-group-1" label="Link" label-for="input-1">
-              <b-form-inputss
+              <b-form-input
               id="input-1"
               v-model="application.applicationLink" type="text"
-              required @keyup="validateLink()"></b-form-inputss>
+              required @keyup="validateLink()"></b-form-input>
               <b-form-invalid-feedback :state="feedbackLink">
                 This field requires a minimum of 9 characters
               </b-form-invalid-feedback>
               </b-form-group>
-              <!-- </div> -->
+              </div>
             </div>
             <div class="d-flex justify-content-between">
                 <div class="small-inputs">
@@ -299,9 +299,9 @@ export default {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-#input-group-1 {
+/* #input-group-1 {
   height: 41px;
-}
+} */
 #input-4 {
     width: 976px;
     height: 144px;
@@ -312,6 +312,7 @@ export default {
     box-shadow: none;
 }
 .height-- {
+  width: 456px;
   height: 108px;
 }
 /* .small-inputs {
@@ -329,6 +330,6 @@ export default {
     font-size: 16px;
     line-height: 19px;
     font-family: Lato;
-    margin-top: 60px;
+    margin-top: 80px;
 }
 </style>

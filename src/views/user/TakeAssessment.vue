@@ -35,7 +35,7 @@
               type="submit"
               class="text-white button"
               @click="quizPage"
-              v-if="openApplicationStatus"
+              v-if="getUserDeetsStatus === 'Approved'"
             >
               Take Assessment
             </b-button>
@@ -57,8 +57,7 @@
 
 <script>
 import Sidebar from '@/components/Sidebar.vue';
-
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'TakeAssessment',
@@ -71,15 +70,18 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['openApplicationStatus']),
-  },
-  mounted() {
-    this.assessmentMenuSelected = true;
+    ...mapGetters(['openApplicationStatus', 'getAdminQuestions', 'getUserDeetsStatus']),
   },
   methods: {
+    ...mapActions(['populateUserDeets']),
     quizPage() {
       this.$router.push({ name: 'Questions' });
     },
+  },
+  mounted() {
+    this.populateUserDeets();
+    this.assessmentMenuSelected = true;
+    console.log(this.getAdminQuestions);
   },
 };
 </script>

@@ -14,7 +14,8 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Password" label-for="input-2">
+      <div class="small-inputs">
+        <b-form-group id="input-group-2" label="Password" label-for="input-2">
         <div class="login-form-password">
           <b-form-input
           id="input-2"
@@ -36,6 +37,7 @@
         <b-form-valid-feedback :state="feedbackPassword">
         </b-form-valid-feedback>
       </b-form-group>
+      </div>
 
       <b-form-valid-feedback style="font-size: 15px" :state="loadingStatus">
        <b>Checking...please wait</b>
@@ -121,6 +123,9 @@ export default {
 </script>
 
 <style scoped>
+.small-inputs {
+  height: 41px;
+}
   .login-form {
     width: 379px;
   }
@@ -158,7 +163,7 @@ export default {
   }
   .button {
     height: 50px;
-    margin-top: 20px;
+    margin-top: 80px;
     background-color: var(--enyata-purple);
     border: none;
   }
