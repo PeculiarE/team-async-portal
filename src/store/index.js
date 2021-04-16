@@ -187,6 +187,7 @@ export default new Vuex.Store({
     },
     updateUserDeets(state, payload) {
       state.userDeets = { ...payload };
+      console.log(state.userDeets);
     },
 
     updateAllUsersDeets(state, payload) {
@@ -412,12 +413,12 @@ export default new Vuex.Store({
       localStorage.removeItem('userId');
       commit('destroyLoginToken');
     },
-    async userApplyPage(context) {
-      backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginToken}`;
-      await backend
-        .get('')
-        .finally(() => {});
-    },
+    // async userApplyPage(context) {
+    //   backend.defaults.headers.common.Authorization = `Bearer ${context.state.loginToken}`;
+    //   await backend
+    //     .get('')
+    //     .finally(() => {});
+    // }, TO BE REWRITTEN
 
     async bringUserDeetstoState({ commit }, payload) {
       // add state beside the commit in above later.
@@ -436,6 +437,7 @@ export default new Vuex.Store({
     async populateUserDeets({ dispatch }) {
       if (localStorage.getItem('loginToken')) {
         const id = localStorage.getItem('userId');
+        console.log(id);
         await axios.get(`https://async-backend.herokuapp.com/user/dashboard/${id}`)
           .then((response) => {
             dispatch('bringUserDeetstoState', response);

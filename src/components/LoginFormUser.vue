@@ -9,6 +9,7 @@
         <b-form-input
           id="input-1"
           type="email"
+          @keyup="loginStatus = null"
           v-model="userDetails.email"
           required
         ></b-form-input>
@@ -81,26 +82,34 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getResponseLogin']),
+    ...mapGetters(['getResponseLogin', 'getUserDeetsApplicationStatus']),
   },
   watch: {
     getResponseLogin(val) {
       if (val.status === 'Success') {
         this.loadingStatus = null;
         this.loginStatus = true;
-        setTimeout(() => {
-          this.$router.push({ name: 'ApplicationForm' });
-        }, 2000);
+        this.populateUserDeets();
+        if (this.getUserDeetsApplicationStatus === 'Yes') {
+          console.log('Yeah!!');
+          setTimeout(() => {
+            this.$router.push({ name: 'Dashboard' });
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            this.$router.push({ name: 'ApplicationForm' });
+          }, 2000);
+        }
       } else {
         this.loadingStatus = null;
         this.loginStatus = false;
-        alert('check');
       }
     },
   },
   methods: {
-    ...mapActions(['login']),
+    ...mapActions(['login', 'populateUserDeets']),
     validatePassword() {
+      this.loginStatus = null;
       if (this.userDetails.password.length >= 8) {
         this.feedbackPassword = true;
         this.valid = false;
@@ -115,9 +124,7 @@ export default {
       console.log('something');
     },
     loginNow() {
-      console.log(this.loginStatus);
       this.loadingStatus = true;
-      console.log(this.loadingStatus);
       this.login(this.userDetails);
     },
   },
