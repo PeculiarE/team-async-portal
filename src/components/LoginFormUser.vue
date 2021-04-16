@@ -15,9 +15,10 @@
         ></b-form-input>
       </b-form-group>
 
-      <div class="small-inputs">
+      <!-- <div class="small-inputs"> -->
         <b-form-group id="input-group-2" label="Password" label-for="input-2">
-        <div class="login-form-password">
+        <div class="small-inputs">
+          <div class="login-form-password">
           <b-form-input
           id="input-2"
           :type="showPassword ? 'text' : 'password'"
@@ -37,10 +38,11 @@
         </b-form-invalid-feedback>
         <b-form-valid-feedback :state="feedbackPassword">
         </b-form-valid-feedback>
+        </div>
       </b-form-group>
-      </div>
+      <!-- </div> -->
 
-      <b-form-valid-feedback style="font-size: 15px" :state="loadingStatus">
+      <b-form-valid-feedback style="font-size: 15px, margin-bottom: 20px" :state="loadingStatus">
        <b>Checking...please wait</b>
       </b-form-valid-feedback>
 
@@ -170,7 +172,7 @@ export default {
   }
   .button {
     height: 50px;
-    margin-top: 80px;
+    margin-top: 40px;
     background-color: var(--enyata-purple);
     border: none;
   }

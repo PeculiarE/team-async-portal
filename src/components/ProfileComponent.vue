@@ -273,6 +273,10 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+.input-1, .input-2, .input-3, .input-4, .input-5 {
+  height: 54px;
+  margin-bottom: 40px;
+}
 #cover-image {
   width: 90px;
   height: 90px;
@@ -433,5 +437,6 @@ input:focus {
   line-height: 19px;
   font-family: Lato;
   margin: auto;
+  margin-bottom: 40px;
 }
 </style>

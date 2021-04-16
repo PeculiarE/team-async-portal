@@ -47,7 +47,7 @@
             @click.prevent="next"> Next </b-button>
           </div>
           <div class='d-flex justify-content-center'>
-            <b-button @click='submitQuiz' class='text-white w-25'>
+            <b-button @click='submitQuiz' class='text-white w-25 finish-btn'>
               Finish
             </b-button>
           </div>
@@ -252,7 +252,12 @@ span {
 .button {
   width: 125px;
   height: 41px;
-  background-color: #2b3c4e;
+  /* background-color: #2b3c4e; */
+  background-color: var(--enyata-purple);
   border-color: #2b3c4e;
+}
+.finish-btn {
+  background-color: var(--enyata-purple);
+
 }
 </style>
