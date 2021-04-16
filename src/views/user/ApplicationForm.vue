@@ -210,6 +210,7 @@ export default {
   },
   mounted() {
     this.populateUserDeets();
+    console.log(this.$store.getters.getUserDeetsApplicationStatus);
   },
   watch: {
     loggedInStatus(res) {

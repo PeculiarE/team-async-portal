@@ -24,7 +24,7 @@
               :class="assessmentMenuSelected ? 'selected_menu' : ''">
                   <img src="../assets/assessment-icon.svg"
                     class="d-inline-block mr-3">Assessment</b-nav-item>
-              <b-nav-item to="" class="sidebar-menu mt-5" @click="logoutNow">
+              <b-nav-item class="sidebar-menu mt-5" @click="logoutNow">
                   <img src="../assets/logout-icon.svg"
                     class="d-inline-block mr-3">Log Out</b-nav-item>
             </b-nav>
