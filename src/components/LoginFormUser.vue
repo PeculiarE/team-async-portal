@@ -90,16 +90,9 @@ export default {
         this.loadingStatus = null;
         this.loginStatus = true;
         this.populateUserDeets();
-        if (this.getUserDeetsApplicationStatus === 'Yes') {
-          console.log('Yeah!!');
-          setTimeout(() => {
-            this.$router.push({ name: 'Dashboard' });
-          }, 2000);
-        } else {
-          setTimeout(() => {
-            this.$router.push({ name: 'ApplicationForm' });
-          }, 2000);
-        }
+        setTimeout(() => {
+          this.$router.push({ name: 'Dashboard' });
+        }, 2000);
       } else {
         this.loadingStatus = null;
         this.loginStatus = false;

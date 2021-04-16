@@ -16,13 +16,29 @@ const validateEmail = (email) => {
   return { valid: true, error: null };
 };
 
-const validateDob = (field) => {
+const validateDob = (field, max) => {
   if (!field.length) {
     return { valid: false, error: 'The field is required' };
   }
   const date = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
   if (!field.match(date)) {
     return { valid: false, error: 'Please, enter a valid date format' };
+  }
+  const yearDiff = max.split('-')[0] - field.split('-')[0];
+  const monthDiff = max.split('-')[1] - field.split('-')[1];
+  const dayDiff = max.split('-')[2] - field.split('-')[2];
+  const yearAgeDiff = yearDiff + monthDiff;
+  const monthAgeDiff = yearAgeDiff + dayDiff;
+  console.log(yearDiff, monthDiff, dayDiff, yearAgeDiff, monthAgeDiff);
+  if (yearDiff === 15) {
+    if (yearAgeDiff < 15) {
+      return { valid: false, error: 'You must be at least 15years!' };
+    }
+    if (monthAgeDiff < 15) {
+      return { valid: false, error: 'You must be at least 15years!' };
+    }
+  } else if (yearDiff <= 15) {
+    return { valid: false, error: 'You must be at least 15years!' };
   }
   return { valid: true, error: null };
 };

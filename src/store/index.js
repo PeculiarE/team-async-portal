@@ -8,7 +8,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    userDeets: {},
+    userDeets: JSON.parse(localStorage.getItem('userDeets')) || {},
     allUsers: [],
     responseRegister: {
       status: '',
@@ -186,8 +186,10 @@ export default new Vuex.Store({
       state.adminQuestions.push(payload);
     },
     updateUserDeets(state, payload) {
+      console.log(payload);
       state.userDeets = { ...payload };
       console.log(state.userDeets);
+      localStorage.setItem('userDeets', JSON.stringify(payload));
     },
 
     updateAllUsersDeets(state, payload) {
