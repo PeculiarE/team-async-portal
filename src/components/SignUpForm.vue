@@ -7,7 +7,8 @@
           label="First Name"
           label-for="input-1"
         >
-          <b-form-input
+          <div class="small-inputs">
+            <b-form-input
             id="input-1"
             type="text"
             v-model="userDetails.firstName"
@@ -20,6 +21,7 @@
           <b-form-valid-feedback :state="feedbackFirstName">
             Looks Good.
           </b-form-valid-feedback>
+          </div>
         </b-form-group>
 
         <b-form-group
@@ -27,7 +29,8 @@
           label="Last Name"
           label-for="input-2"
         >
-          <b-form-input
+          <div class="small-inputs">
+            <b-form-input
             id="input-2"
             type="text"
             v-model="userDetails.lastName"
@@ -40,6 +43,7 @@
           <b-form-valid-feedback :state="feedbackLastName">
             Looks Good.
           </b-form-valid-feedback>
+          </div>
         </b-form-group>
 
         <b-form-group
@@ -47,7 +51,8 @@
           label="Email Address"
           label-for="input-3"
         >
-          <b-form-input
+          <div class="small-inputs">
+            <b-form-input
             id="input-3"
             type="email"
             @keyup="feedbackEmail = true"
@@ -59,6 +64,7 @@
           </b-form-invalid-feedback>
           <b-form-valid-feedback style="font-size: 15px" :state="feedbackEmail">
           </b-form-valid-feedback>
+          </div>
         </b-form-group>
 
         <b-form-group
@@ -66,7 +72,8 @@
           label="Phone Number"
           label-for="input-4"
         >
-          <b-form-input
+         <div class="small-inputs">
+            <b-form-input
             id="input-4"
             type="number"
             v-model="userDetails.phone"
@@ -79,6 +86,7 @@
           <b-form-valid-feedback :state="feedbackPhoneNumber">
             Looks Good.
           </b-form-valid-feedback>
+         </div>
         </b-form-group>
 
         <b-form-group
@@ -86,7 +94,8 @@
           label="Password"
           label-for="input-5"
         >
-          <div class="signup-password">
+          <div class="small-inputs">
+            <div class="signup-password">
               <b-form-input
               id="input-5"
               :type="showPassword ? 'text' : 'password'"
@@ -109,6 +118,7 @@
             <b-form-valid-feedback :state="feedbackPassword">
               Password is strong!
           </b-form-valid-feedback>
+          </div>
         </b-form-group>
 
         <b-form-group
@@ -116,7 +126,8 @@
           label="Confirm Password"
           label-for="input-6"
         >
-          <div class="signup-password">
+          <div class="small-inputs">
+            <div class="signup-password">
               <b-form-input
               id="input-6"
               :type="showConfirmPassword ? 'text' : 'password'"
@@ -137,6 +148,7 @@
           <b-form-valid-feedback :state="feedbackConfirmPassword">
             Passwords match
           </b-form-valid-feedback>
+          </div>
         </b-form-group>
       </div>
       <div class="extras">
@@ -349,10 +361,11 @@ export default {
     line-height: 17px;
     color: var(--text-secondary-small);
     text-align: left;
+    /* height: 41px; */
   }
   #input-1, #input-2, #input-3, #input-4, #input-5, #input-6 {
     width: 379px;
-    height: 41px;
+    /* height: 41px; */
     border: 1.5px solid #BDBDBD;
     outline: none;
     border-radius: 4px;
@@ -361,6 +374,10 @@ export default {
     border-color: inherit;
     -webkit-box-shadow: none;
     box-shadow: none;
+  }
+  .small-inputs {
+    height: 41px;
+    margin-bottom: 44px;
   }
   .signup-password{
     display: flex;
@@ -383,7 +400,7 @@ export default {
   }
   .button {
     height: 50px;
-    margin-top: 20px;
+    margin-top: 40px;
     background-color: var(--enyata-purple);
     border: none;
   }

@@ -219,12 +219,15 @@ export default {
       }
       this.loginStatus = false;
     },
-    // getUserDeetsApplicationStatus(val) {
-    //   console.log(val);
-    //   if (val === 'Yes') {
-    //     this.loadingStatus = false;
-    //   }
-    // },
+    getUserDeetsApplicationStatus(val) {
+      console.log(val);
+      if (val === 'Yes') {
+        this.loadingStatus = false;
+        setTimeout(() => {
+          this.$router.push({ name: 'Dashboard' });
+        }, 500);
+      }
+    },
   },
   methods: {
     filesSelectedCV(fileRecordsNewlySelected) {
