@@ -222,9 +222,9 @@ export default {
       console.log(val);
       if (val === 'Yes') {
         this.loadingStatus = false;
-        // setTimeout(() => {
-        //   this.$router.push({ name: 'Dashboard' });
-        // }, 500);
+        setTimeout(() => {
+          this.$router.push({ name: 'Dashboard' });
+        }, 500);
       }
     },
   },

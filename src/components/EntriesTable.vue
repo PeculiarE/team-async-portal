@@ -436,4 +436,9 @@ label {
     /* margin-left: 50px; */
     /* z-index: 100000; */
 }
+table tbody tr:hover {
+   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05) !important;
+   border-radius: 8px;
+   margin-top: 5px;
+}
 </style>
