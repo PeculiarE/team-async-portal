@@ -237,7 +237,7 @@ export default new Vuex.Store({
     },
     updateAdminInfo(state, payload) {
       console.log(payload.image);
-      if (payload.image === null || payload.image === 'null') {
+      if (payload.image === null || payload.image === 'null' || payload.image === 'removed') {
         /* eslint-disable global-require */
         state.initialResponseAdminLogin.image = require('@/assets/account.svg');
         state.initialResponseAdminLogin.adminName = payload.adminName;

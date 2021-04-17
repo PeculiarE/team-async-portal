@@ -6,8 +6,11 @@
       </div>
       <hr>
       <div class="options">
-        <div id="cover-image">
-          <img :src="getAdminInfo.image" alt="profile-pic">
+        <div id="cover-image" v-if="!fakePhoto">
+          <img :src="testing" alt="profile-pic">
+        </div>
+        <div id="cover-image-fake" v-else>
+          <img alt="profile-pic-fake" :src="fakePhoto">
         </div>
         <div id="vfa-demo">
           <VueFileAgent
@@ -32,7 +35,8 @@
         </div>
         <div :class="removeCoverImage ? 'remove-cover-image-disabled' : 'remove-cover-image'"
         :disabled="removeCoverImage">
-          <p @click="filesSelectedPhoto($event)"
+          <p @click="removeFromDatabase($event)"
+          :disabled="removeCoverImage"
           :class="removeCoverImage ? 'grey-text' : 'red-text'">X  Remove</p>
         </div>
       </div>
@@ -120,6 +124,8 @@ export default {
       errors: {},
       editNow: true,
       removeCoverImage: true,
+      fakePhoto: null,
+      testing: null,
     };
   },
   computed: {
@@ -170,11 +176,26 @@ export default {
         ? fileRecordsNewlySelected[0]
         : null;
       console.log(this.update.photo, this.getAdminInfo.image);
+      if (this.update.photo != null) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.fakePhoto = e.target.result;
+          console.log(this.fakePhoto);
+        };
+        reader.readAsDataURL(this.update.photo.file);
+      }
     },
     beginEdit() {
       this.editNow = false;
       this.removeCoverImage = false;
       this.valid = false;
+    },
+    removeFromDatabase(event) {
+      this.update.photo = 'removed';
+      /* eslint-disable global-require */
+      this.testing = require('@/assets/account.svg');
+      this.filesSelectedPhoto(event);
+      this.fakePhoto = false;
     },
     validateName() {
       const letters = /^[A-Za-z ]{5,}$/;
@@ -206,7 +227,9 @@ export default {
     },
     updateAdminData() {
       this.loadingStatus = true;
-      this.update.photo = this.update.photo === null ? this.update.photo : this.update.photo.file;
+      this.update.photo = (this.update.photo === null || this.update.photo === 'removed')
+        ? this.update.photo
+        : this.update.photo.file;
       this.adminUpdate(this.update);
       console.log(this.update);
     //   this.reset();
@@ -220,6 +243,7 @@ export default {
       : this.getAdminInfo.adminPhone;
     this.update.address = this.getAdminInfo.adminAddress;
     this.update.country = this.getAdminInfo.adminCountry;
+    this.testing = this.getAdminInfo.image;
   },
 };
 </script>
@@ -286,21 +310,34 @@ export default {
   height: 100%;
   border-radius: 50%;
 }
+#cover-image-fake {
+  width: 90px;
+  height: 90px;
+}
+#cover-image-fake img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
 .remove-cover-image {
   width: 170px;
   height: 65px;
-  padding-top: 20px;
+  /* padding-top: 20px; */
+  padding-top: 40px;
   box-sizing: border-box;
-  border: 2px dashed #FF5722;
-  text-align: center;
+  /* border: 2px dashed #FF5722; */
+  /* text-align: center; */
+  text-align: initial;
 }
 .remove-cover-image-disabled {
   width: 170px;
   height: 65px;
-  padding-top: 20px;
+   /* padding-top: 20px; */
+  padding-top: 40px;
   box-sizing: border-box;
-  border: 2px dashed grey;
-  text-align: center;
+  /* border: 2px dashed grey; */
+  /* text-align: center; */
+  text-align: initial;
   opacity: 0.5;
 }
 /* #vfa-demo, .upload-block {
@@ -362,7 +399,9 @@ a {
   line-height: 18px;
   letter-spacing: -0.117188px;
   margin: auto;
-  text-align: center;
+  /* text-align: center; */
+  text-align: initial;
+  cursor: pointer;
 }
 .grey-text {
   color: grey;
@@ -371,8 +410,10 @@ a {
   line-height: 18px;
   letter-spacing: -0.117188px;
   margin: auto;
-  text-align: center;
+  /* text-align: center; */
+  text-align: initial;
   /* opacity: 0.5; */
+  pointer-events: none;
 }
 .row1, .row2 {
   width: 724px;
