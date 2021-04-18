@@ -672,7 +672,7 @@ export default new Vuex.Store({
       const token = localStorage.getItem('loginAdminToken');
       await axios({
         method: 'GET',
-        url: 'http://localhost:3000/assessment_details',
+        url: 'https://async-backend.herokuapp.com/assessment_details',
         headers: {
           Authorization: `Bearer ${token}`,
         },
