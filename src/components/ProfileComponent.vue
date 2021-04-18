@@ -12,7 +12,7 @@
         <div id="cover-image-fake" v-else>
           <img alt="profile-pic-fake" :src="fakePhoto">
         </div>
-        <div id="vfa-demo">
+        <div v-show="removed" id="vfa-demo">
           <VueFileAgent
           class="upload-block"
           ref="vfaDemoRef"
@@ -33,9 +33,29 @@
           id="choose-file"
           ></VueFileAgent>
         </div>
+        <div v-show="!removed" id="vfa-demo-two">
+          <VueFileAgent
+          class="upload-block"
+          ref="vfaDemoTwoRef"
+          :theme="'list'"
+          :multiple="false"
+          :disabled="editNow"
+          :meta="true"
+          :accept="'.jpeg'"
+          :maxSize="'2MB'"
+          :maxFiles="1"
+          :helpText="'Upload a new image'"
+          :errorText="{
+          type: 'Invalid file type. Only files with jpeg extension are allowed',
+          size: 'Files should not exceed 2MB in size',
+          }"
+          @select="filesSelectedPhoto($event)"
+          id="choose-file-two"
+          ></VueFileAgent>
+        </div>
         <div :class="removeCoverImage ? 'remove-cover-image-disabled' : 'remove-cover-image'"
         :disabled="removeCoverImage">
-          <p @click="removeFromDatabase($event)"
+          <p @click="removeFromDatabase()"
           :disabled="removeCoverImage"
           :class="removeCoverImage ? 'grey-text' : 'red-text'">X  Remove</p>
         </div>
@@ -126,6 +146,7 @@ export default {
       removeCoverImage: true,
       fakePhoto: null,
       testing: null,
+      removed: true,
     };
   },
   computed: {
@@ -190,11 +211,12 @@ export default {
       this.removeCoverImage = false;
       this.valid = false;
     },
-    removeFromDatabase(event) {
-      this.update.photo = 'removed';
+    removeFromDatabase() {
       /* eslint-disable global-require */
       this.testing = require('@/assets/account.svg');
-      this.filesSelectedPhoto(event);
+      this.removed = false;
+      // this.filesSelectedPhoto(event);
+      this.update.photo = 'removed';
       this.fakePhoto = false;
     },
     validateName() {
@@ -276,7 +298,7 @@ export default {
   line-height: 18px;
   letter-spacing: -0.5px;
   color: var(--enyata-purple);
-  border: 3px solid var(--enyata-purple);
+  border: 1px solid var(--enyata-purple);
 }
 .title button:focus {
   border: 3px solid var(--enyata-purple);
