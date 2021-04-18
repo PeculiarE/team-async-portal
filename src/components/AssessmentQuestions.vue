@@ -3,8 +3,8 @@
     <h1>Compose Assessment</h1>
 
     <b-form v-if="newQuestion === true" >
-      <p class="text-left">{{ getQuestionCount }}/{{ getQuestionCount }}</p>
-      <div class="d-flex justify-content-evenly align-items-center">
+      <p class="text-left">{{ getQuestionCount + 1 }}/{{ getTotalQuestionCount + 1 }}</p>
+      <div class="d-flex justify-content-between align-items-center">
         <div>
           <VueFileAgent
             ref="vueFileAgent"
@@ -26,12 +26,10 @@
           <small>{{ errors.file }}</small>
         </div>
         <div class="ml-5">
-          <b-form-group id="correctOption" label="correctOption" label-for="correctOption">
+          <b-form-group id="correctOption" label="Correct Option" label-for="correctOption">
             <b-form-select v-model="singleQuestion.correctOption"
-          :options="options" size="sm" required></b-form-select>
+          :options="options" class="w-100 h-50" required></b-form-select>
         <small>{{ errors.correctOption }}</small>
-            <!-- <b-form-input id="inputCorrectOption" type="text"
-            v-model="singleQuestion.correctOption"></b-form-input> -->
         </b-form-group>
         </div>
         </div>
@@ -76,8 +74,8 @@
     </b-form>
 
     <b-form v-else>
-      <p class="text-left">{{ getQuestionCount }}/{{ getQuestionCount }}</p>
-      <div class="d-flex justify-content-evenly align-items-center">
+      <p class="text-left">{{ getQuestionCount + 1 }}/{{ getTotalQuestionCount + 1 }}</p>
+      <div class="d-flex justify-content-between align-items-center">
         <div>
           <VueFileAgent
             ref="vueFileAgent"
@@ -101,12 +99,8 @@
         <div class="ml-5">
           <b-form-group id="correctOption" label="correctOption" label-for="correctOption">
             <b-form-select v-model="singleQuestion.correctOption"
-          :options="options" size="sm" required></b-form-select>
+          :options="options" class="w-100 h-50" required></b-form-select>
         <small>{{ errors.correctOption }}</small>
-            <!-- <b-form-input id="inputCorrectOption" type="text"
-            required
-            v-model="this.getAdminQuestions[getQuestionCount].correctOption"></b-form-input> -->
-        <!-- <small>{{ errors.correctOption }}</small> -->
         </b-form-group>
         </div>
         </div>
@@ -159,8 +153,6 @@
 </template>
 
 <script>
-// import axios from 'axios';
-
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 import {
@@ -174,7 +166,6 @@ export default {
       currentQuestion: 0,
       totalQuestions: 0,
       options: [
-        { value: null, text: 'Select an option', disabled: true },
         { value: 'a', text: 'a' },
         { value: 'b', text: 'b' },
         { value: 'c', text: 'c' },
@@ -194,7 +185,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getAdminQuestions', 'getQuestionCount']),
+    ...mapGetters(['getAdminQuestions', 'getQuestionCount', 'getTotalQuestionCount']),
   },
   methods: {
     ...mapMutations(['reduceQuestionCount', 'updateQuestionCount']),
@@ -246,15 +237,18 @@ export default {
           const newSingleQuestion = { ...this.singleQuestion, file: this.singleQuestion.file.file };
           this.adminNextQuestionButton(newSingleQuestion);
           this.resetQuestionFields();
+          this.errors = {};
           return;
         }
         const newSingleQuestion = { ...this.singleQuestion };
         this.adminNextQuestionButton(newSingleQuestion);
         this.resetQuestionFields();
+        this.errors = {};
         console.log('it\'s working');
       }
     },
     prev() {
+      this.errors = {};
       this.newQuestion = false;
       this.reduceQuestionCount(1);
       console.log(this.getQuestionCount);
@@ -262,55 +256,17 @@ export default {
       console.log(this.getQuestionCount);
     },
     next2() {
+      this.errors = {};
       this.updateQuestionCount(1);
       if (this.getQuestionCount === this.getAdminQuestions.length) {
         this.newQuestion = true;
       }
     },
-    async adminFinishSettingQuestions() {
-      // if (localStorage.getItem('loginAdminToken')) {
-      //   const token = localStorage.getItem('loginAdminToken');
-      //   console.log(`Bearer ${token}`);
-      //   console.log(payload);
-      // payload.forEach((element) => {
-      //   console.log(element, 'element');
-      //   const formData = new FormData();
-      //   const trying = Object.entries(element);
-      //   console.log(trying);
-      //   trying.forEach((el) => {
-      //     console.log(el);
-      //     el.forEach(([key, value]) => {
-      //       formData.append([key, value]);
-      //     });
-      //   });
-      //   console.log(formData);
-      // });
-
-      // const payloaddata = {
-      //   adminQuestions: payload,
-      // };
-      // console.log(payloaddata);
-      // await axios.post('http://localhost:3000/adminquestions', payloaddata,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   })
-      //   .catch((error) => console.log(error))
-      //   .finally(() => {});
-      // }
-    },
     finish() {
       this.next();
-      const {
-        correctOption, question, optionA, optionB, optionC, optionD,
-      } = this.errors;
-      if (correctOption === null && question === null && optionA === null
-      && optionB === null && optionC === null && optionD === null) {
-        console.log(this.getAdminQuestions);
-        // this.adminFinishSettingQuestions(this.getAdminQuestions);
-        this.$router.push({ name: 'TimerSettings' });
-      }
+      console.log(this.getAdminQuestions);
+      console.log(this.errors);
+      this.$router.push({ name: 'TimerSettings' });
     },
   },
 };
@@ -354,6 +310,7 @@ label {
   font-size: 48px;
   line-height: 58px;
 }
+
 #input-group-1,
 #input-group-2,
 #input-group-3,

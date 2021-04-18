@@ -73,8 +73,6 @@ export default {
           scores: 19,
         },
       ],
-
-      // items: this.getUsersInBatch,
     };
   },
   computed: {

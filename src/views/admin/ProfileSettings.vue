@@ -104,10 +104,14 @@ p {
   font-weight: normal;
   font-size: 14px;
   line-height: 17px;
-  color: #333758;
+  color: var(--enyata-purple);
   mix-blend-mode: normal;
 }
 .btn2 {
   background: #ffffff;
+}
+a {
+  color: var(--enyata-purple);
+  text-decoration: none;
 }
 </style>

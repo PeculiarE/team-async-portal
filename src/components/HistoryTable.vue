@@ -4,7 +4,7 @@
     <b-table
       id="assessment-history-table"
       :borderless="true"
-      :items="items"
+      :items="this.getAssessmentHistory"
       :fields="fields"
       head-variant="dark"
     ></b-table>
@@ -12,25 +12,27 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'HistoryTable',
   data() {
     return {
       fields: [
         {
-          key: 'batch',
+          key: 'batch_id',
           label: 'Batch',
         },
         {
-          key: 'date',
+          key: 'created_at',
           label: 'Date Composed',
         },
         {
-          key: 'questions',
+          key: 'total_questions',
           label: 'No of Questions',
         },
         {
-          key: 'time',
+          key: 'total_time',
           label: 'Time Allocated',
         },
         {
@@ -38,16 +40,17 @@ export default {
           label: 'Status',
         },
       ],
-      items: [
-        // {
-        //   batch: 'Batch 1',
-        //   date: '12/07/94',
-        //   questions: 30,
-        //   time: '30 mins',
-        //   status: 'Taken',
-        // },
-      ],
     };
+  },
+  computed: {
+    ...mapGetters(['getAssessmentHistory']),
+  },
+  methods: {
+    ...mapActions(['retrieveAssessmentHistory']),
+  },
+
+  mounted() {
+    this.retrieveAssessmentHistory();
   },
 };
 </script>

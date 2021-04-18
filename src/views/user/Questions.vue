@@ -87,20 +87,14 @@ export default {
   },
   methods: {
     ...mapMutations(['getTestScore']),
-    // ...mapActions(['getAllQuestionsByBatchInDB']),
     storeAnswers(answer) {
-      console.log(answer);
       const isAnswered = this.answersObj.findIndex((item) => item.id === answer.id);
-      console.log(isAnswered);
       if (isAnswered < 0) {
         this.answersObj.push(answer);
-        console.log(answer);
         console.log(this.answersObj);
       } else {
         const itemObj = this.answersObj[isAnswered];
-        console.log(itemObj);
         itemObj.value = answer.value;
-        console.log(this.answersObj);
       }
     },
     async submitQuiz() {
@@ -110,13 +104,11 @@ export default {
         correctAnswersObj.question_id = item.question_id;
         this.correctAnswers.push(correctAnswersObj);
       });
-      console.log(this.correctAnswers);
-      console.log(this.answersObj);
+      // if (this.answersObj.length !== this.correctAnswers.length) {}
       const payload = {
         chosenAnswers: this.answersObj,
         correctAnswers: this.correctAnswers,
       };
-      console.log(payload);
       if (localStorage.getItem('loginToken')) {
         const token = localStorage.getItem('loginToken');
         console.log(token);
@@ -147,7 +139,6 @@ export default {
           },
         })
           .then((response) => {
-            console.log(response.data.data);
             this.allQuestions = response.data.data;
             this.options = [...this.allQuestions].map((item) => {
               const answers = [];
@@ -159,8 +150,6 @@ export default {
               );
               return answers;
             });
-            console.log(this.options);
-            console.log(this.allQuestions);
           })
           .catch((error) => console.log(error))
           .finally(() => {});
@@ -196,7 +185,6 @@ export default {
           method: 'get',
           url: 'https://async-backend.herokuapp.com/user/quiz_time',
           headers: {
-            // 'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${this.getLoginToken}`,
           },
         })
@@ -206,6 +194,10 @@ export default {
             const timer = setInterval(() => {
               this.quizTime -= 1;
             }, 1000);
+            console.log(timer);
+            if (this.quizTime === 0) {
+              alert('You have run out of time');
+            }
             return timer;
           }).catch((error) => console.log(error))
           .finally(() => {});
@@ -217,13 +209,6 @@ export default {
     this.getAllQuestionsByBatchInDB();
     this.getQuizTime();
   },
-  // mounted() {
-  //   if (this.getQuizTime() === timer) {
-  //     if (this.quizTime === 0) {
-  //       clearInterval(timer);
-  //     }
-  //   }
-  // },
 };
 </script>
 

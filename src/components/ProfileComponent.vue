@@ -162,7 +162,7 @@ export default {
   line-height: 18px;
   letter-spacing: -0.5px;
   color: var(--enyata-purple);
-  border: 1px solid var(--enyata-purple);
+  border: 3px solid var(--enyata-purple);
 }
 .options {
   margin-top: 40px;

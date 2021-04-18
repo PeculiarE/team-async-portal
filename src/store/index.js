@@ -54,12 +54,24 @@ export default new Vuex.Store({
     latestApplication: localStorage.getItem('latestApplication') || null,
     adminQuestions: [],
     questionCount: 0,
+    totalQuestionCount: 0,
     setTime: 0,
     allQuestionsInDb: [],
     testScore: 0,
     usersInBatch: [],
+    assessmentHistory: [],
+    dateOfExpiration: null,
   },
   getters: {
+    getDateOfExpiration(state) {
+      return state.dateOfExpiration;
+    },
+    getAssessmentHistory(state) {
+      return state.assessmentHistory;
+    },
+    getTotalQuestionCount(state) {
+      return state.totalQuestionCount;
+    },
     getUsersInBatch(state) {
       return state.usersInBatch;
     },
@@ -162,6 +174,14 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    updateExpirationDate(state, payload) {
+      state.dateOfExpiration = payload;
+      console.log(state.dateOfExpiration);
+    },
+    updateAssessmentHistory(state, payload) {
+      state.assessmentHistory = payload;
+      console.log(state.assessmentHistory);
+    },
     updateQuizSetTime(state, payload) {
       state.setTime = payload;
       console.log(state.setTime);
@@ -175,6 +195,9 @@ export default new Vuex.Store({
     renderAllBatchQuestionsInDb(state, payload) {
       state.allQuestionsInDb = [...payload];
       console.log(state.allQuestionsInDb);
+    },
+    updateTotalQuestionCount(state, payload) {
+      state.totalQuestionCount += payload;
     },
     updateQuestionCount(state, payload) {
       state.questionCount += payload;
@@ -422,13 +445,10 @@ export default new Vuex.Store({
       const newpayload = payload.data.data;
       const date = new Date(newpayload.updated_at).toLocaleString() || null;
       localStorage.setItem('latestApplication', date);
-      // console.log(newpayload.updated_at);
       commit('updateUserDeets', newpayload);
       // commit('updateAllUsersDeets', newpayload);
-      // console.log(newpayload.updated_at);
       commit('updateAllUsersDeets', newpayload);
       console.log(newpayload.updated_at);
-      // console.log(state.allUsers);
     },
 
     async populateUserDeets({ dispatch }) {
@@ -544,26 +564,17 @@ export default new Vuex.Store({
         .finally(() => {});
     },
 
-    getQuestionsByBatchInDb() {
-      console.log('here!');
-      if (localStorage.getItem('loginToken')) {
-        console.log(localStorage.getItem('loginToken'));
-      }
-    },
-
     adminNextQuestionButton({ commit, state }, newSingleQuestion) {
       let newSingleQuestionObject = state.adminQuestions.find((el) => el.questionNumber
       === newSingleQuestion.questionNumber);
-      console.log(newSingleQuestionObject);
       if (newSingleQuestionObject) {
         newSingleQuestionObject = { ...newSingleQuestion };
         commit('updateAdminQuestions', newSingleQuestionObject);
       }
       commit('updateQuestionCount', 1);
+      commit('updateTotalQuestionCount', 1);
       const addIDtoQuestion = { ...newSingleQuestion, questionNumber: state.questionCount };
       commit('updateAdminQuestions', addIDtoQuestion);
-      console.log(addIDtoQuestion);
-      console.log(state.adminQuestions);
     },
 
     async changeStatus({ dispatch, state }, userData) {
@@ -623,6 +634,21 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error))
         .finally(() => {});
+    },
+
+    async retrieveAssessmentHistory({ commit }) {
+      const token = localStorage.getItem('loginAdminToken');
+      await axios({
+        method: 'GET',
+        url: 'http://localhost:3000/assessment_details',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          commit('updateAssessmentHistory', response.data.data);
+        })
+        .catch((err) => console.log(err));
     },
   },
 });

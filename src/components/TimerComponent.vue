@@ -2,13 +2,15 @@
     <div class="container">
       <div class="title">
         <h4>Timer Settings</h4>
+        <p v-show="this.noQuestionsError">No assessment questions has been set.
+          Kindly go set Assessment Questions</p>
       </div>
       <hr>
       <div class="set-divs">
         <div class="set-time">
           <h4>Set Time</h4>
           <div class="mr-2 d-inline">
-            <select v-model="time" name="minutes" id="minutes">
+            <select class="select-box" name="minutes" id="minutes" v-model="time">
               <option value="3">3</option>
               <option value="5">5</option>
               <option value="10">10</option>
@@ -23,18 +25,21 @@
               <option value="59">55</option>
               <option value="60">60</option>
             </select>
+            <span> Minutes</span>
           </div>
           <div class="d-inline">
-            <select name="seconds" id="seconds" v-model="seconds">
+            <select class="select-box" name="seconds" id="seconds" v-model="seconds">
               <option value="00">00</option>
               <option value="30">30</option>
             </select>
+            <span> Seconds</span>
           </div>
-          <small v-show="this.timeError">Please set the timer</small>
+          <p v-show="this.timeError">Please set the timer</p>
         </div>
         <div class="set-application-closure-date">
           <h4>Set Test Expiration Date</h4>
           <input type="date" class="date" v-model="dateOfExpiration">
+          <p v-show="this.dateError">Please set test expiration date</p>
         </div>
       </div>
       <div class="save-btn" @click="send">
@@ -56,15 +61,30 @@ export default {
       seconds: null,
       timeError: false,
       dateOfExpiration: null,
+      dateError: false,
+      noQuestionsError: false,
     };
   },
-
+  watch: {
+    dateOfExpiration: {
+      handler() {
+        this.dateError = false;
+      },
+    },
+    // time: {
+    //   handler() {
+    //     if (this.seconds !== null) {
+    //       this.timeError = false;
+    //     }
+    //   },
+    // },
+  },
   computed: {
-    ...mapGetters(['getSetTime', 'getAdminQuestions']),
+    ...mapGetters(['getSetTime', 'getAdminQuestions', 'getExpirationDate']),
   },
 
   methods: {
-    ...mapMutations(['updateQuizSetTime']),
+    ...mapMutations(['updateQuizSetTime', 'updateExpirationDate']),
     validateTime() {
       if (this.time === null || this.seconds === null) {
         this.timeError = true;
@@ -75,24 +95,40 @@ export default {
       return true;
     },
 
+    validateDate() {
+      if (this.dateOfExpiration !== null) {
+        const payload = this.dateOfExpiration;
+        this.updateExpirationDate(payload);
+        return true;
+      }
+      this.dateError = true;
+      return false;
+    },
+
+    validateAdminQuestions() {
+      if (this.getAdminQuestions.length) {
+        return true;
+      }
+      this.noQuestionsError = true;
+      return false;
+    },
+
     reset() {
       this.time = null;
       this.seconds = null;
       this.dateOfExpiration = null;
+      this.timeError = false;
+      this.dateError = false;
+      this.noQuestionsError = false;
     },
 
     async sendQuestionsAndAssessmentDeets(payload, payloadOne) {
-      console.log(payload);
       if (localStorage.getItem('loginAdminToken')) {
         const token = localStorage.getItem('loginAdminToken');
-        console.log(`Bearer ${token}`);
-        console.log(payload);
-        console.log(payloadOne);
         const payloaddata = {
           adminQuestions: payload,
           assessmentDetails: payloadOne,
         };
-        console.log(payloaddata);
         await axios.post('http://localhost:3000/adminquestions', payloaddata,
           {
             headers: {
@@ -107,15 +143,15 @@ export default {
     },
 
     send() {
-      if (this.validateTime() === true) {
+      if ((this.validateTime() === true)
+      && (this.validateDate() === true)
+      && (this.validateAdminQuestions() === true)) {
         const assessmentDetails = {};
         assessmentDetails.dateOfExpiration = this.dateOfExpiration;
         assessmentDetails.totalTime = this.getSetTime;
         assessmentDetails.totalQuestions = this.getAdminQuestions.length;
         localStorage.setItem('quizTime', this.getSetTime);
         this.sendQuestionsAndAssessmentDeets(this.getAdminQuestions, assessmentDetails);
-      } else {
-        console.log('nah');
       }
     },
   },
@@ -146,7 +182,7 @@ export default {
   text-align: left;
   color: var(--text-main);
 }
-small {
+p {
   color: red;
 }
 .set-time h4 {
@@ -156,7 +192,7 @@ input {
   margin-top: 20px;
   width: 215px;
   height: 44px;
-  border: 1px solid var(--text-primary);
+  border: 3px solid var(--enyata-purple);
 }
 .custom-select {
   width: 70px;
@@ -174,5 +210,21 @@ input {
   margin-top: 40px;
   text-align: center;
   padding-top: 5px;
+}
+
+.select-box {
+  height: 44px;
+  width: 50px;
+  border: 3px solid var(--enyata-purple);
+  outline: none;
+  appearance: none;
+  border-bottom: 2px solid rgba(117, 87, 211, 0.1);
+  transition: color 0.3s ease, background-color 0.3s ease, border-bottom-color 0.3s ease;
+}
+
+.select-box:hover, .select-box:focus, input:focus, input:hover  {
+  color: white;
+  background: var(--enyata-purple);
+  border-bottom-color: #DCDCDC;
 }
 </style>

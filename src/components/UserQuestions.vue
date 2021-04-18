@@ -9,7 +9,7 @@
         <b-form-group v-slot="{ ariaDescribedby }">
           <li class="mb-3 italic" v-for="(item, index) in options" :key="index">
             <b-form-radio v-model="selected" name="options"
-            :aria-describedby="ariaDescribedby" :value="item">
+            :aria-describedby="ariaDescribedby" :value="optionValueArray[index]">
               {{ item }}
             </b-form-radio>
           </li>
@@ -25,7 +25,8 @@ export default {
   props: ['question_number', 'question', 'options', 'chosenAnswers', 'id'],
   data() {
     return {
-      selected: '',
+      selected: 'empty',
+      optionValueArray: ['a', 'b', 'c', 'd'],
     };
   },
   methods: {
