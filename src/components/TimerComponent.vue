@@ -129,7 +129,7 @@ export default {
           adminQuestions: payload,
           assessmentDetails: payloadOne,
         };
-        await axios.post('http://localhost:3000/adminquestions', payloaddata,
+        await axios.post('https://async-backend.herokuapp.com/adminquestions', payloaddata,
           {
             headers: {
               Authorization: `Bearer ${token}`,
