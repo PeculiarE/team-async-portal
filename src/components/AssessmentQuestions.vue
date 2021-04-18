@@ -2,7 +2,8 @@
   <div class="assessment-form mt-5">
     <h1>Compose Assessment</h1>
 
-    <b-form v-if="newQuestion === true" >
+    <div v-show="!alreadySet">
+      <b-form v-if="newQuestion === true" >
       <p class="text-left">{{ getQuestionCount + 1 }}/{{ getTotalQuestionCount + 1 }}</p>
       <div class="d-flex justify-content-between align-items-center">
         <div>
@@ -149,11 +150,20 @@
         <b-button id="finish-btn" variant="dark"
         @click="finish">Finish</b-button>
       </div>
+    </div>
+
+    <div v-show="alreadySet" class="mt-5">
+      <h2 style="color: var(--enyata-purple)">
+        Assessments for this Batch has already been set.
+      </h2>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+
+import axios from 'axios';
 
 import {
   validateTextField,
@@ -182,14 +192,42 @@ export default {
       },
       errors: {},
       newQuestion: true,
+      questions: [],
+      alreadySet: false,
     };
   },
   computed: {
     ...mapGetters(['getAdminQuestions', 'getQuestionCount', 'getTotalQuestionCount']),
   },
+  mounted() {
+    this.checkQuestionsByBatchInDB();
+  },
   methods: {
     ...mapMutations(['reduceQuestionCount', 'updateQuestionCount']),
     ...mapActions(['adminNextQuestionButton', 'adminFinishSettingQuestions']),
+    async checkQuestionsByBatchInDB() {
+      if (localStorage.getItem('loginAdminToken')) {
+        const token = localStorage.getItem('loginAdminToken');
+        await axios({
+          method: 'get',
+          url: 'http://localhost:3000/admin/assessment_questions',
+          headers: {
+            // 'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            console.log(response.data.data);
+            this.questions = response.data.data;
+            if (this.questions.length) {
+              this.alreadySet = true;
+            }
+          })
+          .catch((error) => console.log(error))
+          .finally(() => {});
+      }
+    },
+
     questionFileSelected(newFile) {
       this.singleQuestion.file = newFile.length > 0 ? newFile[0] : null;
     },
