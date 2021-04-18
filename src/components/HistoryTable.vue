@@ -29,7 +29,7 @@ export default {
         },
         {
           key: 'date_of_expiration',
-          label: 'Expiration Date',
+          label: 'Test Expiration Date',
         },
         {
           key: 'total_questions',

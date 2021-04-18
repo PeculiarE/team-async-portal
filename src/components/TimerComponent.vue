@@ -185,7 +185,7 @@ input {
   margin-top: 20px;
   width: 215px;
   height: 44px;
-  border: 3px solid var(--enyata-purple);
+  border: 2px solid var(--enyata-purple);
 }
 .custom-select {
   width: 70px;
@@ -208,7 +208,7 @@ input {
 .select-box {
   height: 44px;
   width: 50px;
-  border: 3px solid var(--enyata-purple);
+  border: 2px solid var(--enyata-purple);
   outline: none;
   appearance: none;
   border-bottom: 2px solid rgba(117, 87, 211, 0.1);

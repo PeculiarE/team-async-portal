@@ -22,6 +22,7 @@
             }"
             @select="questionFileSelected($event)"
             v-model="singleQuestion.file"
+            class="file"
             disabled
           ></VueFileAgent>
           <small>{{ errors.file }}</small>
@@ -93,6 +94,7 @@
             }"
             @select="questionFileSelected($event)"
             v-model="this.getAdminQuestions[getQuestionCount].file"
+            class="file"
             disabled
           ></VueFileAgent>
           <small>{{ errors.file }}</small>
@@ -100,7 +102,7 @@
         <div class="ml-5">
           <b-form-group id="correctOption" label="correctOption" label-for="correctOption">
             <b-form-select v-model="singleQuestion.correctOption"
-          :options="options" class="w-100 h-50" required></b-form-select>
+          :options="options" class="w-100 h-50 " required></b-form-select>
         <small>{{ errors.correctOption }}</small>
         </b-form-group>
         </div>
@@ -210,7 +212,7 @@ export default {
         const token = localStorage.getItem('loginAdminToken');
         await axios({
           method: 'get',
-          url: 'http://localhost:3000/admin/assessment_questions',
+          url: 'https://async-backend.herokuapp.com/admin/assessment_questions',
           headers: {
             // 'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
@@ -282,7 +284,6 @@ export default {
         this.adminNextQuestionButton(newSingleQuestion);
         this.resetQuestionFields();
         this.errors = {};
-        console.log('it\'s working');
       }
     },
     prev() {
@@ -347,6 +348,10 @@ label {
   font-weight: 300;
   font-size: 48px;
   line-height: 58px;
+}
+.file {
+    width: 400px;
+    cursor: pointer;
 }
 
 #input-group-1,
@@ -414,5 +419,4 @@ small {
   background: var(--enyata-purple);
   border: none;
 }
-
 </style>

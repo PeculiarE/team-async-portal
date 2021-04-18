@@ -26,28 +26,31 @@
           <div class="row d-flex flex-column align-items-center">
             <img src="../../assets/hourglass-take-assessment.svg" alt=""
             class="mb-4"/>
-            <p class="text-center mb-3">
-              We have some days left until the assessment. <br />
-              Watch this space
+            <p v-if="getUserDeetsStatus === 'Declined' || 'Pending'" class="text-center mb-3">
+              Cannot take assessment because your application has been declined or is pending.
+            </p>
+            <p v-else-if="getUserDeetsStatus === 'Approved'
+              && alreadySet === false && testTaken === false" class="text-center mb-3">
+              We have some days left until you can take assessment. <br />
+              Watch this space.
+            </p>
+              <p v-else-if="getUserDeetsStatus === 'Approved'
+              && alreadySet === true && testTaken === false" class="mb-2">
+              Your assessment questions are ready. Click the button below to take assessment.
+            </p>
+            <p v-else class="mb-2">
+              Best of luck in your concluded assessment.
             </p>
             <b-button
               id="enabled-btn"
               type="submit"
               class="text-white button"
               @click="quizPage"
-              v-if="getUserDeetsStatus === 'Approved'"
+              :disabled="(getUserDeetsStatus === 'Declined' || 'Pending')
+              || alreadySet === false || testTaken === true"
             >
               Take Assessment
             </b-button>
-            <!-- <b-button
-              type="submit"
-              class="text-white button"
-              @click="quizPage"
-              disabled
-              v-else
-            >
-              Take Assessment
-            </b-button> -->
           </div>
         </div>
       </div>
@@ -56,6 +59,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Sidebar from '@/components/Sidebar.vue';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -63,26 +67,76 @@ export default {
   name: 'TakeAssessment',
   components: {
     Sidebar,
-    // v-if="getAdminQuestions.length && getUserDeetsStatus === 'Approved'"
   },
   data() {
     return {
       assessmentMenuSelected: false,
+      questions: [],
+      alreadySet: false,
+      testTaken: false,
     };
   },
   computed: {
-    ...mapGetters(['openApplicationStatus', 'getAdminQuestions', 'getUserDeetsStatus']),
+    ...mapGetters(['openApplicationStatus', 'getUserDeetsStatus']),
   },
   methods: {
     ...mapActions(['populateUserDeets']),
     quizPage() {
       this.$router.push({ name: 'Questions' });
     },
+
+    async checkQuestionsByBatchInDB() {
+      if (localStorage.getItem('loginToken')) {
+        const token = localStorage.getItem('loginToken');
+        await axios({
+          method: 'get',
+          url: 'http://localhost:3000/user/assessment_questions',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          // eslint-disable-next-line consistent-return
+          .then((response) => {
+            console.log(response.data.data);
+            this.questions = response.data.data;
+            if (this.questions.length) {
+              this.alreadySet = true;
+            }
+            console.log(this.questions);
+          })
+          .catch((error) => console.log(error))
+          .finally(() => {});
+      }
+    },
+
+    async getUserTestScore() {
+      if (localStorage.getItem('loginToken')) {
+        const token = localStorage.getItem('loginToken');
+        console.log(token);
+        await axios({
+          method: 'get',
+          url: 'https://async-backend.herokuapp.com/user/test_score',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            this.testScore = response.data.data.test_score;
+            if (this.testScore !== null) {
+              this.testTaken = true;
+            }
+          })
+          .catch((error) => { console.log(error); })
+          .finally(() => {});
+      }
+    },
   },
   mounted() {
-    this.populateUserDeets();
     this.assessmentMenuSelected = true;
-    console.log(this.getAdminQuestions);
+    this.populateUserDeets();
+    this.checkQuestionsByBatchInDB();
+    this.getUserTestScore();
+    console.log(this.getUserDeetsStatus);
   },
 };
 </script>
