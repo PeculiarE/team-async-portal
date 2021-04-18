@@ -152,7 +152,8 @@
             </div>
           </div>
         </div>
-        <b-form-valid-feedback class="mt-3" style="font-size: 15px" :state="loadingStatus">
+        <b-form-valid-feedback class="mt-3 text-center mt-3"
+        style="font-size: 15px" :state="loadingStatus">
        <b>Checking...please wait</b>
       </b-form-valid-feedback>
 
