@@ -3,7 +3,7 @@
     <div class='col-3 w-100 px-0'>
       <Sidebar />
     </div>
-    <div class='col-9 px-0 mt-4'>
+    <div v-show="!testTaken" class='col-9 px-0 mt-4'>
       <div class='row mt-5 mb-3'>
         <div class='col-8'>
           <p class='p1'>Take Assessment</p>
@@ -54,6 +54,24 @@
         </div>
       </div>
     </div>
+    <div v-show="testTaken" class='col-9 px-0 mt-5'>
+      <h2 style="color: var(--enyata-purple)" class="mt-5">
+        You have already taken this test.
+      </h2>
+      <div class="col-9 offset-1 d-flex justify-content-center mt-5">
+          <div class="row d-flex flex-column align-items-center">
+            <img
+              src="../../assets/confetti.svg"
+              alt=""
+              class="mb-4"
+            />
+            <p class="text-center mb-3">
+             Wishing you all the best
+            </p>
+            <b-button type="submit" class="text-white button" @click="toHome"> Home </b-button>
+          </div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -79,14 +97,46 @@ export default {
       correctAnswers: [],
       answersObj: [],
       quizTime: null,
+      testScore: null,
+      testTaken: false,
     };
   },
 
+  mounted() {
+    this.getUserTestScore();
+  },
   computed: {
     ...mapGetters(['getAllQuestions', 'getLoginToken', 'getSetTime']),
   },
   methods: {
+    async getUserTestScore() {
+      if (localStorage.getItem('loginToken')) {
+        const token = localStorage.getItem('loginToken');
+        console.log(token);
+        await axios({
+          method: 'get',
+          url: 'http://localhost:3000/user/test_score',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            this.testScore = response.data.data.test_score;
+            if (this.testScore !== null) {
+              this.testTaken = true;
+            }
+          })
+          .catch((error) => { console.log(error); })
+          .finally(() => {});
+      }
+    },
+
+    toHome() {
+      this.$router.push({ name: 'HomePage' });
+    },
+
     ...mapMutations(['getTestScore']),
+
     storeAnswers(answer) {
       const isAnswered = this.answersObj.findIndex((item) => item.id === answer.id);
       if (isAnswered < 0) {
@@ -196,7 +246,9 @@ export default {
             }, 1000);
             console.log(timer);
             if (this.quizTime === 0) {
+              console.log(timer);
               alert('You have run out of time');
+              clearInterval(timer);
             }
             return timer;
           }).catch((error) => console.log(error))
@@ -243,6 +295,5 @@ span {
 }
 .finish-btn {
   background-color: var(--enyata-purple);
-
 }
 </style>

@@ -678,7 +678,40 @@ export default new Vuex.Store({
         },
       })
         .then((response) => {
-          commit('updateAssessmentHistory', response.data.data);
+          const change = response.data.data;
+          console.log(change);
+          // eslint-disable-next-line consistent-return
+          change.forEach((item) => {
+            const minutes = Math.floor(item.total_time / 60);
+            const seconds = item.total_time % 60;
+            const time = String(`${minutes} ${seconds}`);
+            const time2 = time.split(' ');
+            // eslint-disable-next-line no-param-reassign
+            item.total_time = `${time2[0]} minutes ${time2[1]} seconds`;
+            function isDateAfterToday(date) {
+              return new Date(date.toDateString()) > new Date(new Date().toDateString());
+            }
+            const date = item.date_of_expiration.split('-');
+            const date2 = date[2].split('T');
+            const yearToNumber = Number(date[0]);
+            const monthToNumber = Number(date[1] - 1);
+            const dayToNumber = Number(date2[0]);
+            const check = isDateAfterToday(new Date(yearToNumber, monthToNumber, dayToNumber));
+            if (check === false) {
+              // eslint-disable-next-line no-unused-expressions
+              return item.status === 'Taken';
+            }
+          });
+          console.log(change);
+          const formattedChange = change
+            .map((item) => ({
+              ...item,
+              created_at: new Date(item.created_at).toLocaleDateString(),
+              date_of_expiration: item.date_of_expiration.split('T')[0],
+            }
+            ));
+          console.log(formattedChange);
+          commit('updateAssessmentHistory', formattedChange);
         })
         .catch((err) => console.log(err));
     },

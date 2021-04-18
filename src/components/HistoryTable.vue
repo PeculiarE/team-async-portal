@@ -28,6 +28,10 @@ export default {
           label: 'Date Composed',
         },
         {
+          key: 'date_of_expiration',
+          label: 'Expiration Date',
+        },
+        {
           key: 'total_questions',
           label: 'No of Questions',
         },

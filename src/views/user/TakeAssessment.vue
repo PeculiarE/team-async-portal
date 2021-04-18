@@ -27,7 +27,7 @@
             <img src="../../assets/hourglass-take-assessment.svg" alt=""
             class="mb-4"/>
             <p class="text-center mb-3">
-              We have 4 days left until the next assessment. <br />
+              We have some days left until the assessment. <br />
               Watch this space
             </p>
             <b-button

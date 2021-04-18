@@ -44,7 +44,7 @@
               <p class="pt-2"><b>Take assessment</b></p>
               <div class="text-center">
                   <p class="mb-2">
-              We have 4 days left until the next assessment. <br />
+              We have some days left until the assessment. <br />
               Watch this space
             </p>
             <b-button
