@@ -17,6 +17,12 @@ const routes = [
     meta: { guestUser: true },
   },
   {
+    path: '/verifyuser/:token',
+    name: 'VerifyUser',
+    component: () => import('../views/user/VerifyUser.vue'),
+    meta: { guestUser: true },
+  },
+  {
     path: '/user/login',
     name: 'UserLogin',
     component: () => import('../views/user/UserLogin.vue'),

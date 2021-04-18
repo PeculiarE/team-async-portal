@@ -190,8 +190,7 @@
       </div>
     </div>
     <div v-show="successPage">
-      <h1>Congratulations! {{ getResponseRegister.message }}</h1>
-      <h3>Kindly proceed to login</h3>
+      <h1>{{ getResponseRegister.message }}</h1>
     </div>
   </div>
 </template>
@@ -263,9 +262,6 @@ export default {
       if (val.status === 'Success') {
         this.loadingStatus = null;
         this.successPage = true;
-        setTimeout(() => {
-          this.$router.push({ name: 'UserLogin' });
-        }, 2000);
       } else {
         this.loadingStatus = null;
         this.confirmDetails = true;

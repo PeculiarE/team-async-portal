@@ -309,8 +309,9 @@ export default new Vuex.Store({
   actions: {
     async register({ commit }, userData) {
       await axios
-        .post('https://async-backend.herokuapp.com/register', userData)
+        .post('http://localhost:3000/register', userData)
         .then((response) => {
+          console.log(response);
           const successObject = {
             status: response.data.status,
             message: response.data.message,
@@ -318,6 +319,30 @@ export default new Vuex.Store({
           commit('updateResponseRegister', successObject);
         })
         .catch((error) => {
+          console.log(error);
+          const failObject = {
+            status: error.response.data.status,
+            message: error.response.data.message,
+          };
+          commit('updateResponseRegister', failObject);
+        })
+        .finally(() => {});
+    },
+
+    async verify({ commit }, token) {
+      console.log(token);
+      await axios
+        .post(`http://localhost:3000/verify/${token}`)
+        .then((response) => {
+          console.log(response);
+          const successObject = {
+            status: response.data.status,
+            message: response.data.message,
+          };
+          commit('updateResponseRegister', successObject);
+        })
+        .catch((error) => {
+          console.log(error);
           const failObject = {
             status: error.response.data.status,
             message: error.response.data.message,
