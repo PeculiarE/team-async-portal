@@ -43,7 +43,13 @@
            justify-content-between dashb-info assessment">
               <p class="pt-2"><b>Take assessment</b></p>
               <div class="text-center">
-                  <p class="mb-2">
+            <p v-if="alreadySet === true && testTaken === true" class="mb-2">
+              Best of luck in your concluded assessment.
+            </p>
+               <p v-else-if="alreadySet === true && testTaken === false" class="mb-2">
+              Your assessment question has been set. Click the button below to take assessment.
+            </p>
+                  <p v-else class="mb-2">
               We have some days left until the assessment. <br />
               Watch this space
             </p>
@@ -51,6 +57,7 @@
               type="submit"
               class="text-white button mt-2"
               @click="beforeAssessment"
+              :disabled="alreadySet === false || testTaken === true"
             >
               Take Assessment
             </b-button>
@@ -63,6 +70,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Sidebar from '@/components/Sidebar.vue';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -74,7 +82,16 @@ export default {
   data() {
     return {
       dashboardMenuSelected: false,
+      questions: [],
+      alreadySet: false,
+      testTaken: false,
     };
+  },
+  mounted() {
+    this.dashboardMenuSelected = true;
+    this.populateUserDeets();
+    this.checkQuestionsByBatchInDB();
+    this.getUserTestScore();
   },
   computed: {
     ...mapGetters(['getUserDeetsTime', 'getUserDeetsStatus']),
@@ -84,12 +101,51 @@ export default {
     beforeAssessment() {
       this.$router.push({ name: 'TakeAssessment' });
     },
-  },
-  mounted() {
-    this.dashboardMenuSelected = true;
-    this.populateUserDeets();
-    // const ts = new Date();
-    // console.log(ts.toLocaleDateString());
+    async checkQuestionsByBatchInDB() {
+      if (localStorage.getItem('loginToken')) {
+        const token = localStorage.getItem('loginToken');
+        await axios({
+          method: 'get',
+          url: 'http://localhost:3000/user/assessment_questions',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          // eslint-disable-next-line consistent-return
+          .then((response) => {
+            console.log(response.data.data);
+            this.questions = response.data.data;
+            if (this.questions.length) {
+              this.alreadySet = true;
+            }
+            console.log(this.questions);
+          })
+          .catch((error) => console.log(error))
+          .finally(() => {});
+      }
+    },
+
+    async getUserTestScore() {
+      if (localStorage.getItem('loginToken')) {
+        const token = localStorage.getItem('loginToken');
+        console.log(token);
+        await axios({
+          method: 'get',
+          url: 'https://async-backend.herokuapp.com/user/test_score',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            this.testScore = response.data.data.test_score;
+            if (this.testScore !== null) {
+              this.testTaken = true;
+            }
+          })
+          .catch((error) => { console.log(error); })
+          .finally(() => {});
+      }
+    },
   },
 };
 </script>
@@ -147,5 +203,8 @@ hr {
     border: 1px solid #ECECF9;
     box-sizing: border-box;
     border-radius: 4px
+}
+.button {
+  background-color: var(--enyata-purple);
 }
 </style>

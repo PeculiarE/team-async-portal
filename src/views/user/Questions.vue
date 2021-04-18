@@ -115,7 +115,7 @@ export default {
         console.log(token);
         await axios({
           method: 'get',
-          url: 'http://localhost:3000/user/test_score',
+          url: 'https://async-backend.herokuapp.com/user/test_score',
           headers: {
             Authorization: `Bearer ${token}`,
           },
