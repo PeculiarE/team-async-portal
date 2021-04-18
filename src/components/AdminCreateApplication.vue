@@ -27,17 +27,17 @@
                   Please upload a flyer
                 </b-form-invalid-feedback>
               </div>
-              <!-- <div class="small-inputs"> -->
+              <div class="small-inputs">
                 <b-form-group id="input-group-1" label="Link" label-for="input-1">
-              <b-form-inputss
+              <b-form-input
               id="input-1"
               v-model="application.applicationLink" type="text"
-              required @keyup="validateLink()"></b-form-inputss>
+              required @keyup="validateLink()"></b-form-input>
               <b-form-invalid-feedback :state="feedbackLink">
                 This field requires a minimum of 9 characters
               </b-form-invalid-feedback>
               </b-form-group>
-              <!-- </div> -->
+              </div>
             </div>
             <div class="d-flex justify-content-between">
                 <div class="small-inputs">
@@ -170,10 +170,10 @@ export default {
         };
         this.openApplication(dateAndBatch);
         this.openBatch(1);
-        setTimeout(() => {
-          // eslint-disable-next-line no-restricted-globals
-          location.reload();
-        }, 5000);
+        // setTimeout(() => {
+        //   // eslint-disable-next-line no-restricted-globals
+        //   location.reload();
+        // }, 5000);
       } else {
         this.loadingStatus = false;
         this.feedbackBatch = false;
@@ -195,7 +195,7 @@ export default {
     },
     validateInstructions() {
       this.feedbackImage = this.application.design !== null;
-      if (/^(?!.*?\s{2})[A-Za-z0-9.?/@!#$%^&*()_+=_><,:;"'{[}| ]{15,}$/.test(this.application.instructions)) {
+      if (/^(?!.*?\s{2})[A-Za-z0-9.?/@!#$%^&*()_+=-><,:;"'{[}| ]{15,}$/.test(this.application.instructions)) {
         this.feedbackInstructions = true;
         return;
       }
@@ -299,9 +299,9 @@ export default {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-#input-group-1 {
+/* #input-group-1 {
   height: 41px;
-}
+} */
 #input-4 {
     width: 976px;
     height: 144px;
@@ -312,6 +312,7 @@ export default {
     box-shadow: none;
 }
 .height-- {
+  width: 456px;
   height: 108px;
 }
 /* .small-inputs {
@@ -329,6 +330,6 @@ export default {
     font-size: 16px;
     line-height: 19px;
     font-family: Lato;
-    margin-top: 60px;
+    margin-top: 80px;
 }
 </style>

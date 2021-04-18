@@ -9,13 +9,16 @@
         <b-form-input
           id="input-1"
           type="email"
+          @keyup="loginStatus = null"
           v-model="userDetails.email"
           required
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Password" label-for="input-2">
-        <div class="login-form-password">
+      <!-- <div class="small-inputs"> -->
+        <b-form-group id="input-group-2" label="Password" label-for="input-2">
+        <div class="small-inputs">
+          <div class="login-form-password">
           <b-form-input
           id="input-2"
           :type="showPassword ? 'text' : 'password'"
@@ -35,9 +38,11 @@
         </b-form-invalid-feedback>
         <b-form-valid-feedback :state="feedbackPassword">
         </b-form-valid-feedback>
+        </div>
       </b-form-group>
+      <!-- </div> -->
 
-      <b-form-valid-feedback style="font-size: 15px" :state="loadingStatus">
+      <b-form-valid-feedback style="font-size: 15px, margin-bottom: 20px" :state="loadingStatus">
        <b>Checking...please wait</b>
       </b-form-valid-feedback>
 
@@ -77,26 +82,27 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getResponseLogin']),
+    ...mapGetters(['getResponseLogin', 'getUserDeetsApplicationStatus']),
   },
   watch: {
     getResponseLogin(val) {
       if (val.status === 'Success') {
         this.loadingStatus = null;
         this.loginStatus = true;
+        this.populateUserDeets();
         setTimeout(() => {
-          this.$router.push({ name: 'ApplicationForm' });
+          this.$router.push({ name: 'Dashboard' });
         }, 2000);
       } else {
         this.loadingStatus = null;
         this.loginStatus = false;
-        alert('check');
       }
     },
   },
   methods: {
-    ...mapActions(['login']),
+    ...mapActions(['login', 'populateUserDeets']),
     validatePassword() {
+      this.loginStatus = null;
       if (this.userDetails.password.length >= 8) {
         this.feedbackPassword = true;
         this.valid = false;
@@ -111,9 +117,7 @@ export default {
       console.log('something');
     },
     loginNow() {
-      console.log(this.loginStatus);
       this.loadingStatus = true;
-      console.log(this.loadingStatus);
       this.login(this.userDetails);
     },
   },
@@ -121,6 +125,9 @@ export default {
 </script>
 
 <style scoped>
+.small-inputs {
+  height: 41px;
+}
   .login-form {
     width: 379px;
   }
@@ -158,7 +165,7 @@ export default {
   }
   .button {
     height: 50px;
-    margin-top: 20px;
+    margin-top: 40px;
     background-color: var(--enyata-purple);
     border: none;
   }

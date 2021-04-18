@@ -372,4 +372,9 @@ small {
   font-size: 16px;
   line-height: 19px;
 }
+#next-btn, #prev-btn, #finish-btn {
+  background: var(--enyata-purple);
+  border: none;
+}
+
 </style>

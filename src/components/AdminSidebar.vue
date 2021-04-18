@@ -56,7 +56,7 @@
                 class="d-inline-block ml-4 mr-3"
               />Compose Assessment</b-nav-item
             >
-            <b-nav-item
+            <!-- <b-nav-item
               to="/admin/history"
               class="admin-sidebar-menu mb-2"
               :class="toggleHistoryBorder ? 'purple-border-history' : null"
@@ -66,7 +66,7 @@
                 src="../assets/assessment-history-icon.svg"
                 class="d-inline-block ml-4 mr-3"
               />Assessment History</b-nav-item
-            >
+            > -->
             <b-nav-item class="admin-sidebar-menu mb-2"
             :class="toggleResultsBorder ? 'purple-border' : null"
             @click="selectResults">

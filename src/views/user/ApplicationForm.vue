@@ -4,8 +4,9 @@
       <img src="../../assets/enyata-logo.svg" alt="Enyata Logo" />
     </div>
     <div class="title">Application Form</div>
-    <div class="form-container p-5">
-      <form class="formm" enctype="multipart/form-data" @submit.prevent="apply()">
+    <div v-if="!successPage" class="form-container p-5">
+      <form
+      class="formm" enctype="multipart/form-data" @submit.prevent="apply()">
         <div class="form-row justify-content-around d-flex mb-4">
           <VueFileAgent
             ref="vueFileAgent"
@@ -76,6 +77,7 @@
                 type="text"
                 name="email"
                 class="form-control"
+                disabled
               />
               <small>{{ errors.email }}</small>
             </div>
@@ -88,6 +90,7 @@
                 name="dob"
                 class="form-control"
                 placeholder="yyyy-mm-dd"
+                :max="minimumBirthDate"
               />
               <small>{{ errors.dob }}</small>
             </div>
@@ -104,16 +107,23 @@
               />
               <small>{{ errors.address }}</small>
             </div>
-            <div class="col-12 col-md-6">
-              <label for="university">University</label>
-              <input
+            <div class="col-12 col-md-6 selecty">
+              <label id="selecty-label" for="university">University</label>
+              <!-- <input
                 id="input-6"
                 v-model="user.university"
                 type="text"
                 name="university"
                 class="form-control"
-              />
-              <small>{{ errors.university }}</small>
+              /> -->
+              <b-form-select class="form-control"
+              id="input-6" v-model="user.university">
+              <b-form-select-option v-for="(option, index) in options" :key="index"
+              :value="option === 'Please select an option' ? '' : option ">
+                {{ option }}
+              </b-form-select-option>
+              </b-form-select>
+              <small id="selecty-error">{{ errors.university }}</small>
             </div>
           </div>
           <div class="form-row justify-content-between mb-3">
@@ -142,7 +152,8 @@
             </div>
           </div>
         </div>
-        <b-form-valid-feedback class="mt-3" style="font-size: 15px" :state="loadingStatus">
+        <b-form-valid-feedback class="mt-3 text-center mt-3"
+        style="font-size: 15px" :state="loadingStatus">
        <b>Checking...please wait</b>
       </b-form-valid-feedback>
 
@@ -156,7 +167,7 @@
         </div>
       </form>
     </div>
-    <div v-show="successPage">
+    <div class="text-center" v-else>
       <h1>Congratulations! {{ success }}</h1>
       <h3>Kindly proceed to your dashboard</h3>
     </div>
@@ -197,6 +208,97 @@ export default {
         cv: null,
         photo: null,
       },
+      options: [
+        'Please select an option',
+        'Bestower International University, Benin Republic, Cotonou',
+        'Adekunle Ajasin University, Akungba-Akoko',
+        'Afe Babalola University, Ado Ekiti',
+        'Caritas University, Enugu',
+        'City University, Yaba, Lagos State',
+        'Citygate University, Ibadan',
+        'Cross River University of Technology, Calabar',
+        'Crownhill University, Ilorin, Kwara State',
+        'Enugu State University of Science and Technology, Enugu',
+        'Federal University, Birnin Kebbi, Kebbi State',
+        'Federal University Gashua, Yobe State',
+        'Federal University Gusau, Zamfara State',
+        'Federal University of Dutse (FUD)',
+        'Federal University of Petroleum Resource Effurun',
+        'Federal University of Technology Minna',
+        'Federal University of Technology Owerri',
+        'Gombe State University, Gombe',
+        'Gombe State University of Science and Technology, Kumo',
+        'Ibrahim Babangida University, Lapai',
+        'Ibrahim Badamasi Babangida University, Niger State, Lapai',
+        'Edusoko University, Bida, Niger State',
+        'Ahman Pategi University, Pategi, Kwara State',
+        'Ignatius Ajuru University of Education (Rivers State University of Education), Port Harcourt',
+        'Imo State University, Owerri',
+        'Institute of Management and Technology, Enugu',
+        'Joseph Ayo Babalola University, Ipo Arakeji and Ikeji-Arakeji',
+        'Kaduna State University, Kaduna Kaduna State',
+        'Kano State University of Science and Technology, Wudil',
+        'Kebbi State University of Technology Aliero',
+        'Kogi State University, Ayigba, Kogi State',
+        'Koladaisi University, Ibadan, Oyo State',
+        'Kwara State University, Malete, Kwara State',
+        'Koladaisi University Ibadan, Oyo State',
+        'Ladoke Akintola University of Technology, Ogbomoso',
+        'Lagos Business School, Lagos',
+        'Lead City University, Ibadan',
+        'Madonna University (Ihiala), Okija',
+        'Mewar University, Masaka, Nasarawa State',
+        'Michael Okpara Federal University of Agriculture, Umudike',
+        'Modibbo Adama University of Technology, Yola',
+        'Michael and Cecilia Ibru University, Agbara-Otor, Ughelli North, Delta State',
+        'Mountain Top University, Ogun State',
+        'Nasarawa State University, Keffi',
+        'National Open University of Nigeria, Lagos',
+        'Niger Delta University, Wilberforce Island, Bayelsa State',
+        'Nigerian Defence Academy, Kaduna',
+        'Nnamdi Azikiwe University, Awka',
+        'Northwest University, Kano',
+        'Novena University, Ogume, Delta State',
+        'Obafemi Awolowo University, Ile Ife',
+        'Obong University, Obong Ntak, Akwa Ibom',
+        'Oduduwa University, Ipetumodu, Osun State',
+        'Olabisi Onabanjo University, Ago-Iwoye, Ogun State',
+        'Ondo State University of Science and Technology, Okitipupa',
+        'Osun State University, Osogbo',
+        'Pan-Atlantic University, Lagos',
+        'Paul University, Awka Anambra',
+        'Ritman University, Ikot Ekpene, Akwa Ibom State',
+        'Rivers State University, Port Harcourt',
+        'Redeemer\'s University, Off, Gbongan – Oshogbo Rd, Ede',
+        'Renaissance University, Agbani',
+        'Rhema University, Aba Abia State',
+        'Salem University, Lokoja Kogi State',
+        'Samuel Adegboyega University, Ogwa Edo State',
+        'Skyline University Nigeria, Kano State',
+        'Sokoto State University, Sokoto',
+        'Sule Lamido University, Kaffin Hausa, Jigawa State',
+        'Tai Solarin University of Education, Ijebu-Ode, Ogun State',
+        'The University on Idemili, Alor, Anambra State',
+        'University of Abuja, Gwagwalada',
+        'University of Ado Ekiti, Ado Ekiti',
+        'University of Agriculture, Abeokuta, Abeokuta',
+        'University of Africa(Toru-Orua),Bayelsa State',
+        'University of Agriculture, Makurdi, Makurdi, Benue State',
+        'University of Ibadan, Ibadan',
+        'University of Ilorin, Ilorin',
+        'University of Jos, Jos',
+        'University of Maiduguri, Maiduguri',
+        'University of Mkar, Mkar-Gboko, Benue State',
+        'University of Uyo, Uyo, Akwa Ibom State',
+        'Usman Dan Fodio University, Sokoto, Sokoto State',
+        'Wesley University, Ondo',
+        'Western Delta University, Oghara, Delta State',
+        'Yaba College of Technology, Yaba, Lagos State, Nigeria',
+        'Bauchi State University, Gadau, Bauchi State',
+        'Abubakar Tatari Ali Polytechnic, Bauchi',
+        'Nigerian Army University Biu (NAUB)',
+      ],
+      minimumBirthDate: new Date().toISOString().split('T')[0],
       valid: true,
       errors: {},
       loginStatus: null,
@@ -207,9 +309,6 @@ export default {
 
   computed: {
     ...mapGetters(['loggedInStatus', 'getLoginToken', 'getUserDeets', 'getUserDeetsApplicationStatus']),
-  },
-  mounted() {
-    this.populateUserDeets();
   },
   watch: {
     loggedInStatus(res) {
@@ -273,6 +372,7 @@ export default {
 
       if (cv && photo !== null) {
         console.log(this.valid);
+        this.errors.file = '';
         this.valid = true;
         console.log(this.user.cv);
         console.log(this.user.photo);
@@ -307,7 +407,7 @@ export default {
         this.user.email = emailCopy.email;
       }
 
-      const validDob = validateDob(dob);
+      const validDob = validateDob(dob, this.minimumBirthDate);
       this.errors.dob = validDob.error;
       if (this.valid) {
         this.valid = validDob.valid;
@@ -359,6 +459,7 @@ export default {
     ...mapActions(['mountApplyPage', 'populateUserDeets']),
 
     async apply() {
+      console.log(this.validateFields);
       if (this.validateFields() === false) {
         this.errors.fields = 'Refresh the page and fill all fields correctly';
       } else {
@@ -402,6 +503,13 @@ export default {
         console.log({ res });
       }
     },
+  },
+  mounted() {
+    this.populateUserDeets();
+    const fullName = this.$store.getters.getUserDeets.full_name.split(' ');
+    [this.user.firstName] = fullName;
+    [, this.user.lastName] = fullName;
+    this.user.email = this.$store.getters.getUserDeets.email;
   },
 };
 </script>
@@ -473,7 +581,7 @@ input[type="file"] {
   z-index: -1;
 }
 
-input {
+input, #input-6 {
   border: 1.5px solid #2b3c4e;
   outline: none;
   margin: auto;
@@ -491,14 +599,24 @@ small {
   margin: 25px;
   color: red;
 }
-
+#input-3 {
+  background-color: #f8f6fd;
+}
 button {
   background-color: var(--enyata-purple);
   background-color: #7557d3;
   width: 379px;
   height: 50px;
 }
-
+.selecty {
+  padding-left: 29px;
+}
+#selecty-label {
+  margin-left: 0px;
+}
+#selecty-error {
+  margin: 4px;
+}
 @media only screen and (max-width: 768px) {
 }
 </style>

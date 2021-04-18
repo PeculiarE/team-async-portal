@@ -14,32 +14,43 @@ const routes = [
     path: '/signup',
     name: 'SignUp',
     component: () => import('../views/user/SignUp.vue'),
+    meta: { guestUser: true },
+  },
+  {
+    path: '/verifyuser/:token',
+    name: 'VerifyUser',
+    component: () => import('../views/user/VerifyUser.vue'),
+    meta: { guestUser: true },
   },
   {
     path: '/user/login',
     name: 'UserLogin',
     component: () => import('../views/user/UserLogin.vue'),
+    meta: { guestUser: true },
   },
   {
     path: '/forgot-password',
     name: 'ForgotPassword',
     component: () => import('../views/user/ForgotPassword.vue'),
+    meta: { guestUser: true },
   },
   {
     path: '/resetpassword/:token',
     name: 'PasswordReset',
     component: () => import('../components/PasswordReset.vue'),
+    meta: { guestUser: true },
   },
   {
     path: '/changesuccess',
     name: 'PasswordChangeSuccess',
     component: () => import('../components/PasswordChangeSuccess.vue'),
+    meta: { guestUser: true },
   },
   {
     path: '/application',
     name: 'ApplicationForm',
     component: () => import('../views/user/ApplicationForm.vue'),
-    meta: { requiresApplyAuth: true },
+    meta: { requiresApplyAuthTest: true },
   },
   {
     path: '/user/dashboard',
@@ -126,6 +137,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     await store.dispatch('adminFetchPage');
@@ -140,7 +152,26 @@ router.beforeEach(async (to, from, next) => {
 });
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresApplyAuth)) {
-    await store.dispatch('userApplyPage');
+    // await store.dispatch('userApplyPage');
+    if (store.getters.loggedInStatus) {
+      await store.dispatch('populateUserDeets');
+      if (store.getters.getUserDeetsApplicationStatus === 'Yes') {
+        console.log('Yeah!!');
+        next();
+        return;
+      }
+      console.log('Oh No!');
+      next('/application');
+    } else {
+      next('/user/login');
+    }
+  } else {
+    next();
+  }
+});
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresApplyAuthTest)) {
+    // await store.dispatch('userApplyPage');
     if (store.getters.loggedInStatus) {
       next();
     } else {
@@ -154,6 +185,17 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.guest)) {
     if (store.getters.loggedInStatusAdmin) {
       next('/admin/dashboard');
+      return;
+    }
+    next();
+  } else {
+    next();
+  }
+});
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.guestUser)) {
+    if (store.getters.loggedInStatus) {
+      next('/user/dashboard');
       return;
     }
     next();

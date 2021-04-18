@@ -8,7 +8,7 @@
                         <div class="form-group">
                             <label for="email">Email Address</label>
                             <b-form-input
-                            class="input"
+                            id="input-1"
                             name="email"
                             type="text"
                             v-model="form.email"
@@ -41,7 +41,7 @@ export default {
         email: '',
       };
       this.$modal.hide('forgot-password-modal');
-      setTimeout(() => { alert('Password reset link sent. Check your mailbox'); }, 1000);
+      setTimeout(() => { alert('Password reset link sent. Check your mailbox'); }, 3000);
     },
     show() {
       this.$modal.show('forgot-password-modal');
@@ -65,6 +65,14 @@ p {
 input {
   width: 70%;
   margin: auto;
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+#input-1 {
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 button{
 width: 320px;

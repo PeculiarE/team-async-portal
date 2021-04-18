@@ -217,4 +217,9 @@ button:hover {
     cursor: pointer;
     /* margin-top: -10px; */
   }
+  #input-1, #input-2 {
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 </style>

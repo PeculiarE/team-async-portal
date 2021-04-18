@@ -2,8 +2,8 @@
   <div>
     <div class="wrapper">
       <div>
-        <p>Password has been successfully changed</p>
-        <h3>Pls sign in with your new password</h3>
+        <p>Password has been successfully changed!</p>
+        <h3>Please sign in with your new password</h3>
       </div>
       <div>
         <b-button type="submit" class="button" @click="login">Sign In</b-button>

@@ -35,6 +35,7 @@
               type="submit"
               class="text-white button"
               @click="quizPage"
+              v-if="getUserDeetsStatus === 'Approved'"
             >
               Take Assessment
             </b-button>
@@ -81,6 +82,7 @@ export default {
   mounted() {
     this.populateUserDeets();
     this.assessmentMenuSelected = true;
+    console.log(this.getAdminQuestions);
   },
 };
 </script>
