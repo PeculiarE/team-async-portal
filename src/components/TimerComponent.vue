@@ -71,13 +71,6 @@ export default {
         this.dateError = false;
       },
     },
-    // time: {
-    //   handler() {
-    //     if (this.seconds !== null) {
-    //       this.timeError = false;
-    //     }
-    //   },
-    // },
   },
   computed: {
     ...mapGetters(['getSetTime', 'getAdminQuestions', 'getExpirationDate']),
