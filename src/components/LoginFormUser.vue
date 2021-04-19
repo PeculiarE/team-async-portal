@@ -114,7 +114,6 @@ export default {
     },
     togglePassword() {
       this.showPassword = !this.showPassword;
-      console.log('something');
     },
     loginNow() {
       this.loadingStatus = true;

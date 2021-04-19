@@ -46,6 +46,16 @@
               type="submit"
               class="text-white button"
               @click="quizPage"
+              v-if="getAdminQuestions.length && getUserDeetsStatus === 'Approved'"
+            >
+              Take Assessment
+            </b-button>
+            <b-button
+              type="submit"
+              class="text-white button"
+              @click="quizPage"
+              disabled
+              v-else
             >
               Take Assessment
             </b-button>
@@ -59,6 +69,7 @@
 <script>
 import axios from 'axios';
 import Sidebar from '@/components/Sidebar.vue';
+
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -77,7 +88,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['openApplicationStatus', 'getUserDeetsStatus']),
+    ...mapGetters(['openApplicationStatus', 'getAdminQuestions', 'getUserDeetsStatus']),
   },
   methods: {
     ...mapActions(['populateUserDeets']),
@@ -137,6 +148,10 @@ export default {
     this.checkQuestionsByBatchInDB();
     this.getUserTestScore();
     console.log(this.getUserDeetsStatus);
+  },
+  mounted() {
+    this.populateUserDeets();
+    this.assessmentMenuSelected = true;
   },
 };
 </script>

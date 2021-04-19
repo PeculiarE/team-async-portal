@@ -37,7 +37,7 @@ export default new Vuex.Store({
     ongoingApplication: localStorage.getItem('ongoingApplication') || null,
     applicationStartDate: localStorage.getItem('applicationStartDate') || null,
     hasBatchEnded: localStorage.getItem('hasBatchEnded') || null,
-    assessmentComposed: localStorage.getItem('assessmentComposed') || null,
+    // assessmentComposed: localStorage.getItem('assessmentComposed') || null,
     responseAdminAd: {
       status: '',
       message: '',
@@ -47,6 +47,7 @@ export default new Vuex.Store({
       message: '',
     },
     summary: {},
+    adminQuestions: [],
     presentBatch: 0,
     currentApplications: 0,
     totalApplications: 0,
@@ -71,6 +72,9 @@ export default new Vuex.Store({
     },
     getTotalQuestionCount(state) {
       return state.totalQuestionCount;
+    },
+    getAdminQuestions(state) {
+      return state.adminQuestions;
     },
     getUsersInBatch(state) {
       return state.usersInBatch;
@@ -147,9 +151,6 @@ export default new Vuex.Store({
     batchEnded(state) {
       return state.hasBatchEnded !== null;
     },
-    getAssessmentComposed(state) {
-      return state.assessmentComposed !== null;
-    },
     getResponseAdminAd(state) {
       return state.responseAdminAd;
     },
@@ -171,6 +172,9 @@ export default new Vuex.Store({
     getLatestApplication(state) {
       return state.latestApplication;
     },
+    getAssessmentComposed(state) {
+      return state.assessmentComposed !== null;
+    },
   },
 
   mutations: {
@@ -185,6 +189,8 @@ export default new Vuex.Store({
     updateQuizSetTime(state, payload) {
       state.setTime = payload;
       console.log(state.setTime);
+    updateAdminQuestions(state, payload) {
+      state.adminQuestions.push(payload);
     },
     updateTestscore(state, payload) {
       state.testScore = payload;
