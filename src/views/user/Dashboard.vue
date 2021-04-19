@@ -87,6 +87,7 @@ export default {
       testTaken: false,
     };
   },
+
   mounted() {
     this.dashboardMenuSelected = true;
     this.populateUserDeets();

@@ -27,7 +27,7 @@
             <img src="../../assets/hourglass-take-assessment.svg" alt=""
             class="mb-4"/>
             <p v-if="getUserDeetsStatus === 'Declined' || 'Pending'" class="text-center mb-3">
-              Cannot take assessment because your application has been declined or is pending.
+            Either you've taken the test before or your application has been declined or is pending.
             </p>
             <p v-else-if="getUserDeetsStatus === 'Approved'
               && alreadySet === false && testTaken === false" class="text-center mb-3">
@@ -46,8 +46,6 @@
               type="submit"
               class="text-white button"
               @click="quizPage"
-              :disabled="(getUserDeetsStatus === 'Declined' || 'Pending')
-              || alreadySet === false || testTaken === true"
             >
               Take Assessment
             </b-button>
@@ -68,6 +66,8 @@ export default {
   components: {
     Sidebar,
   },
+  // :disabled="(getUserDeetsStatus === 'Declined' || 'Pending')
+  //             || alreadySet === false || testTaken === true"
   data() {
     return {
       assessmentMenuSelected: false,
